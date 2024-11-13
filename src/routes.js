@@ -25,6 +25,7 @@ import Users from 'views/admin/users';
 import Analytics from 'views/admin/analytics';
 import Company from 'views/admin/company';
 import Device from 'views/admin/device';
+import Dashboard from 'views/admin/dashboard';
 // import Analytics from 'views/admin/analytics';
 
 const routes = [
@@ -33,7 +34,7 @@ const routes = [
     layout: '/admin',
     path: '/dashboard',
     icon: <Icon as={MdHome} width="20px" height="20px" color="inherit" />,
-    component: <MainDashboard />,
+    component: <Dashboard />,
   },
   // {
   //   name: 'Analytics',
@@ -82,6 +83,13 @@ const routes = [
     icon: <Icon as={MdPeople} width="20px" height="20px" color="inherit" />,
     component: <Users />,
     secondary: true,
+  },
+  {
+    name: 'MainDashboard',
+    layout: '/admin',
+    path: '/main-dashboard',
+    icon: <Icon as={MdHome} width="20px" height="20px" color="inherit" />,
+    component: <MainDashboard />,
   },
   {
     name: 'Data Tables',

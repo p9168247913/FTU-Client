@@ -431,6 +431,11 @@ const Company = () => {
                 })
               }
               width="auto"
+              bg={useColorModeValue('white', 'gray.700')}
+              color={useColorModeValue('black', 'white')}
+              _placeholder={{
+                color: useColorModeValue('gray.500', 'gray.400'),
+              }}
             />
           </InputGroup>
         </HStack>
@@ -438,7 +443,6 @@ const Company = () => {
           Add Company
         </Button>
       </Flex>
-
       <DevelopmentTable
         tableData={company}
         handleEditUser={(device, e) => handleEdit(device, e)}
@@ -665,7 +669,6 @@ const Company = () => {
         </ModalContent>
       </Modal>
 
-      {/* Edit Company Modal */}
       <Modal isOpen={isEditOpen} onClose={onEditClose} size="lg">
         <ModalOverlay />
         <ModalContent maxWidth="800px" mx="auto">

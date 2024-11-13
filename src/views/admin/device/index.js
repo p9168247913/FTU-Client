@@ -95,6 +95,7 @@ const Devices = () => {
   const modalBg = useColorModeValue('white', 'gray.800');
   const labelColor = useColorModeValue('gray.800', 'gray.300');
   const borderColor = useColorModeValue('gray.200', 'gray.600');
+  
   useEffect(() => {
     getAllDevices();
     productTypes();

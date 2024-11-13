@@ -191,8 +191,8 @@ const User = () => {
   };
 
   const handleEditUser = (user) => {
-    setEditUser(user); // Set the user to be edited
-    onEditOpen(); // Open the edit modal
+    setEditUser(user);
+    onEditOpen();
   };
 
   const handleSave = async () => {
@@ -212,8 +212,6 @@ const User = () => {
       if (editUser?.companyId?._id) {
         payload.companyId = editUser.companyId._id;
       }
-
-      console.log(payload);
 
       const response = await axiosInstance.put(
         `/auth/updateUser/${editUser._id}`,
@@ -318,15 +316,12 @@ const User = () => {
     setPage(newPage);
   };
 
-  useEffect(() => {
-    console.log(editUser);
-  }, [editUser]);
-
   const handleSearchChange = (e) => {
     const { name, value } = e.target;
     setSearchTerm((prev) => ({ ...prev, [name]: value }));
     setPage(1);
   };
+  
   return (
     <Box pt={{ base: '130px', md: '80px', xl: '80px' }}>
       <Flex justifyContent="space-between" mb={5} wrap="wrap">
