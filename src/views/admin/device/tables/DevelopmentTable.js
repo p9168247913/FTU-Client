@@ -56,17 +56,17 @@ const DevelopmentTable = ({
     }
 
     return tableData.map((device, index) => (
-      <Tr key={device._id}>
+      <Tr key={device?._id}>
         <Td>{index + 1 + (page - 1) * 10}</Td>
         <Td whiteSpace="nowrap" overflow="hidden" textOverflow="ellipsis">
-          {device.productId}
+          {device?.productId}
         </Td>
-        <Td>{device.productName}</Td>
+        <Td>{device?.productName}</Td>
         {/* <Td>{device.productPasscode}</Td> */}
         <Td whiteSpace="nowrap" textOverflow="ellipsis" overflow="hidden">
-          {device.company?.name || 'N/A'}
+          {device?.company?.name || 'N/A'}
         </Td>
-        <Td>{device.productType?.type || 'N/A'}</Td>
+        <Td>{device?.productType?.type || 'N/A'}</Td>
         <Td>
           <Flex gap="2">
             <IconButton
@@ -83,7 +83,7 @@ const DevelopmentTable = ({
               colorScheme="red"
               onClick={(e) => {
                 e.stopPropagation();
-                handleDeleteUser(device._id, e);
+                handleDeleteUser(device?._id, e);
               }}
             />
           </Flex>

@@ -95,7 +95,7 @@ const Devices = () => {
   const modalBg = useColorModeValue('white', 'gray.800');
   const labelColor = useColorModeValue('gray.800', 'gray.300');
   const borderColor = useColorModeValue('gray.200', 'gray.600');
-  
+
   useEffect(() => {
     getAllDevices();
     productTypes();
@@ -354,6 +354,11 @@ const Devices = () => {
                 }))
               }
               leftIcon={<SearchIcon />}
+              bg={useColorModeValue('white', 'gray.700')}
+              color={useColorModeValue('black', 'white')}
+              _placeholder={{
+                color: useColorModeValue('gray.500', 'gray.400'),
+              }}
             />
           </InputGroup>
 

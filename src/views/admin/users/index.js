@@ -247,6 +247,7 @@ const User = () => {
       });
     }
   };
+  
   const handleAddUser = async () => {
     const payload = {
       name: addUser.name,
@@ -763,7 +764,6 @@ const User = () => {
         </ModalContent>
       </Modal>
 
-      {/* View User Modal */}
       {/* View User Modal */}
       <Modal isOpen={isViewOpen} onClose={onViewClose} size="lg">
         <ModalOverlay />
