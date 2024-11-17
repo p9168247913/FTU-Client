@@ -13,7 +13,7 @@ import {
   ModalFooter,
   ModalBody,
   ModalCloseButton,
-  Select,
+  // Select,
   Spinner,
   Table,
   Tbody,
@@ -41,6 +41,7 @@ import DevelopmentTable from './tables/DevelopmentTable';
 import { SearchIcon } from '@chakra-ui/icons';
 import { SearchBar } from 'components/navbar/searchBar/SearchBar';
 import { useColorModeValue } from '@chakra-ui/react';
+import Select from 'react-select';
 
 const User = () => {
   const [users, setUsers] = useState([]);
@@ -61,6 +62,7 @@ const User = () => {
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [loading, setLoading] = useState(true);
   const [companies, setCompanies] = useState([]);
+  const [device, setDevice] = useState([]);
   const [viewUser, setViewUser] = useState(null);
   const { isOpen, onOpen, onClose } = useDisclosure();
   const {
@@ -81,7 +83,9 @@ const User = () => {
     email: '',
     username: '',
   });
-
+  const inputBg = useColorModeValue('white', 'gray.700');
+  const inputTextColor = useColorModeValue('black', 'white');
+  const inputPlaceholderColor = useColorModeValue('gray.500', 'gray.400');
   const getQueryString = (params) => {
     return Object.keys(params)
       .filter((key) => params[key] !== undefined && params[key] !== '')
@@ -148,8 +152,16 @@ const User = () => {
   useEffect(() => {
     fetchCompanies();
     getUsers();
+    getAllDeviceList();
   }, [page, rowsPerPage, searchTerm]);
 
+  useEffect(() => {
+    console.log('DEVICE data', device);
+  }, [device]);
+
+  useEffect(() => {
+    console.log('EDIT DEVICE', editUser);
+  }, [editUser]);
   const handleDelete = async (id) => {
     Swal.fire({
       title: 'Are you sure?',
@@ -189,14 +201,15 @@ const User = () => {
       }
     });
   };
-
   const handleEditUser = (user) => {
-    setEditUser(user);
+    const assignedDevices = user.assignedDevices.map((device) => device._id); // Extract only _id
+    setEditUser({ ...user, assignedDevices }); // Set the updated user object with assignedDevices as an array of _id
     onEditOpen();
   };
 
   const handleSave = async () => {
     try {
+      // Transform assignedDevices to array of device IDs
       const payload = {
         name: editUser.name,
         email: editUser.email,
@@ -204,6 +217,7 @@ const User = () => {
         role: editUser.role,
         designation: editUser.designation,
         phoneNo: editUser.phoneNo,
+        assignedDevices: editUser?.assignedDevices,
       };
 
       if (editUser?.password) {
@@ -212,6 +226,8 @@ const User = () => {
       if (editUser?.companyId?._id) {
         payload.companyId = editUser.companyId._id;
       }
+
+      console.log('payload', payload);
 
       const response = await axiosInstance.put(
         `/auth/updateUser/${editUser._id}`,
@@ -247,7 +263,7 @@ const User = () => {
       });
     }
   };
-  
+
   const handleAddUser = async () => {
     const payload = {
       name: addUser.name,
@@ -322,7 +338,27 @@ const User = () => {
     setSearchTerm((prev) => ({ ...prev, [name]: value }));
     setPage(1);
   };
-  
+
+  const getAllDeviceList = async () => {
+    try {
+      setLoading(true);
+      const response = await axiosInstance.get(
+        `${baseUrl}/device/device-list`,
+        { headers: { Authorization: `Bearer ${Token}` } },
+      );
+      const data = response.data.data;
+      setDevice(data.data);
+      setLoading(false);
+    } catch (error) {
+      setLoading(false);
+      toast({
+        title: error.response.data.message || 'Failed to load devices',
+        status: 'error',
+        isClosable: true,
+      });
+    }
+  };
+
   return (
     <Box pt={{ base: '130px', md: '80px', xl: '80px' }}>
       <Flex justifyContent="space-between" mb={5} wrap="wrap">
@@ -540,19 +576,27 @@ const User = () => {
                 <FormControl>
                   <FormLabel>Company</FormLabel>
                   <Select
-                    name="companyId"
-                    value={addUser.companyId}
-                    onChange={(e) =>
-                      setAddUser({ ...addUser, companyId: e.target.value })
+                    options={companies.map((company) => ({
+                      value: company._id,
+                      label: company.name,
+                    }))}
+                    value={
+                      addUser.companyId
+                        ? {
+                            value: addUser.companyId,
+                            label: companies.find(
+                              (c) => c._id === addUser.companyId,
+                            )?.name,
+                          }
+                        : null
                     }
-                  >
-                    <option value="">Select Company</option>
-                    {companies.map((company) => (
-                      <option key={company._id} value={company._id}>
-                        {company.name}
-                      </option>
-                    ))}
-                  </Select>
+                    onChange={(selectedOption) =>
+                      setAddUser({
+                        ...addUser,
+                        companyId: selectedOption ? selectedOption.value : '',
+                      })
+                    }
+                  />
                 </FormControl>
               )}
             </SimpleGrid>
@@ -711,27 +755,32 @@ const User = () => {
                 <FormControl>
                   <FormLabel>Company</FormLabel>
                   <Select
-                    name="companyId"
-                    title="Select Company"
-                    value={editUser?.companyId?._id || ''}
-                    onChange={(e) =>
+                    options={companies.map((company) => ({
+                      value: company._id,
+                      label: company.name,
+                    }))}
+                    value={
+                      editUser?.companyId
+                        ? {
+                            value: editUser.companyId._id,
+                            label: companies.find(
+                              (c) => c._id === editUser.companyId._id,
+                            )?.name,
+                          }
+                        : null
+                    }
+                    onChange={(selectedOption) =>
                       setEditUser({
                         ...editUser,
-                        companyId: {
-                          _id: e.target.value,
-                          name: companies.find((c) => c._id === e.target.value)
-                            ?.name,
-                        },
+                        companyId: selectedOption
+                          ? {
+                              _id: selectedOption.value,
+                              name: selectedOption.label,
+                            }
+                          : null,
                       })
                     }
-                  >
-                    <option value="">Select Company</option>
-                    {companies.map((company) => (
-                      <option key={company._id} value={company._id}>
-                        {company.name}
-                      </option>
-                    ))}
-                  </Select>
+                  />
                 </FormControl>
               )}
 
@@ -751,6 +800,42 @@ const User = () => {
                   }}
                 />
               </FormControl>
+
+              {(editUser?.role === 'user' ||
+                editUser?.role === 'companyUser') && (
+                <FormControl>
+                  <FormLabel>Assigned Devices</FormLabel>
+                  <Select
+                    isMulti
+                    options={device.map((dev) => ({
+                      value: dev._id,
+                      label: `${dev.productName} (${dev.productId})`,
+                    }))}
+                    value={
+                      editUser?.assignedDevices?.map((id) => {
+                        const matchedDevice = device.find(
+                          (dev) => dev._id === id,
+                        );
+                        return {
+                          value: id,
+                          label: `${matchedDevice?.productName || ''} (${
+                            matchedDevice?.productId || ''
+                          })`,
+                        };
+                      }) || []
+                    }
+                    onChange={(selectedOptions) => {
+                      const selectedDeviceIds = selectedOptions.map(
+                        (option) => option.value,
+                      );
+                      setEditUser({
+                        ...editUser,
+                        assignedDevices: selectedDeviceIds,
+                      });
+                    }}
+                  />
+                </FormControl>
+              )}
             </SimpleGrid>
           </ModalBody>
           <ModalFooter>
