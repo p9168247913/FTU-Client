@@ -1,66 +1,51 @@
-/*!
-  _   _  ___  ____  ___ ________  _   _   _   _ ___   
- | | | |/ _ \|  _ \|_ _|__  / _ \| \ | | | | | |_ _| 
- | |_| | | | | |_) || |  / / | | |  \| | | | | || | 
- |  _  | |_| |  _ < | | / /| |_| | |\  | | |_| || |
- |_| |_|\___/|_| \_\___/____\___/|_| \_|  \___/|___|
-                                                                                                                                                                                                                                                                                                                                       
-=========================================================
-* Horizon UI - v1.1.0
-=========================================================
-
-* Product Page: https://www.horizon-ui.com/
-* Copyright 2023 Horizon UI (https://www.horizon-ui.com/)
-
-* Designed and Coded by Simmmple
-
-=========================================================
-
-* The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-
-*/
-
-// Chakra imports
-import { Box, Grid } from "@chakra-ui/react";
+import { Box, Grid } from '@chakra-ui/react';
 
 // Custom components
-import Banner from "views/admin/profile/components/Banner";
-import General from "views/admin/profile/components/General";
-import Notifications from "views/admin/profile/components/Notifications";
-import Projects from "views/admin/profile/components/Projects";
-import Storage from "views/admin/profile/components/Storage";
-import Upload from "views/admin/profile/components/Upload";
+import Banner from 'views/admin/profile/components/Banner';
+import General from 'views/admin/profile/components/General';
+import Notifications from 'views/admin/profile/components/Notifications';
+import Projects from 'views/admin/profile/components/Projects';
+import Storage from 'views/admin/profile/components/Storage';
+import Upload from 'views/admin/profile/components/Upload';
 
 // Assets
-import banner from "assets/img/auth/banner.png";
-import avatar from "assets/img/avatars/avatar4.png";
-import React from "react";
+import banner from 'assets/img/auth/banner.png';
+import avatar from 'assets/img/avatars/USER_LOGO.webp';
+import React from 'react';
 
 export default function Overview() {
+  const user = {
+    name: localStorage.getItem('name') || 'User',
+    email: localStorage.getItem('email') || 'example@example.com',
+    username: localStorage.getItem('username') || 'username',
+    role: localStorage.getItem('role') || 'role',
+  };
   return (
-    <Box pt={{ base: "130px", md: "80px", xl: "80px" }}>
+    <Box pt={{ base: '130px', md: '80px', xl: '80px' }}>
       {/* Main Fields */}
       <Grid
         templateColumns={{
-          base: "1fr",
-          lg: "1.34fr 1fr 1.62fr",
+          base: '1fr',
+          lg: '1.34fr 1fr 1.62fr',
         }}
         templateRows={{
-          base: "repeat(3, 1fr)",
-          lg: "1fr",
+          base: 'repeat(3, 1fr)',
+          lg: '1fr',
         }}
-        gap={{ base: "20px", xl: "20px" }}>
+        gap={{ base: '20px', xl: '20px' }}
+      >
         <Banner
-          gridArea='1 / 1 / 2 / 2'
+          // gridArea="1 / 1 / 2 / 2"
+          margin = 'auto'
           banner={banner}
           avatar={avatar}
-          name='Adela Parkson'
-          job='Product Designer'
-          posts='17'
-          followers='9.7k'
-          following='274'
+          name={user.name}
+          job={`${user.role}`}
+          posts={`${user.email}`}
+          followers={`${user.username}`}
+          following="" // You can replace this with any additional field if necessary
         />
-        <Storage
+        {/* <Storage
           gridArea={{ base: "2 / 1 / 3 / 2", lg: "1 / 2 / 2 / 3" }}
           used={25.6}
           total={50}
@@ -73,9 +58,9 @@ export default function Overview() {
           minH={{ base: "auto", lg: "420px", "2xl": "365px" }}
           pe='20px'
           pb={{ base: "100px", lg: "20px" }}
-        />
+        /> */}
       </Grid>
-      <Grid
+      {/* <Grid
         mb='20px'
         templateColumns={{
           base: "1fr",
@@ -112,7 +97,7 @@ export default function Overview() {
             "2xl": "1 / 3 / 2 / 4",
           }}
         />
-      </Grid>
+      </Grid> */}
     </Box>
   );
 }

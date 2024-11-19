@@ -265,38 +265,38 @@ const Devices = () => {
   };
   const handleEdit = (device, event) => {
     event.stopPropagation();
-    setEditId(device._id);
+    setEditId(device?._id);
     setEditDevice({
-      productName: device.productName || '',
-      productId: device.productId || '',
-      productType: device.productType._id || '',
-      company: device.company._id || '',
-      flowmeterSerialNumber: device.flowmeterSerialNumber || '',
-      make: device.make || '',
-      model: device.model || '',
-      protocol: device.protocol || '',
-      diameter: device.diameter || '',
-      installedBy: device.installedBy || '',
-      commissioningDate: device.commissioningDate || '',
-      value: device.value || 0,
-      newFlowmeter: device.newFlowmeter ?? true,
-      resetCounter: device.resetCounter || false,
-      dashboardLicensingExpiry: device.dashboardLicensingExpiry || '',
+      productName: device?.productName || '',
+      productId: device?.productId || '',
+      productType: device?.productType._id || '',
+      company: device?.company?._id || '',
+      flowmeterSerialNumber: device?.flowmeterSerialNumber || '',
+      make: device?.make || '',
+      model: device?.model || '',
+      protocol: device?.protocol || '',
+      diameter: device?.diameter || '',
+      installedBy: device?.installedBy || '',
+      commissioningDate: device?.commissioningDate || '',
+      value: device?.value || 0,
+      newFlowmeter: device?.newFlowmeter ?? true,
+      resetCounter: device?.resetCounter || false,
+      dashboardLicensingExpiry: device?.dashboardLicensingExpiry || '',
       flowmeterWarranty: {
-        startDate: device.flowmeterWarranty?.startDate || '',
-        endDate: device.flowmeterWarranty?.endDate || '',
+        startDate: device?.flowmeterWarranty?.startDate || '',
+        endDate: device?.flowmeterWarranty?.endDate || '',
       },
       flowmeterTelemetryWarrantyValidity: {
-        startDate: device.flowmeterTelemetryWarrantyValidity?.startDate || '',
-        endDate: device.flowmeterTelemetryWarrantyValidity?.endDate || '',
+        startDate: device?.flowmeterTelemetryWarrantyValidity?.startDate || '',
+        endDate: device?.flowmeterTelemetryWarrantyValidity?.endDate || '',
       },
       dashboardValidity: {
-        startDate: device.dashboardValidity?.startDate || '',
-        endDate: device.dashboardValidity?.endDate || '',
+        startDate: device?.dashboardValidity?.startDate || '',
+        endDate: device?.dashboardValidity?.endDate || '',
       },
       simcardValidity: {
-        startDate: device.simcardValidity?.startDate || '',
-        endDate: device.simcardValidity?.endDate || '',
+        startDate: device?.simcardValidity?.startDate || '',
+        endDate: device?.simcardValidity?.endDate || '',
       },
     });
     onEditOpen();

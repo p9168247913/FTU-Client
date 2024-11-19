@@ -202,8 +202,8 @@ const User = () => {
     });
   };
   const handleEditUser = (user) => {
-    const assignedDevices = user.assignedDevices.map((device) => device._id); // Extract only _id
-    setEditUser({ ...user, assignedDevices }); // Set the updated user object with assignedDevices as an array of _id
+    const assignedDevices = user.assignedDevices.map((device) => device._id);
+    setEditUser({ ...user, assignedDevices });
     onEditOpen();
   };
 
@@ -359,6 +359,30 @@ const User = () => {
     }
   };
 
+  const addRoleOptions = {
+    admin: [
+      { value: '', label: 'Select Role' },
+      { value: 'admin', label: 'Admin' },
+      { value: 'sales', label: 'Sales' },
+      { value: 'IRM', label: 'IRM' },
+      { value: 'FSE', label: 'FSE' },
+      { value: 'user', label: 'User' },
+      { value: 'companyUser', label: 'Company User' },
+    ],
+    IRM: [
+      { value: '', label: 'Select Role' },
+      { value: 'sales', label: 'Sales' },
+      { value: 'IRM', label: 'IRM' },
+      { value: 'FSE', label: 'FSE' },
+      { value: 'user', label: 'User' },
+      { value: 'companyUser', label: 'Company User' },
+    ],
+    companyUser: [
+      { value: '', label: 'Select Role' },
+      { value: 'user', label: 'User' },
+    ],
+  };
+
   return (
     <Box pt={{ base: '130px', md: '80px', xl: '80px' }}>
       <Flex justifyContent="space-between" mb={5} wrap="wrap">
@@ -505,42 +529,14 @@ const User = () => {
               <FormControl>
                 <FormLabel>Role</FormLabel>
                 <Select
-                  name="role"
-                  value={addUser.role}
-                  onChange={(e) =>
-                    setAddUser({ ...addUser, role: e.target.value })
+                  options={addRoleOptions[role]}
+                  value={addRoleOptions[role].find(
+                    (option) => option.value === addUser.role,
+                  )}
+                  onChange={(selectedOption) =>
+                    setAddUser({ ...addUser, role: selectedOption.value })
                   }
-                >
-                  {role === 'admin' && (
-                    <>
-                      <option value="">Select Role</option>
-                      <option value="admin">Admin</option>
-                      <option value="sales">Sales</option>
-                      <option value="IRM">IRM</option>
-                      <option value="FSE">FSE</option>
-                      <option value="user">User</option>
-                      <option value="companyUser">Company User</option>
-                    </>
-                  )}
-
-                  {role === 'IRM' && (
-                    <>
-                      <option value="">Select Role</option>
-                      <option value="sales">Sales</option>
-                      <option value="IRM">IRM</option>
-                      <option value="FSE">FSE</option>
-                      <option value="user">User</option>
-                      <option value="companyUser">Company User</option>
-                    </>
-                  )}
-
-                  {role === 'companyUser' && (
-                    <>
-                      <option value="">Select Role</option>
-                      <option value="user">User</option>
-                    </>
-                  )}
-                </Select>
+                />
               </FormControl>
               <FormControl>
                 <FormLabel>Designation</FormLabel>
@@ -675,47 +671,14 @@ const User = () => {
               <FormControl>
                 <FormLabel>Role</FormLabel>
                 <Select
-                  name="role"
-                  value={editUser?.role || ''}
-                  onChange={(e) =>
-                    setEditUser({ ...editUser, role: e.target.value })
+                  options={addRoleOptions[role]}
+                  value={addRoleOptions[role].find(
+                    (option) => option.value === editUser?.role,
+                  )}
+                  onChange={(selectedOption) =>
+                    setEditUser({ ...editUser, role: selectedOption.value })
                   }
-                  bg={useColorModeValue('white', 'gray.700')}
-                  color={useColorModeValue('black', 'white')}
-                  _placeholder={{
-                    color: useColorModeValue('gray.500', 'gray.400'),
-                  }}
-                >
-                  {role === 'admin' && (
-                    <>
-                      <option value="">Select Role</option>
-                      <option value="admin">Admin</option>
-                      <option value="sales">Sales</option>
-                      <option value="IRM">IRM</option>
-                      <option value="FSE">FSE</option>
-                      <option value="user">User</option>
-                      <option value="companyUser">Company User</option>
-                    </>
-                  )}
-
-                  {role === 'IRM' && (
-                    <>
-                      <option value="">Select Role</option>
-                      <option value="sales">Sales</option>
-                      <option value="IRM">IRM</option>
-                      <option value="FSE">FSE</option>
-                      <option value="user">User</option>
-                      <option value="companyUser">Company User</option>
-                    </>
-                  )}
-
-                  {role === 'companyUser' && (
-                    <>
-                      <option value="">Select Role</option>
-                      <option value="user">User</option>
-                    </>
-                  )}
-                </Select>
+                />
               </FormControl>
 
               <FormControl>
@@ -853,9 +816,9 @@ const User = () => {
       <Modal isOpen={isViewOpen} onClose={onViewClose} size="lg">
         <ModalOverlay />
         <ModalContent maxWidth="800px" mx="auto">
-          <ModalHeader>User Details</ModalHeader>
-          <ModalCloseButton />
+          {/* <ModalHeader>User Details</ModalHeader> */}
           <ModalBody>
+            <ModalCloseButton />
             <Box borderWidth="1px" borderRadius="lg" p={5} boxShadow="lg">
               <Flex alignItems="center" mb={4}>
                 <Avatar size="lg" name={viewUser?.name} mr={4} />

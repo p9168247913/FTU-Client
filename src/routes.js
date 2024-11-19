@@ -28,7 +28,7 @@ import Device from 'views/admin/device';
 import Dashboard from 'views/admin/dashboard';
 // import Analytics from 'views/admin/analytics';
 
-const routes = [
+const allRoutes = [
   {
     name: 'Dashboard',
     layout: '/admin',
@@ -114,4 +114,23 @@ const routes = [
   },
 ];
 
+const getFilteredRoutes = () => {
+  const role = localStorage.getItem('role');
+
+  if (role === 'companyUser') {
+    return allRoutes.filter((route) =>
+      ['Dashboard', 'Analytics', 'Users', 'Profile'].includes(route.name),
+    );
+  }
+
+  if (role === 'user') {
+    return allRoutes.filter((route) =>
+      ['Dashboard', 'Analytics', 'Profile'].includes(route.name),
+    );
+  }
+
+  return allRoutes;
+};
+
+const routes = getFilteredRoutes();
 export default routes;

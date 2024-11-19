@@ -73,7 +73,6 @@ function SignIn() {
 
   const login = async (e) => {
     e.preventDefault();
-    console.log('login');
     try {
       setLoading(true);
       const response = await axiosInstance.post(
