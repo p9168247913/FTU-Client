@@ -13,12 +13,16 @@ import {
   InputLeftElement,
   List,
   ListItem,
+  Select as ChakraSelect,
+  Button,
+  IconButton,
 } from '@chakra-ui/react';
+import { ChevronLeftIcon, ChevronRightIcon } from '@chakra-ui/icons';
 
 import Select from 'react-select';
 import LiquidGauge from 'react-liquid-gauge';
 import { useEffect, useState } from 'react';
-import { format } from 'date-fns';
+import { format, set } from 'date-fns';
 import { SearchIcon } from '@chakra-ui/icons';
 import baseUrl from 'Base_Url/baseUrl';
 import axiosInstance from 'axiosInstance';
@@ -27,8 +31,14 @@ import { MdPinDrop } from 'react-icons/md';
 const Dashboard = () => {
   const [productId, setProductId] = useState([]);
   const [selectedPID, setSelectedPID] = useState('');
+  const [pidData, setPidData] = useState([]);
+  const [companyData, setCompanyData] = useState([]);
   const [unit, setUnit] = useState('m³');
   const [selectedCompany, setSelectedCompany] = useState(null);
+  const [selectedCompany2, setSelectedCompany2] = useState({
+    label: '',
+    value: '',
+  });
   const Token = localStorage.getItem('token');
   const [page, setPage] = useState(1);
   const [totalResult, setTotalResult] = useState();
@@ -39,19 +49,17 @@ const Dashboard = () => {
   const cardBorder = useColorModeValue('gray.200', 'gray.600');
   const sectionBg = useColorModeValue('gray.100', 'gray.800');
 
-  const [pidData, setPidData] = useState([]);
   const selectBg = useColorModeValue('white', 'gray.700');
   const selectTextColor = useColorModeValue('black', 'white');
 
-  // const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-  // const [searchQuery, setSearchQuery] = useState('');
-
-  const [companyData, setCompanyData] = useState([]);
-  const companyOptions = companyData.map((company) => ({
-    value: company._id,
-    label: company.name,
-  }));
-
+  const companyOptions = [
+    { value: '', label: 'Select Company' },
+    ...companyData.map((company) => ({
+      value: company._id,
+      label: company.name,
+    })),
+  ];
+  const productIdOptions = [{ value: '', label: 'All' }, ...productId];
   const unitOptions = [
     { value: 'm³', label: 'm³' },
     { value: 'Liters', label: 'Liters' },
@@ -70,19 +78,18 @@ const Dashboard = () => {
   const inputBg = useColorModeValue('white', 'gray.700');
   const inputTextColor = useColorModeValue('gray.600', 'white');
   const placeholderColor = useColorModeValue('gray.500', 'gray.400');
-  const dropdownBg = useColorModeValue('white', 'gray.700');
 
-  // const progressPercentage = selectedCompanyData
-  //   ? (selectedCompanyData.consumption / selectedCompanyData.limit) * 100
-  //   : 0;
-  // const progressColor = selectedCompanyData
-  //   ? selectedCompanyData.consumption <= selectedCompanyData.limit
-  //     ? withinLimitColor
-  //     : exceededLimitColor
-  //   : withinLimitColor;
+  const progressPercentage = selectedCompanyData
+    ? (selectedCompanyData?.consumption / selectedCompanyData?.limit) * 100
+    : 0;
+  const progressColor = selectedCompanyData
+    ? selectedCompanyData?.consumption <= selectedCompanyData?.limit
+      ? withinLimitColor
+      : exceededLimitColor
+    : withinLimitColor;
 
   const filteredPidData = selectedPID
-    ? pidData.filter((pid) => pid.productId === selectedPID)
+    ? pidData?.filter((pid) => pid?.productId === selectedPID)
     : pidData;
 
   const convertReading = (reading) => {
@@ -94,6 +101,14 @@ const Dashboard = () => {
     return reading;
   };
 
+  const convertFlowrate = (flowrate) => {
+    if (unit === 'Liters') {
+      return flowrate * 1000;
+    } else if (unit === 'Gallons') {
+      return flowrate * 264.172;
+    }
+    return flowrate; // Default to m³/s
+  };
   const formatDate = (timestamp) => {
     return format(new Date(timestamp), 'do MMM, yyyy hh:mm a');
   };
@@ -125,6 +140,8 @@ const Dashboard = () => {
           value: pid,
           label: pid,
         }));
+        console.log(formattedProductIds);
+
         setProductId(formattedProductIds || []);
       }
     } catch (error) {
@@ -153,6 +170,13 @@ const Dashboard = () => {
           companyId: selectedCompany,
         };
       }
+
+      if (selectedPID) {
+        filter = {
+          ...filter,
+          productId: selectedPID,
+        };
+      }
       if (Object.keys(filter).length > 0) {
         queryParams.filter = JSON.stringify(filter);
       }
@@ -165,8 +189,10 @@ const Dashboard = () => {
         },
       );
       if (response) {
-        console.log(response);
         setPidData(response?.data?.data?.data);
+        setPage(response?.data?.data?.page);
+        setTotalPages(response?.data?.data?.totalPages);
+        setTotalResult(response?.data?.data?.totalResults);
       }
     } catch (error) {
       console.log(error);
@@ -194,15 +220,96 @@ const Dashboard = () => {
 
   useEffect(() => {
     getDeviceData();
-  }, [selectedPID, unit, selectedCompany]);
+  }, [selectedPID, unit, selectedCompany, page, rowsPerPage]);
 
   useEffect(() => {
     getCompanyList();
   }, []);
 
   const handleSelectChange = (selectedOption) => {
-    console.log(selectedOption);
+    setPage(1);
     setSelectedPID(selectedOption.value);
+  };
+
+  const handlePageChange = (newPage) => {
+    setPage(newPage);
+  };
+
+  const renderPagination = () => {
+    const maxPagesToShow = 5; 
+    const pages = [];
+    const isEllipsisShown = totalPages > maxPagesToShow;
+
+    const createPageButton = (pageNumber) => (
+      <Button
+        key={pageNumber}
+        onClick={() => handlePageChange(pageNumber)}
+        colorScheme={page === pageNumber ? 'blue' : 'gray'}
+        variant={page === pageNumber ? 'solid' : 'outline'}
+        mx="1"
+      >
+        {pageNumber}
+      </Button>
+    );
+
+    if (isEllipsisShown) {
+      if (page > Math.ceil(maxPagesToShow / 2)) {
+        pages.push(createPageButton(1));
+        pages.push(
+          <Text key="ellipsis-start" mx="1" fontSize="lg">
+            ...
+          </Text>,
+        );
+      }
+
+      const startPage = Math.max(page - Math.floor(maxPagesToShow / 2), 1);
+      const endPage = Math.min(
+        page + Math.floor(maxPagesToShow / 2),
+        totalPages,
+      );
+      for (let i = startPage; i <= endPage; i++) {
+        pages.push(createPageButton(i));
+      }
+
+      if (page < totalPages - Math.floor(maxPagesToShow / 2)) {
+        pages.push(
+          <Text key="ellipsis-end" mx="1" fontSize="lg">
+            ...
+          </Text>,
+        );
+        pages.push(createPageButton(totalPages));
+      }
+    } else {
+      for (let i = 1; i <= totalPages; i++) {
+        pages.push(createPageButton(i));
+      }
+    }
+
+    return (
+      <Flex mt="4" justify="center" align="center">
+        <IconButton
+          aria-label="Previous Page"
+          icon={<ChevronLeftIcon />}
+          isDisabled={page <= 1}
+          onClick={() => handlePageChange(page - 1)}
+          mr="2"
+        />
+        {pages}
+        <IconButton
+          aria-label="Next Page"
+          icon={<ChevronRightIcon />}
+          isDisabled={page >= totalPages}
+          onClick={() => handlePageChange(page + 1)}
+          ml="2"
+        />
+      </Flex>
+    );
+  };
+
+  const handleRowsPerPageChange = (event) => {
+    const newRowsPerPage = parseInt(event.target.value, 10);
+    setRowsPerPage(newRowsPerPage);
+    setPage(1);
   };
 
   return (
@@ -216,8 +323,8 @@ const Dashboard = () => {
           (option) => option.value === selectedCompany,
         )}
         onChange={(selectedOption) => {
-          console.log(selectedOption);
-
+          setPage(1);
+          setSelectedCompany2(selectedOption);
           setSelectedCompany(selectedOption.value);
         }}
         placeholder="Search Company"
@@ -240,33 +347,38 @@ const Dashboard = () => {
         }}
       />
 
-      {/* <Box mb={8}>
-        <Flex gap={2} mb={1}>
-          <Text fontSize="lg" fontWeight="bold">
-            Total Consumption of {selectedCompanyData?.name}
+      {selectedCompany2?.value !== '' ? (
+        <Box mb={8}>
+          <Flex gap={2} mb={1}>
+            <Text fontSize="lg" fontWeight="bold">
+              Total Consumption of {selectedCompany2?.label}:
+            </Text>
+            <Text fontSize="md" color={textColor}>
+              {selectedCompanyData?.consumption} / {selectedCompanyData?.limit}{' '}
+              m³
+            </Text>
+          </Flex>
+          <Progress
+            value={progressPercentage}
+            colorScheme={
+              selectedCompanyData?.consumption <= selectedCompanyData?.limit
+                ? 'green'
+                : 'red'
+            }
+            bg={progressBg}
+            hasStripe
+            isAnimated
+            rounded="md"
+            height="12px"
+            w="20%"
+          />
+          <Text fontSize="sm" color={progressColor} mt={2}>
+            {progressPercentage?.toFixed(1)}% of limit
           </Text>
-          <Text fontSize="md" color={textColor}>
-            {selectedCompanyData?.consumption} / {selectedCompanyData?.limit} m³
-          </Text>
-        </Flex>
-        <Progress
-          value={progressPercentage}
-          colorScheme={
-            selectedCompanyData?.consumption <= selectedCompanyData?.limit
-              ? 'green'
-              : 'red'
-          }
-          bg={progressBg}
-          hasStripe
-          isAnimated
-          rounded="md"
-          height="12px"
-          w="20%"
-        />
-        <Text fontSize="sm" color={progressColor} mt={2}>
-          {progressPercentage?.toFixed(1)}% of limit
-        </Text>
-      </Box> */}
+        </Box>
+      ) : (
+        ''
+      )}
 
       <Flex
         alignItems="center"
@@ -275,8 +387,10 @@ const Dashboard = () => {
         mb={4}
       >
         <Select
-          options={productId}
-          value={productId?.find((option) => option.value === selectedPID)}
+          options={productIdOptions}
+          value={productIdOptions?.find(
+            (option) => option.value === selectedPID,
+          )}
           onChange={handleSelectChange}
           placeholder="Select Product ID"
           isSearchable={true}
@@ -298,7 +412,7 @@ const Dashboard = () => {
           value={unitOptions.find((option) => option.value === unit)}
           onChange={(selectedOption) => setUnit(selectedOption.value)}
           placeholder="Select Unit"
-          isSearchable={false} // Disable search functionality
+          isSearchable={false}
           styles={{
             container: (base) => ({
               ...base,
@@ -428,7 +542,7 @@ const Dashboard = () => {
                 >
                   <Box
                     bg="green.400"
-                    width={`${convertReading(pid.flowrate)}%`}
+                    width={`${convertFlowrate(pid.flowrate)}%`}
                     h="8px"
                     position="absolute"
                     top="0"
@@ -436,13 +550,27 @@ const Dashboard = () => {
                   />
                 </Box>
                 <Text fontSize="sm" color="gray.600">
-                  {convertReading(pid.flowrate)?.toFixed(2)} {unit}
+                  {convertFlowrate(pid.flowrate)?.toFixed(2)} {unit}
                 </Text>
               </Stack>
             </SimpleGrid>
           </Box>
         ))}
       </SimpleGrid>
+
+      {pidData.length > 0 && <Flex justifyContent="space-between" alignItems="center" mb={4} mt={3}>
+        <ChakraSelect
+          value={rowsPerPage}
+          onChange={handleRowsPerPageChange}
+          width="150px"
+        >
+          <option value={20}>20</option>
+          <option value={50}>50</option>
+          <option value={100}>100</option>
+        </ChakraSelect>
+
+        {renderPagination()}
+      </Flex>}
     </Box>
   );
 };

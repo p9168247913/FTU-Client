@@ -4,7 +4,7 @@ import {
   Flex,
   Input,
   Button,
-  Select,
+  // Select,
   Modal,
   ModalOverlay,
   ModalContent,
@@ -17,6 +17,7 @@ import {
   InputLeftElement,
   InputGroup,
 } from '@chakra-ui/react';
+import Select from 'react-select';
 import { useColorModeValue } from '@chakra-ui/react';
 import { Bar } from 'react-chartjs-2';
 import {
@@ -30,6 +31,8 @@ import {
 } from 'chart.js';
 import DevelopmentTable from './tables/DevelopmentTable';
 import { SearchIcon, DownloadIcon } from '@chakra-ui/icons';
+import axiosInstance from 'axiosInstance';
+import baseUrl from 'Base_Url/baseUrl';
 
 // Register Chart.js components
 ChartJS.register(
@@ -50,8 +53,16 @@ const AnalyticsPage = () => {
   const [graphData, setGraphData] = useState({ labels: [], datasets: [] });
   const [page, setPage] = useState(1);
   const [loading, setLoading] = useState(false);
+  const Token = localStorage.getItem('token');
+  const [productId, setProductId] = useState([]);
+  const [selectedPID, setSelectedPID] = useState('');
+  const [selectedProductId, setSelectedProductId] = useState('');
+  const [pidData, setPidData] = useState([]);
+  const [totalResult, setTotalResult] = useState();
+  const [totalPages, setTotalPages] = useState(1);
+  const [rowsPerPage, setRowsPerPage] = useState(20);
+  const productIdOptions = [{ value: '', label: 'All' }, ...productId];
 
-  // Table Data
   const tableData = [
     {
       _id: 'ID123',
@@ -100,9 +111,93 @@ const AnalyticsPage = () => {
     },
   ];
 
-  const totalPages = 1;
+  const selectBg = useColorModeValue('white', 'gray.700');
+  const selectTextColor = useColorModeValue('black', 'white');
 
-  // Initialize graph data with all entries
+  const getQueryString = (params) => {
+    return Object.keys(params)
+      .filter((key) => params[key] !== undefined && params[key] !== '')
+      .map((key) => `${key}=${encodeURIComponent(params[key])}`)
+      .join('&');
+  };
+
+  const getAllProductId = async () => {
+    try {
+      const queryParams = {};
+      let filter = {};
+
+      // if (selectedCompany) {
+      //   filter = {
+      //     ...filter,
+      //     companyId: selectedCompany,
+      //   };
+      // }
+      if (Object.keys(filter).length > 0) {
+        queryParams.filter = JSON.stringify(filter);
+      }
+      const response = await axiosInstance.get(
+        `${baseUrl}/device-readings/unique?${getQueryString(queryParams)}`,
+        {
+          headers: {
+            Authorization: `Bearer ${Token}`,
+          },
+        },
+      );
+      if (response) {
+        const formattedProductIds = response?.data?.data?.data.map((pid) => ({
+          value: pid,
+          label: pid,
+        }));
+        setProductId(formattedProductIds || []);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const getDeviceData = async () => {
+    try {
+      const queryParams = {
+        page: page ? page : 1,
+        limit: rowsPerPage,
+      };
+      let filter = {};
+
+      if (selectedPID) {
+        filter = {
+          ...filter,
+          productId: selectedPID,
+        };
+      }
+      if (Object.keys(filter).length > 0) {
+        queryParams.filter = JSON.stringify(filter);
+      }
+      const response = await axiosInstance.get(
+        `${baseUrl}/device-readings/latest?${getQueryString(queryParams)}`,
+        {
+          headers: {
+            Authorization: `Bearer ${Token}`,
+          },
+        },
+      );
+      if (response) {
+        setPidData(response?.data?.data?.data);
+        setPage(response?.data?.data?.page);
+        setTotalPages(response?.data?.data?.totalPages);
+        setTotalResult(response?.data?.data?.totalResults);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  useEffect(() => {
+    getDeviceData();
+  }, [selectedPID, page, rowsPerPage]);
+
+  useEffect(() => {
+    getAllProductId();
+  }, []);
+
   useEffect(() => {
     generateGraph('All');
   }, []);
@@ -135,28 +230,42 @@ const AnalyticsPage = () => {
     generateGraph(newPid);
   };
 
+  const handleSelectChange = (selectedOption) => {
+    setPage(1);
+    setSelectedPID(selectedOption.value);
+  };
+
+  const handleModalSelectChange = (selectedOption) => {
+    setSelectedProductId(selectedOption.value);
+  };
+
   return (
     <Box pt={{ base: '130px', md: '80px', xl: '80px' }}>
       <Flex justify="space-between" mb={4}>
-        <InputGroup>
-          <InputLeftElement pointerEvents="none">
-            <SearchIcon color="gray.300" />
-          </InputLeftElement>
-          <Input
-            placeholder="Search for PID or Location..."
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-            maxW="300px"
-            bg={useColorModeValue('white', 'gray.700')}
-            color={useColorModeValue('black', 'white')}
-            _placeholder={{
-              color: useColorModeValue('gray.500', 'gray.400'),
-            }}
-          />
-        </InputGroup>
+        <Select
+          options={productIdOptions}
+          value={productIdOptions?.find(
+            (option) => option.value === selectedPID,
+          )}
+          onChange={handleSelectChange}
+          placeholder="Select Product ID"
+          isSearchable={true}
+          styles={{
+            container: (base) => ({
+              ...base,
+              width: '200px',
+              maxWidth: '300px',
+            }),
+            control: (base) => ({
+              ...base,
+              backgroundColor: selectBg,
+              color: selectTextColor,
+            }),
+          }}
+        />
 
         <Button
-        p={5}
+          p={5}
           leftIcon={<DownloadIcon />}
           colorScheme="green"
           onClick={() => setIsModalOpen(true)}
@@ -166,11 +275,7 @@ const AnalyticsPage = () => {
       </Flex>
 
       <DevelopmentTable
-        tableData={tableData.filter(
-          (item) =>
-            item.companyId.toLowerCase().includes(search.toLowerCase()) ||
-            item.name.toLowerCase().includes(search.toLowerCase()),
-        )}
+        tableData={pidData}
         handlePageChange={(newPage) => setPage(newPage)}
         handleRowClick={(row) => console.log('Row clicked:', row)}
         page={page}
@@ -181,22 +286,26 @@ const AnalyticsPage = () => {
       <SimpleGrid columns={{ base: 1, md: 2 }} spacing={6}>
         <Flex mb={4} gap={4} justifyContent={'space-between'}>
           <Select
-            placeholder="Select PID"
-            value={pid}
-            onChange={(e) => handlePidChange(e.target.value)}
-            bg={useColorModeValue('white', 'gray.700')}
-            color={useColorModeValue('black', 'white')}
-            _placeholder={{
-              color: useColorModeValue('gray.500', 'gray.400'),
+            options={productIdOptions}
+            value={productIdOptions?.find(
+              (option) => option.value === selectedPID,
+            )}
+            onChange={handleSelectChange}
+            placeholder="Select Product ID"
+            isSearchable={true}
+            styles={{
+              container: (base) => ({
+                ...base,
+                width: '200px',
+                maxWidth: '300px',
+              }),
+              control: (base) => ({
+                ...base,
+                backgroundColor: selectBg,
+                color: selectTextColor,
+              }),
             }}
-          >
-            <option value="All">All</option>
-            {tableData.map((item) => (
-              <option key={item.companyId} value={item.companyId}>
-                {item.companyId}
-              </option>
-            ))}
-          </Select>
+          />
           <Input
             type="date"
             placeholder="Start Date"
@@ -226,16 +335,26 @@ const AnalyticsPage = () => {
             <FormControl mb={4}>
               <FormLabel>PID / All Selection</FormLabel>
               <Select
-                value={pid}
-                onChange={(e) => handlePidChange(e.target.value)}
-              >
-                <option value="All">All</option>
-                {tableData.map((item) => (
-                  <option key={item.companyId} value={item.companyId}>
-                    {item.companyId}
-                  </option>
-                ))}
-              </Select>
+                options={productIdOptions}
+                value={productIdOptions?.find(
+                  (option) => option.value === selectedProductId,
+                )}
+                onChange={handleModalSelectChange}
+                placeholder="Select Product ID"
+                isSearchable={true}
+                styles={{
+                  // container: (base) => ({
+                  //   ...base,
+                  //   width: '200px',
+                  //   maxWidth: '300px',
+                  // }),
+                  control: (base) => ({
+                    ...base,
+                    backgroundColor: selectBg,
+                    color: selectTextColor,
+                  }),
+                }}
+              />
             </FormControl>
             <FormControl mb={4}>
               <FormLabel>Start Date</FormLabel>

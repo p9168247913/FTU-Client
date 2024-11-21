@@ -29,6 +29,14 @@ const DevelopmentTable = ({
   const borderColor = useColorModeValue('gray.200', 'whiteAlpha.100');
   const rowHoverBg = useColorModeValue('gray.100', 'gray.700');
 
+  const roundToTwoDecimalPlaces = (value) => {
+    const numericValue = parseFloat(value);
+    if (isNaN(numericValue)) {
+      throw new Error('Input must be a number or a numeric string');
+    }
+    return Math.round(numericValue * 100) / 100;
+  };
+
   const renderTableRows = () => {
     if (loading) {
       return (
@@ -52,18 +60,18 @@ const DevelopmentTable = ({
 
     return tableData.map((item, index) => (
       <Tr
-        key={item._id}
+        key={item.productId}
         onClick={() => handleRowClick(item)}
         cursor="pointer"
         _hover={{ backgroundColor: rowHoverBg }}
       >
         {/* <Td>{index + 1 + (page - 1) * 10}</Td> */}
-        <Td>{item.companyId}</Td>
-        <Td>{item.name}</Td>
-        <Td>{item.today}</Td>
-        <Td>{item.weekly}</Td>
-        <Td>{item.monthly}</Td>
-        <Td>{item.annual}</Td>
+        <Td>{item.productId}</Td>
+        <Td>{item.location ? item.location.name : 'N/A'}</Td>
+        <Td>{roundToTwoDecimalPlaces(item.todayTotal)}</Td>
+        <Td>{roundToTwoDecimalPlaces(item.weeklyCumulative)}</Td>
+        <Td>{roundToTwoDecimalPlaces(item.monthlyCumulative)}</Td>
+        <Td>{roundToTwoDecimalPlaces(item.annualCumulative)}</Td>
       </Tr>
     ));
   };
@@ -99,14 +107,22 @@ const DevelopmentTable = ({
   );
 
   return (
-    <Card flexDirection="column" w="100%" px="0px" overflowX="auto" pt={3} pb={3} mb={4}>
+    <Card
+      flexDirection="column"
+      w="100%"
+      px="0px"
+      overflowX="auto"
+      pt={3}
+      pb={3}
+      mb={4}
+    >
       {/* <Flex px="25px" mb="8px" justifyContent="space-between" align="center">
         <Text color={textColor} fontSize="22px" fontWeight="700">
           Data Table
         </Text>
       </Flex> */}
-      <Box overflowX="auto" >
-        <Table variant="simple" color="gray.500" mb={2} mt="12px">
+      <Box overflowX="auto">
+        <Table variant="simple" color="gray.500" mb={2} mt="12px" >
           <Thead>
             <Tr>
               {/* <Th borderColor={borderColor}>No.</Th> */}
@@ -118,7 +134,7 @@ const DevelopmentTable = ({
               <Th borderColor={borderColor}>Annual Cumulative</Th>
             </Tr>
           </Thead>
-          <Tbody>{renderTableRows()}</Tbody>
+          <Tbody overflow={'auto'}>{renderTableRows()}</Tbody>
         </Table>
       </Box>
       {renderPagination()}
