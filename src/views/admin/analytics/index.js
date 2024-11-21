@@ -16,6 +16,7 @@ import {
   SimpleGrid,
   InputLeftElement,
   InputGroup,
+  useToast,
 } from '@chakra-ui/react';
 import Select from 'react-select';
 import { useColorModeValue } from '@chakra-ui/react';
@@ -29,6 +30,7 @@ import {
   Tooltip,
   Legend,
 } from 'chart.js';
+import { format } from 'date-fns';
 import DevelopmentTable from './tables/DevelopmentTable';
 import { SearchIcon, DownloadIcon } from '@chakra-ui/icons';
 import axiosInstance from 'axiosInstance';
@@ -62,6 +64,7 @@ const AnalyticsPage = () => {
   const [totalPages, setTotalPages] = useState(1);
   const [rowsPerPage, setRowsPerPage] = useState(20);
   const productIdOptions = [{ value: '', label: 'All' }, ...productId];
+  const toast = useToast();
 
   const tableData = [
     {
@@ -190,6 +193,7 @@ const AnalyticsPage = () => {
       console.log(error);
     }
   };
+
   useEffect(() => {
     getDeviceData();
   }, [selectedPID, page, rowsPerPage]);
@@ -237,6 +241,103 @@ const AnalyticsPage = () => {
 
   const handleModalSelectChange = (selectedOption) => {
     setSelectedProductId(selectedOption.value);
+  };
+
+  const downloadExcel = async (productId, startDate, endDate) => {
+    if (productId === '') {
+      toast({
+        title: 'Product ID is required',
+        status: 'error',
+        duration: 3000,
+        isClosable: true,
+      });
+      return;
+    }
+    if (startDate === '') {
+      toast({
+        title: 'Start Date is required',
+        status: 'error',
+        duration: 3000,
+        isClosable: true,
+      });
+      return;
+    }
+    if (endDate === '') {
+      toast({
+        title: 'End Date is required',
+        status: 'error',
+        duration: 3000,
+        isClosable: true,
+      });
+      return;
+    }
+
+    try {
+      const queryParams = {};
+      let filter = {};
+
+      if (startDate && endDate) {
+        filter = {
+          ...filter,
+          startDate: startDate,
+          endDate: endDate,
+        };
+      }
+
+      if (productId) {
+        queryParams.productId = productId;
+      }
+      if (Object.keys(filter).length > 0) {
+        queryParams.filter = JSON.stringify(filter);
+      }
+
+      const response = await axiosInstance.get(
+        `${baseUrl}/device-readings/download?${getQueryString(queryParams)}`,
+        {
+          headers: {
+            Authorization: `Bearer ${Token}`,
+          },
+          responseType: 'blob',
+        },
+      );
+
+      // Check if the response is a JSON message
+      const contentType = response.headers['content-type'];
+      if (contentType && contentType.includes('application/json')) {
+        const reader = new FileReader();
+        reader.onload = () => {
+          const result = JSON.parse(reader.result);
+          toast({
+            title:
+              result?.data?.message ||
+              'No data found for the specified criteria',
+            status: 'info',
+            duration: 3000,
+            isClosable: true,
+          });
+        };
+        reader.readAsText(response.data);
+      } else {
+        // Handle file download
+        const url = window.URL.createObjectURL(new Blob([response.data]));
+        const link = document.createElement('a');
+        link.href = url;
+        link.setAttribute('download', `readings_${productId}.xlsx`);
+        document.body.appendChild(link);
+        link.click();
+        link.remove();
+      }
+    } catch (error) {
+      toast({
+        title:
+          error?.response?.data?.data ||
+          error?.response?.data?.message ||
+          'Failed to download the report',
+        status: 'error',
+        duration: 3000,
+        isClosable: true,
+      });
+    }
   };
 
   return (
@@ -327,7 +428,15 @@ const AnalyticsPage = () => {
         <Bar data={graphData} />
       </Box>
 
-      <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
+      <Modal
+        isOpen={isModalOpen}
+        onClose={() => {
+          setStartDate('');
+          setEndDate('');
+          setSelectedProductId('');
+          setIsModalOpen(false);
+        }}
+      >
         <ModalOverlay />
         <ModalContent>
           <ModalHeader>Download Report</ModalHeader>
@@ -343,11 +452,6 @@ const AnalyticsPage = () => {
                 placeholder="Select Product ID"
                 isSearchable={true}
                 styles={{
-                  // container: (base) => ({
-                  //   ...base,
-                  //   width: '200px',
-                  //   maxWidth: '300px',
-                  // }),
                   control: (base) => ({
                     ...base,
                     backgroundColor: selectBg,
@@ -387,7 +491,13 @@ const AnalyticsPage = () => {
             <Button variant="ghost" onClick={() => setIsModalOpen(false)}>
               Close
             </Button>
-            <Button colorScheme="teal" ml={3}>
+            <Button
+              onClick={() =>
+                downloadExcel(selectedProductId, startDate, endDate)
+              }
+              colorScheme="teal"
+              ml={3}
+            >
               Download
             </Button>
           </ModalFooter>
