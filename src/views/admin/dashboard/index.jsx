@@ -2,7 +2,7 @@ import {
   Box,
   Flex,
   Text,
-  Select,
+  // Select,
   SimpleGrid,
   useColorModeValue,
   VStack,
@@ -14,39 +14,48 @@ import {
   List,
   ListItem,
 } from '@chakra-ui/react';
+
+import Select from 'react-select';
 import LiquidGauge from 'react-liquid-gauge';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { format } from 'date-fns';
 import { SearchIcon } from '@chakra-ui/icons';
+import baseUrl from 'Base_Url/baseUrl';
+import axiosInstance from 'axiosInstance';
+import { MdPinDrop } from 'react-icons/md';
 
 const Dashboard = () => {
-  const [consumptionLimit, setConsumptionLimit] = useState('100');
+  const [productId, setProductId] = useState([]);
   const [selectedPID, setSelectedPID] = useState('');
   const [unit, setUnit] = useState('m³');
-  const [selectedCompany, setSelectedCompany] = useState('Company A');
-  const companies = ['Company A', 'Company B', 'Company C'];
-
-  const units = ['m³', 'Liters', 'Gallons'];
+  const [selectedCompany, setSelectedCompany] = useState(null);
+  const Token = localStorage.getItem('token');
+  const [page, setPage] = useState(1);
+  const [totalResult, setTotalResult] = useState();
+  const [totalPages, setTotalPages] = useState(1);
+  const [rowsPerPage, setRowsPerPage] = useState(20);
 
   const cardBg = useColorModeValue('white', 'gray.700');
   const cardBorder = useColorModeValue('gray.200', 'gray.600');
   const sectionBg = useColorModeValue('gray.100', 'gray.800');
 
-  const pidData = [
-    { id: 'ID00001', location: 'Location 1', pid: 'ID00001', reading: 55.2 },
-    { id: 'ID00002', location: 'Location 2', pid: 'ID00002', reading: 60.5 },
-    { id: 'ID00003', location: 'Location 3', pid: 'ID00003', reading: 70.8 },
-    { id: 'ID00004', location: 'Location 4', pid: 'ID00004', reading: 38.6 },
-    { id: 'ID00005', location: 'Location 5', pid: 'ID00005', reading: 82.3 },
-  ];
+  const [pidData, setPidData] = useState([]);
+  const selectBg = useColorModeValue('white', 'gray.700');
+  const selectTextColor = useColorModeValue('black', 'white');
 
-  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-  const [searchQuery, setSearchQuery] = useState('');
+  // const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  // const [searchQuery, setSearchQuery] = useState('');
 
-  const companyData = [
-    { name: 'Company A', limit: 1000, consumption: 700 },
-    { name: 'Company B', limit: 1500, consumption: 1800 },
-    { name: 'Company C', limit: 2000, consumption: 900 },
+  const [companyData, setCompanyData] = useState([]);
+  const companyOptions = companyData.map((company) => ({
+    value: company._id,
+    label: company.name,
+  }));
+
+  const unitOptions = [
+    { value: 'm³', label: 'm³' },
+    { value: 'Liters', label: 'Liters' },
+    { value: 'Gallons', label: 'Gallons' },
   ];
 
   const withinLimitColor = useColorModeValue('green.400', 'green.300');
@@ -55,25 +64,25 @@ const Dashboard = () => {
   const progressBg = useColorModeValue('gray.200', 'gray.700');
 
   const selectedCompanyData = companyData.find(
-    (company) => company.name === selectedCompany,
+    (company) => company._id === selectedCompany,
   );
 
   const inputBg = useColorModeValue('white', 'gray.700');
-  const inputTextColor = useColorModeValue('black', 'white');
+  const inputTextColor = useColorModeValue('gray.600', 'white');
   const placeholderColor = useColorModeValue('gray.500', 'gray.400');
   const dropdownBg = useColorModeValue('white', 'gray.700');
 
-  const progressPercentage = selectedCompanyData
-    ? (selectedCompanyData.consumption / selectedCompanyData.limit) * 100
-    : 0;
-  const progressColor = selectedCompanyData
-    ? selectedCompanyData.consumption <= selectedCompanyData.limit
-      ? withinLimitColor
-      : exceededLimitColor
-    : withinLimitColor;
+  // const progressPercentage = selectedCompanyData
+  //   ? (selectedCompanyData.consumption / selectedCompanyData.limit) * 100
+  //   : 0;
+  // const progressColor = selectedCompanyData
+  //   ? selectedCompanyData.consumption <= selectedCompanyData.limit
+  //     ? withinLimitColor
+  //     : exceededLimitColor
+  //   : withinLimitColor;
 
   const filteredPidData = selectedPID
-    ? pidData.filter((pid) => pid.pid === selectedPID)
+    ? pidData.filter((pid) => pid.productId === selectedPID)
     : pidData;
 
   const convertReading = (reading) => {
@@ -89,80 +98,161 @@ const Dashboard = () => {
     return format(new Date(timestamp), 'do MMM, yyyy hh:mm a');
   };
 
+  const getAllProductId = async () => {
+    try {
+      const queryParams = {};
+      let filter = {};
+
+      if (selectedCompany) {
+        filter = {
+          ...filter,
+          companyId: selectedCompany,
+        };
+      }
+      if (Object.keys(filter).length > 0) {
+        queryParams.filter = JSON.stringify(filter);
+      }
+      const response = await axiosInstance.get(
+        `${baseUrl}/device-readings/unique?${getQueryString(queryParams)}`,
+        {
+          headers: {
+            Authorization: `Bearer ${Token}`,
+          },
+        },
+      );
+      if (response) {
+        const formattedProductIds = response?.data?.data?.data.map((pid) => ({
+          value: pid,
+          label: pid,
+        }));
+        setProductId(formattedProductIds || []);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const getQueryString = (params) => {
+    return Object.keys(params)
+      .filter((key) => params[key] !== undefined && params[key] !== '')
+      .map((key) => `${key}=${encodeURIComponent(params[key])}`)
+      .join('&');
+  };
+
+  const getDeviceData = async () => {
+    try {
+      const queryParams = {
+        page: page ? page : 1,
+        limit: rowsPerPage,
+      };
+      let filter = {};
+
+      if (selectedCompany) {
+        filter = {
+          ...filter,
+          companyId: selectedCompany,
+        };
+      }
+      if (Object.keys(filter).length > 0) {
+        queryParams.filter = JSON.stringify(filter);
+      }
+      const response = await axiosInstance.get(
+        `${baseUrl}/device-readings/latest?${getQueryString(queryParams)}`,
+        {
+          headers: {
+            Authorization: `Bearer ${Token}`,
+          },
+        },
+      );
+      if (response) {
+        console.log(response);
+        setPidData(response?.data?.data?.data);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const getCompanyList = async () => {
+    try {
+      const response = await axiosInstance.get(`${baseUrl}/company/list`, {
+        headers: {
+          Authorization: `Bearer ${Token}`,
+        },
+      });
+      if (response) {
+        setCompanyData(response?.data?.data?.data);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    getAllProductId();
+  }, [selectedCompany]);
+
+  useEffect(() => {
+    getDeviceData();
+  }, [selectedPID, unit, selectedCompany]);
+
+  useEffect(() => {
+    getCompanyList();
+  }, []);
+
+  const handleSelectChange = (selectedOption) => {
+    console.log(selectedOption);
+    setSelectedPID(selectedOption.value);
+  };
+
   return (
     <Box
       pt={{ base: '130px', md: '80px', xl: '80px' }}
       px={{ base: '4', md: '8' }}
     >
-      <InputGroup mb={4} maxW="50%">
-        <InputLeftElement pointerEvents="none">
-          <SearchIcon color="gray.300" />
-        </InputLeftElement>
-        <Input
-          placeholder="Search Company"
-          value={searchQuery}
-          onChange={(e) => setSearchQuery(e.target.value)}
-          onFocus={() => setIsDropdownOpen(true)}
-          onBlur={() => setTimeout(() => setIsDropdownOpen(false), 100)}
-          bg={inputBg}
-          color={inputTextColor}
-          _placeholder={{
-            color: placeholderColor,
-          }}
-        />
-      </InputGroup>
-      {isDropdownOpen && (
-        <Box
-          position="absolute"
-          zIndex="1"
-          bg={dropdownBg}
-          border="1px solid"
-          borderColor="gray.200"
-          rounded="md"
-          mt={1}
-          maxH="200px"
-          overflowY="auto"
-          w="100%"
-          maxW="50%"
-        >
-          <List>
-            {companies
-              .filter((company) =>
-                company.toLowerCase().includes(searchQuery.toLowerCase()),
-              )
-              .map((company) => (
-                <ListItem
-                  key={company}
-                  px={4}
-                  py={2}
-                  cursor="pointer"
-                  _hover={{ bg: 'gray.100' }}
-                  onClick={() => {
-                    setSelectedCompany(company);
-                    setSearchQuery(company);
-                    setIsDropdownOpen(false);
-                  }}
-                >
-                  {company}
-                </ListItem>
-              ))}
-          </List>
-        </Box>
-      )}
+      <Select
+        options={companyOptions}
+        value={companyOptions.find(
+          (option) => option.value === selectedCompany,
+        )}
+        onChange={(selectedOption) => {
+          console.log(selectedOption);
 
-      <Box mb={8}>
+          setSelectedCompany(selectedOption.value);
+        }}
+        placeholder="Search Company"
+        isSearchable
+        styles={{
+          container: (base) => ({
+            ...base,
+            maxWidth: '50%',
+            marginBottom: '16px',
+          }),
+          control: (base) => ({
+            ...base,
+            backgroundColor: inputBg,
+            color: inputTextColor,
+          }),
+          placeholder: (base) => ({
+            ...base,
+            color: placeholderColor,
+          }),
+        }}
+      />
+
+      {/* <Box mb={8}>
         <Flex gap={2} mb={1}>
           <Text fontSize="lg" fontWeight="bold">
-            Total Consumption of {selectedCompanyData.name}
+            Total Consumption of {selectedCompanyData?.name}
           </Text>
           <Text fontSize="md" color={textColor}>
-            {selectedCompanyData.consumption} / {selectedCompanyData.limit} m³
+            {selectedCompanyData?.consumption} / {selectedCompanyData?.limit} m³
           </Text>
         </Flex>
         <Progress
           value={progressPercentage}
           colorScheme={
-            selectedCompanyData.consumption <= selectedCompanyData.limit
+            selectedCompanyData?.consumption <= selectedCompanyData?.limit
               ? 'green'
               : 'red'
           }
@@ -174,49 +264,53 @@ const Dashboard = () => {
           w="20%"
         />
         <Text fontSize="sm" color={progressColor} mt={2}>
-          {progressPercentage.toFixed(1)}% of limit
+          {progressPercentage?.toFixed(1)}% of limit
         </Text>
-      </Box>
+      </Box> */}
 
       <Flex
         alignItems="center"
         width="full"
         justifyContent={'space-between'}
-        mb={5}
+        mb={4}
       >
         <Select
-          placeholder="Select PID"
-          value={selectedPID}
-          onChange={(e) => setSelectedPID(e.target.value)}
-          maxW="200px"
-          bg={useColorModeValue('white', 'gray.700')}
-          color={useColorModeValue('black', 'white')}
-          _placeholder={{
-            color: useColorModeValue('gray.500', 'gray.400'),
+          options={productId}
+          value={productId?.find((option) => option.value === selectedPID)}
+          onChange={handleSelectChange}
+          placeholder="Select Product ID"
+          isSearchable={true}
+          styles={{
+            container: (base) => ({
+              ...base,
+              width: '200px',
+              maxWidth: '300px',
+            }),
+            control: (base) => ({
+              ...base,
+              backgroundColor: selectBg,
+              color: selectTextColor,
+            }),
           }}
-        >
-          {pidData.map((pid) => (
-            <option key={pid.id} value={pid.pid}>
-              {pid.pid}
-            </option>
-          ))}
-        </Select>
+        />
         <Select
-          value={unit}
-          onChange={(e) => setUnit(e.target.value)}
-          maxW="150px"
-          bg={useColorModeValue('white', 'gray.700')}
-          color={useColorModeValue('black', 'white')}
-          _placeholder={{
-            color: useColorModeValue('gray.500', 'gray.400'),
+          options={unitOptions}
+          value={unitOptions.find((option) => option.value === unit)}
+          onChange={(selectedOption) => setUnit(selectedOption.value)}
+          placeholder="Select Unit"
+          isSearchable={false} // Disable search functionality
+          styles={{
+            container: (base) => ({
+              ...base,
+              maxWidth: '150px',
+            }),
+            control: (base) => ({
+              ...base,
+              backgroundColor: selectBg,
+              color: selectTextColor,
+            }),
           }}
-        >
-          {units.map((unit) => (
-            <option key={unit} value={unit}>
-              {unit}
-            </option>
-          ))}
-        </Select>
+        />
       </Flex>
 
       <SimpleGrid columns={{ base: 1, md: 2 }} spacing={6}>
@@ -232,16 +326,16 @@ const Dashboard = () => {
           >
             <div>
               <Text fontSize="lg" fontWeight="bold">
-                {pid.id}
+                {pid.productId}
               </Text>
               <Text fontSize="sm" color="gray.500">
-                * {pid.location}
+                * {pid.location ? pid.location : 'N/A'}
               </Text>
               <Text fontSize="sm" color="gray.500">
-                * {pid.pid}
+                * {pid.productId}
               </Text>
               <Text fontSize="sm" color="gray.500">
-                * {formatDate(Date.now())}
+                * {formatDate(pid.timestamp)}
               </Text>
             </div>
 
@@ -259,9 +353,9 @@ const Dashboard = () => {
                   TOTALIZER
                 </Text>
                 <LiquidGauge
-                  value={Math.min(convertReading(pid.reading), 100)} // Clamp to 100% max
-                  width={100}
-                  height={100}
+                  value={convertReading(pid.totalizer)}
+                  width={200}
+                  height={150}
                   textSize={1}
                   waveFrequency={2}
                   waveAmplitude={3}
@@ -281,9 +375,7 @@ const Dashboard = () => {
                   textRenderer={(value) => {
                     const displayValue = parseFloat(value) || 0;
                     return (
-                      <tspan>
-                       {convertReading(pid.reading).toFixed(2)} {unit}
-                      </tspan>
+                      <tspan>{convertReading(pid.totalizer)?.toFixed(2)}</tspan>
                     );
                   }}
                 />
@@ -336,7 +428,7 @@ const Dashboard = () => {
                 >
                   <Box
                     bg="green.400"
-                    width={`${convertReading(pid.reading)}%`}
+                    width={`${convertReading(pid.flowrate)}%`}
                     h="8px"
                     position="absolute"
                     top="0"
@@ -344,7 +436,7 @@ const Dashboard = () => {
                   />
                 </Box>
                 <Text fontSize="sm" color="gray.600">
-                  {convertReading(pid.reading).toFixed(2)} {unit}
+                  {convertReading(pid.flowrate)?.toFixed(2)} {unit}
                 </Text>
               </Stack>
             </SimpleGrid>
