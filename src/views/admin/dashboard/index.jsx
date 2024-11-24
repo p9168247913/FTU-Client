@@ -20,11 +20,7 @@ import {
 import { ChevronLeftIcon, ChevronRightIcon } from '@chakra-ui/icons';
 import { Spinner } from '@chakra-ui/react';
 import { CircularProgress } from '@chakra-ui/react';
-import {
-  Skeleton,
-  SkeletonText,
-  SkeletonCircle,
-} from '@chakra-ui/react';
+import { Skeleton, SkeletonText, SkeletonCircle } from '@chakra-ui/react';
 
 import Select from 'react-select';
 import LiquidGauge from 'react-liquid-gauge';
@@ -111,12 +107,22 @@ const Dashboard = () => {
 
   const convertFlowrate = (flowrate) => {
     if (unit === 'Liters') {
-      return flowrate * 1000;
+      return {
+        value: flowrate * 1000,
+        unit: 'L/hr',
+      };
     } else if (unit === 'Gallons') {
-      return flowrate * 264.172;
+      return {
+        value: flowrate * 264.172,
+        unit: 'gal/hr',
+      };
     }
-    return flowrate; // Default to m³/s
+    return {
+      value: flowrate,
+      unit: 'm³/hr',
+    };
   };
+
   const formatDate = (timestamp) => {
     return format(new Date(timestamp), 'do MMM, yyyy hh:mm a');
   };
@@ -148,8 +154,6 @@ const Dashboard = () => {
           value: pid,
           label: pid,
         }));
-        console.log(formattedProductIds);
-
         setProductId(formattedProductIds || []);
       }
     } catch (error) {
@@ -323,6 +327,11 @@ const Dashboard = () => {
     setPage(1);
   };
 
+  const totalConsumption = pidData.reduce(
+    (sum, device) => sum + (device.totalizer || 0),
+    0,
+  );
+
   return (
     <Box
       pt={{ base: '130px', md: '80px', xl: '80px' }}
@@ -358,21 +367,28 @@ const Dashboard = () => {
         }}
       />
 
-      {selectedCompany2?.value !== '' ? (
+      {selectedCompany && (
         <Box mb={8}>
           <Flex gap={2} mb={1}>
             <Text fontSize="lg" fontWeight="bold">
-              Total Consumption of {selectedCompany2?.label}:
+              Total Consumption for {selectedCompany2?.label}:
             </Text>
             <Text fontSize="md" color={textColor}>
-              {selectedCompanyData?.consumption} / {selectedCompanyData?.limit}{' '}
-              m³
+              {convertReading(totalConsumption).toFixed(2) +
+                '/' +
+                convertReading(selectedCompanyData?.allowedLimit || 0).toFixed(
+                  2,
+                )}{' '}
+              {unit}
             </Text>
           </Flex>
           <Progress
-            value={progressPercentage}
+            value={
+              (totalConsumption / (selectedCompanyData?.allowedLimit || 1)) *
+              100
+            }
             colorScheme={
-              selectedCompanyData?.consumption <= selectedCompanyData?.limit
+              totalConsumption <= (selectedCompanyData?.allowedLimit || 0)
                 ? 'green'
                 : 'red'
             }
@@ -384,11 +400,13 @@ const Dashboard = () => {
             w="20%"
           />
           <Text fontSize="sm" color={progressColor} mt={2}>
-            {progressPercentage?.toFixed(1)}% of limit
+            {(
+              (totalConsumption / (selectedCompanyData?.allowedLimit || 1)) *
+              100
+            ).toFixed(1)}
+            % of limit
           </Text>
         </Box>
-      ) : (
-        ''
       )}
 
       <Flex
@@ -439,8 +457,18 @@ const Dashboard = () => {
       </Flex>
 
       {loading ? (
-        <Flex justify="center" align="center" h="200px" flexDirection={'column'}>
-          <Progress isIndeterminate colorScheme="green" size="lg" width={'50%'} />
+        <Flex
+          justify="center"
+          align="center"
+          h="200px"
+          flexDirection={'column'}
+        >
+          <Progress
+            isIndeterminate
+            colorScheme="green"
+            size="lg"
+            width={'50%'}
+          />
           <span>Please wait....</span>
         </Flex>
       ) : (
@@ -562,7 +590,7 @@ const Dashboard = () => {
                   >
                     <Box
                       bg="green.400"
-                      width={`${convertFlowrate(pid.flowrate)}%`}
+                      width={`${convertFlowrate(pid.flowrate).value}%`}
                       h="8px"
                       position="absolute"
                       top="0"
@@ -570,7 +598,8 @@ const Dashboard = () => {
                     />
                   </Box>
                   <Text fontSize="sm" color="gray.600">
-                    {convertFlowrate(pid.flowrate)?.toFixed(2)} {unit}
+                    {convertFlowrate(pid.flowrate).value.toFixed(2)}{' '}
+                    {convertFlowrate(pid.flowrate).unit}
                   </Text>
                 </Stack>
               </SimpleGrid>
