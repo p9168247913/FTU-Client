@@ -18,6 +18,13 @@ import {
   IconButton,
 } from '@chakra-ui/react';
 import { ChevronLeftIcon, ChevronRightIcon } from '@chakra-ui/icons';
+import { Spinner } from '@chakra-ui/react';
+import { CircularProgress } from '@chakra-ui/react';
+import {
+  Skeleton,
+  SkeletonText,
+  SkeletonCircle,
+} from '@chakra-ui/react';
 
 import Select from 'react-select';
 import LiquidGauge from 'react-liquid-gauge';
@@ -44,6 +51,7 @@ const Dashboard = () => {
   const [totalResult, setTotalResult] = useState();
   const [totalPages, setTotalPages] = useState(1);
   const [rowsPerPage, setRowsPerPage] = useState(20);
+  const [loading, setLoading] = useState(false);
 
   const cardBg = useColorModeValue('white', 'gray.700');
   const cardBorder = useColorModeValue('gray.200', 'gray.600');
@@ -157,6 +165,7 @@ const Dashboard = () => {
   };
 
   const getDeviceData = async () => {
+    setLoading(true);
     try {
       const queryParams = {
         page: page ? page : 1,
@@ -196,6 +205,8 @@ const Dashboard = () => {
       }
     } catch (error) {
       console.log(error);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -236,7 +247,7 @@ const Dashboard = () => {
   };
 
   const renderPagination = () => {
-    const maxPagesToShow = 5; 
+    const maxPagesToShow = 5;
     const pages = [];
     const isEllipsisShown = totalPages > maxPagesToShow;
 
@@ -427,85 +438,94 @@ const Dashboard = () => {
         />
       </Flex>
 
-      <SimpleGrid columns={{ base: 1, md: 2 }} spacing={6}>
-        {filteredPidData.map((pid) => (
-          <Box
-            key={pid.id}
-            bg={cardBg}
-            border="1px"
-            borderColor={cardBorder}
-            rounded="lg"
-            p={4}
-            shadow="md"
-          >
-            <div>
-              <Text fontSize="lg" fontWeight="bold">
-                {pid.productId}
-              </Text>
-              <Text fontSize="sm" color="gray.500">
-                * {pid.location ? pid.location : 'N/A'}
-              </Text>
-              <Text fontSize="sm" color="gray.500">
-                * {pid.productId}
-              </Text>
-              <Text fontSize="sm" color="gray.500">
-                * {formatDate(pid.timestamp)}
-              </Text>
-            </div>
-
-            <SimpleGrid columns={2} spacing={4} mt={4}>
-              <Stack
-                spacing={2}
-                align="center"
-                p={4}
-                bg={sectionBg}
-                rounded="md"
-                border="1px"
-                borderColor={cardBorder}
-              >
-                <Text fontSize="md" fontWeight="bold">
-                  TOTALIZER
+      {loading ? (
+        <Flex justify="center" align="center" h="200px" flexDirection={'column'}>
+          <Progress isIndeterminate colorScheme="green" size="lg" width={'50%'} />
+          <span>Please wait....</span>
+        </Flex>
+      ) : (
+        <SimpleGrid columns={{ base: 1, md: 2 }} spacing={6}>
+          {filteredPidData.map((pid) => (
+            <Box
+              key={pid.id}
+              bg={cardBg}
+              border="1px"
+              borderColor={cardBorder}
+              rounded="lg"
+              p={4}
+              shadow="md"
+            >
+              <div>
+                <Text fontSize="lg" fontWeight="bold">
+                  {pid.productId}
                 </Text>
-                <LiquidGauge
-                  value={convertReading(pid.totalizer)}
-                  width={200}
-                  height={150}
-                  textSize={1}
-                  waveFrequency={2}
-                  waveAmplitude={3}
-                  gradient
-                  gradientStops={[
-                    { key: '0%', stopColor: '#3498db', offset: '0%' }, // Blue for water
-                    { key: '100%', stopColor: 'blue', offset: '100%' },
-                  ]}
-                  circleStyle={{
-                    fill: 'lightgray', // Light gray background for the empty part
-                  }}
-                  waveStyle={{
-                    fill: 'url(#gradient)',
-                    animation: 'waveAnimation 2s ease-in-out infinite',
-                    transformOrigin: 'center',
-                  }}
-                  textRenderer={(value) => {
-                    const displayValue = parseFloat(value) || 0;
-                    return (
-                      <tspan>{convertReading(pid.totalizer)?.toFixed(2)}</tspan>
-                    );
-                  }}
-                />
+                <Text fontSize="sm" color="gray.500">
+                  * {pid.location ? pid.location : 'N/A'}
+                </Text>
+                <Text fontSize="sm" color="gray.500">
+                  * {pid.productId}
+                </Text>
+                <Text fontSize="sm" color="gray.500">
+                  * {formatDate(pid.timestamp)}
+                </Text>
+              </div>
 
-                <style>
-                  {`
+              <SimpleGrid columns={2} spacing={4} mt={4}>
+                <Stack
+                  spacing={2}
+                  align="center"
+                  p={4}
+                  bg={sectionBg}
+                  rounded="md"
+                  border="1px"
+                  borderColor={cardBorder}
+                >
+                  <Text fontSize="md" fontWeight="bold">
+                    TOTALIZER
+                  </Text>
+                  <LiquidGauge
+                    value={convertReading(pid.totalizer)}
+                    width={200}
+                    height={150}
+                    textSize={1}
+                    waveFrequency={2}
+                    waveAmplitude={3}
+                    gradient
+                    gradientStops={[
+                      { key: '0%', stopColor: '#3498db', offset: '0%' }, // Blue for water
+                      { key: '100%', stopColor: 'blue', offset: '100%' },
+                    ]}
+                    circleStyle={{
+                      fill: 'lightgray', // Light gray background for the empty part
+                    }}
+                    waveStyle={{
+                      fill: 'url(#gradient)',
+                      animation: 'waveAnimation 2s ease-in-out infinite',
+                      transformOrigin: 'center',
+                    }}
+                    textRenderer={(value) => {
+                      const displayValue = parseFloat(value) || 0;
+                      return (
+                        <tspan>
+                          {convertReading(pid.totalizer)?.toFixed(2)} <br />{' '}
+                          {unit}
+                        </tspan>
+                      );
+                    }}
+                  />
+
+                  <style>
+                    {`
     @keyframes waveAnimation {
       0% { transform: translateY(5px); }
       50% { transform: translateY(-5px); }
       100% { transform: translateY(5px); }
     }
   `}
-                </style>
+                  </style>
 
-                <style>
-                  {`
+                  <style>
+                    {`
     @keyframes waveAnimation {
       0% {
         transform: translateY(5%);
@@ -518,59 +538,62 @@ const Dashboard = () => {
       }
     }
   `}
-                </style>
-              </Stack>
-              <Stack
-                spacing={2}
-                align="center"
-                p={4}
-                bg={sectionBg}
-                rounded="md"
-                border="1px"
-                borderColor={cardBorder}
-              >
-                <Text fontSize="md" fontWeight="bold">
-                  FLOWRATE
-                </Text>
-                <Box
-                  bg="gray.300"
-                  h="8px"
-                  w="full"
-                  position="relative"
+                  </style>
+                </Stack>
+                <Stack
+                  spacing={2}
+                  align="center"
+                  p={4}
+                  bg={sectionBg}
                   rounded="md"
-                  overflow="hidden"
+                  border="1px"
+                  borderColor={cardBorder}
                 >
+                  <Text fontSize="md" fontWeight="bold">
+                    FLOWRATE
+                  </Text>
                   <Box
-                    bg="green.400"
-                    width={`${convertFlowrate(pid.flowrate)}%`}
+                    bg="gray.300"
                     h="8px"
-                    position="absolute"
-                    top="0"
-                    left="0"
-                  />
-                </Box>
-                <Text fontSize="sm" color="gray.600">
-                  {convertFlowrate(pid.flowrate)?.toFixed(2)} {unit}
-                </Text>
-              </Stack>
-            </SimpleGrid>
-          </Box>
-        ))}
-      </SimpleGrid>
+                    w="full"
+                    position="relative"
+                    rounded="md"
+                    overflow="hidden"
+                  >
+                    <Box
+                      bg="green.400"
+                      width={`${convertFlowrate(pid.flowrate)}%`}
+                      h="8px"
+                      position="absolute"
+                      top="0"
+                      left="0"
+                    />
+                  </Box>
+                  <Text fontSize="sm" color="gray.600">
+                    {convertFlowrate(pid.flowrate)?.toFixed(2)} {unit}
+                  </Text>
+                </Stack>
+              </SimpleGrid>
+            </Box>
+          ))}
+        </SimpleGrid>
+      )}
 
-      {pidData.length > 0 && <Flex justifyContent="space-between" alignItems="center" mb={4} mt={3}>
-        <ChakraSelect
-          value={rowsPerPage}
-          onChange={handleRowsPerPageChange}
-          width="150px"
-        >
-          <option value={20}>20</option>
-          <option value={50}>50</option>
-          <option value={100}>100</option>
-        </ChakraSelect>
+      {pidData.length > 0 && (
+        <Flex justifyContent="space-between" alignItems="center" mb={4} mt={3}>
+          <ChakraSelect
+            value={rowsPerPage}
+            onChange={handleRowsPerPageChange}
+            width="150px"
+          >
+            <option value={20}>20</option>
+            <option value={50}>50</option>
+            <option value={100}>100</option>
+          </ChakraSelect>
 
-        {renderPagination()}
-      </Flex>}
+          {renderPagination()}
+        </Flex>
+      )}
     </Box>
   );
 };

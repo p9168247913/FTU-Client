@@ -4,7 +4,7 @@ import {
   Flex,
   Input,
   Button,
-  // Select,
+  Select as ChakraSelect,
   Modal,
   ModalOverlay,
   ModalContent,
@@ -15,6 +15,7 @@ import {
   FormLabel,
   SimpleGrid,
   InputLeftElement,
+  Progress,
   InputGroup,
   useToast,
 } from '@chakra-ui/react';
@@ -30,7 +31,7 @@ import {
   Tooltip,
   Legend,
 } from 'chart.js';
-import { format } from 'date-fns';
+import { format, set } from 'date-fns';
 import DevelopmentTable from './tables/DevelopmentTable';
 import { SearchIcon, DownloadIcon } from '@chakra-ui/icons';
 import axiosInstance from 'axiosInstance';
@@ -55,6 +56,8 @@ const AnalyticsPage = () => {
   const [graphData, setGraphData] = useState({ labels: [], datasets: [] });
   const [page, setPage] = useState(1);
   const [loading, setLoading] = useState(false);
+  const [loadingGraph, setLoadingGraph] = useState(false);
+  const [loadingProductId, setLoadingProductId] = useState(false);
   const Token = localStorage.getItem('token');
   const [productId, setProductId] = useState([]);
   const [selectedPID, setSelectedPID] = useState('');
@@ -65,54 +68,8 @@ const AnalyticsPage = () => {
   const [rowsPerPage, setRowsPerPage] = useState(20);
   const productIdOptions = [{ value: '', label: 'All' }, ...productId];
   const toast = useToast();
-
-  const tableData = [
-    {
-      _id: 'ID123',
-      name: 'Location A',
-      companyId: 'ID123',
-      today: 10,
-      weekly: 50,
-      monthly: 200,
-      annual: 2400,
-    },
-    {
-      _id: 'ID124',
-      name: 'Location B',
-      companyId: 'ID124',
-      today: 20,
-      weekly: 70,
-      monthly: 300,
-      annual: 2800,
-    },
-    {
-      _id: 'ID125',
-      name: 'Location C',
-      companyId: 'ID125',
-      today: 15,
-      weekly: 60,
-      monthly: 250,
-      annual: 2600,
-    },
-    {
-      _id: 'ID126',
-      name: 'Location D',
-      companyId: 'ID126',
-      today: 25,
-      weekly: 80,
-      monthly: 400,
-      annual: 3000,
-    },
-    {
-      _id: 'ID127',
-      name: 'Location E',
-      companyId: 'ID127',
-      today: 30,
-      weekly: 90,
-      monthly: 500,
-      annual: 3200,
-    },
-  ];
+  const [graphPid, setGraphPid] = useState('');
+  const [timeFrame, setTimeFrame] = useState('daily');
 
   const selectBg = useColorModeValue('white', 'gray.700');
   const selectTextColor = useColorModeValue('black', 'white');
@@ -125,16 +82,11 @@ const AnalyticsPage = () => {
   };
 
   const getAllProductId = async () => {
+    setLoadingProductId(true);
     try {
       const queryParams = {};
       let filter = {};
 
-      // if (selectedCompany) {
-      //   filter = {
-      //     ...filter,
-      //     companyId: selectedCompany,
-      //   };
-      // }
       if (Object.keys(filter).length > 0) {
         queryParams.filter = JSON.stringify(filter);
       }
@@ -155,10 +107,13 @@ const AnalyticsPage = () => {
       }
     } catch (error) {
       console.log(error);
+    } finally {
+      setLoadingProductId(false);
     }
   };
 
   const getDeviceData = async () => {
+    setLoading(true);
     try {
       const queryParams = {
         page: page ? page : 1,
@@ -191,6 +146,73 @@ const AnalyticsPage = () => {
       }
     } catch (error) {
       console.log(error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const getGraphData = async () => {
+    if (!graphPid) return;
+    setLoadingGraph(true);
+    try {
+      const response = await axiosInstance.get(
+        `${baseUrl}/device-readings/graph?productId=${graphPid}&timeframe=${timeFrame}`,
+        {
+          headers: {
+            Authorization: `Bearer ${Token}`,
+          },
+        },
+      );
+      if (response) {
+        const data = response?.data?.data?.data || [];
+
+        const today = new Date(); // Get today's date
+        const filteredData =
+          timeFrame === 'daily'
+            ? data.filter((item) => new Date(item.key) <= today) // Exclude future dates
+            : data;
+
+        // Dynamically format labels based on the timeframe
+        const labels =
+          timeFrame === 'monthly'
+            ? filteredData.map((item) =>
+                new Date(item.key).toLocaleString('default', {
+                  month: 'short',
+                }),
+              )
+            : timeFrame === 'daily'
+            ? filteredData.map((item) => {
+                const date = new Date(item.key);
+                return `${date
+                  .getDate()
+                  .toString()
+                  .padStart(2, '0')} ${date.toLocaleString('default', {
+                  month: 'short',
+                })}`;
+              })
+            : filteredData.map((item) => item.key); // Default fallback for other timeframes
+
+        const usageData = filteredData.map((item) => item.usage);
+
+        setGraphData({
+          labels,
+          datasets: [
+            {
+              label: `Usage Data (${
+                timeFrame.charAt(0).toUpperCase() + timeFrame.slice(1)
+              })`,
+              data: usageData,
+              backgroundColor: 'rgba(75, 192, 192, 0.4)',
+              borderColor: 'rgba(75, 192, 192, 1)',
+              borderWidth: 1,
+            },
+          ],
+        });
+      }
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setLoadingGraph(false);
     }
   };
 
@@ -202,45 +224,20 @@ const AnalyticsPage = () => {
     getAllProductId();
   }, []);
 
-  useEffect(() => {
-    generateGraph('All');
-  }, []);
-
-  const generateGraph = (selectedPid = pid) => {
-    const filteredData = tableData.filter(
-      (item) => selectedPid === 'All' || item.companyId === selectedPid,
-    );
-
-    const labels = filteredData.map((item) => item.name);
-    const data = filteredData.map((item) => item.today);
-
-    setGraphData({
-      labels,
-      datasets: [
-        {
-          label:
-            selectedPid === 'All' ? 'Data for All' : `Data for ${selectedPid}`,
-          data,
-          backgroundColor: 'rgba(75,192,192,0.4)',
-          borderColor: 'rgba(75,192,192,1)',
-          borderWidth: 1,
-        },
-      ],
-    });
-  };
-
-  const handlePidChange = (newPid) => {
-    setPid(newPid);
-    generateGraph(newPid);
-  };
-
   const handleSelectChange = (selectedOption) => {
-    setPage(1);
-    setSelectedPID(selectedOption.value);
+    setSelectedPID(selectedOption.value); // Update selectedPID state
+  };
+
+  const handleSelectGraphChange = (selectedOption) => {
+    setGraphPid(selectedOption.value); // Update selectedPID state
   };
 
   const handleModalSelectChange = (selectedOption) => {
     setSelectedProductId(selectedOption.value);
+  };
+
+  const handleTimeFrameChange = (value) => {
+    setTimeFrame(value);
   };
 
   const downloadExcel = async (productId, startDate, endDate) => {
@@ -340,6 +337,26 @@ const AnalyticsPage = () => {
     }
   };
 
+  useEffect(() => {
+    if (!isModalOpen) {
+      setStartDate('');
+      setEndDate('');
+      setSelectedProductId('');
+    }
+  }, [isModalOpen]);
+
+  useEffect(() => {
+    if (productId.length > 0 && !graphPid) {
+      setGraphPid(productId[0].value);
+    }
+  }, [productId]);
+
+  useEffect(() => {
+    if (graphPid) {
+      getGraphData();
+    }
+  }, [graphPid, timeFrame]);
+
   return (
     <Box pt={{ base: '130px', md: '80px', xl: '80px' }}>
       <Flex justify="space-between" mb={4}>
@@ -347,8 +364,8 @@ const AnalyticsPage = () => {
           options={productIdOptions}
           value={productIdOptions?.find(
             (option) => option.value === selectedPID,
-          )}
-          onChange={handleSelectChange}
+          )} // Controlled value
+          onChange={handleSelectChange} // Update state on change
           placeholder="Select Product ID"
           isSearchable={true}
           styles={{
@@ -364,7 +381,7 @@ const AnalyticsPage = () => {
             }),
           }}
         />
-
+        ;
         <Button
           p={5}
           leftIcon={<DownloadIcon />}
@@ -389,15 +406,15 @@ const AnalyticsPage = () => {
           <Select
             options={productIdOptions}
             value={productIdOptions?.find(
-              (option) => option.value === selectedPID,
+              (option) => option.value === graphPid,
             )}
-            onChange={handleSelectChange}
+            onChange={handleSelectGraphChange}
             placeholder="Select Product ID"
             isSearchable={true}
             styles={{
               container: (base) => ({
                 ...base,
-                width: '200px',
+                width: '350px',
                 maxWidth: '300px',
               }),
               control: (base) => ({
@@ -407,33 +424,70 @@ const AnalyticsPage = () => {
               }),
             }}
           />
-          <Input
-            type="date"
-            placeholder="Start Date"
-            value={startDate}
-            onChange={(e) => setStartDate(e.target.value)}
-            bg={useColorModeValue('white', 'gray.700')}
-            color={useColorModeValue('black', 'white')}
-            _placeholder={{
-              color: useColorModeValue('gray.500', 'gray.400'),
-            }}
-          />
+          <ChakraSelect
+            placeholder={'Select an option'}
+            value={timeFrame}
+            onChange={(e) => handleTimeFrameChange(e.target.value)}
+            size="md"
+            variant="outline"
+            borderColor="gray.300"
+            focusBorderColor="blue.500"
+          >
+            <option value="daily">Daily</option>
+            <option value="monthly">Monthly</option>
+            <option value="yearly">Yearly</option>
+          </ChakraSelect>
           {/* <Button width="100%" colorScheme="blue" onClick={() => generateGraph()}>
             Generate Graph
           </Button> */}
         </Flex>
       </SimpleGrid>
 
-      <Box m="auto" w="70%" h="auto">
-        <Bar data={graphData} />
-      </Box>
+      {loadingGraph ? (
+        <Flex
+          justify="center"
+          align="center"
+          h="200px"
+          flexDirection={'column'}
+        >
+          <Progress
+            isIndeterminate
+            colorScheme="green"
+            size="lg"
+            width={'50%'}
+          />
+          <span>Please wait....</span>
+        </Flex>
+      ) : (
+        <Box m="auto" w="70%" h="50vh">
+          {graphData?.labels.length > 0 ? (
+            <Bar
+              data={graphData}
+              options={{
+                responsive: true,
+                plugins: {
+                  legend: {
+                    display: true,
+                    position: 'top',
+                  },
+                  title: {
+                    display: true,
+                    text: `Graph Data for ${graphPid || 'All'} (${timeFrame})`,
+                  },
+                },
+              }}
+            />
+          ) : (
+            <Flex justifyContent="center" alignItems="center" h="100%">
+              <p>No data available for the selected product and timeframe.</p>
+            </Flex>
+          )}
+        </Box>
+      )}
 
       <Modal
         isOpen={isModalOpen}
         onClose={() => {
-          setStartDate('');
-          setEndDate('');
-          setSelectedProductId('');
           setIsModalOpen(false);
         }}
       >
@@ -465,7 +519,13 @@ const AnalyticsPage = () => {
               <Input
                 type="date"
                 value={startDate}
-                onChange={(e) => setStartDate(e.target.value)}
+                onChange={(e) => {
+                  setStartDate(e.target.value);
+                  if (endDate && new Date(e.target.value) > new Date(endDate)) {
+                    // Reset endDate if it is less than startDate
+                    setEndDate('');
+                  }
+                }}
                 bg={useColorModeValue('white', 'gray.700')}
                 color={useColorModeValue('black', 'white')}
                 _placeholder={{
@@ -473,12 +533,14 @@ const AnalyticsPage = () => {
                 }}
               />
             </FormControl>
-            <FormControl>
+            <FormControl mb={4}>
               <FormLabel>End Date</FormLabel>
               <Input
                 type="date"
                 value={endDate}
                 onChange={(e) => setEndDate(e.target.value)}
+                min={startDate} // Prevent selecting an earlier date than startDate
+                disabled={!startDate} // Disable if startDate is not selected
                 bg={useColorModeValue('white', 'gray.700')}
                 color={useColorModeValue('black', 'white')}
                 _placeholder={{
