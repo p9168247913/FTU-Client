@@ -74,7 +74,10 @@ const DevelopmentTable = ({
               icon={<EditIcon />}
               size="sm"
               colorScheme="blue"
-              onClick={(e) => handleEditUser(device, e)}
+              onClick={(e) => {
+                console.log(device);
+                
+                handleEditUser(device, e)}}
             />
             <IconButton
               aria-label="Delete"

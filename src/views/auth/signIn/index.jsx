@@ -87,6 +87,7 @@ function SignIn() {
           response?.data?.data?.tokens?.access?.token,
         );
         localStorage.setItem('name', response?.data?.data?.user?.name);
+        localStorage.setItem('companyId', response?.data?.data?.user?.companyId);
         localStorage.setItem('username', response?.data?.data?.user?.username);
         if (response?.data?.data?.user?.email !== undefined) {
           localStorage.setItem('email', response?.data?.data?.user?.email);

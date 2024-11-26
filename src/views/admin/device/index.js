@@ -336,6 +336,10 @@ const Devices = () => {
     }
   };
 
+  useEffect(() => {
+    console.log(editDevice);
+  }, [editDevice]);
+
   return (
     <Box pt={{ base: '130px', md: '80px', xl: '80px' }}>
       <Flex mb="5" justifyContent="space-between" alignItems="center">
@@ -942,7 +946,13 @@ const Devices = () => {
                 <Input
                   name="dashboardLicensingExpiry"
                   type="date"
-                  value={editDevice.dashboardLicensingExpiry}
+                  value={
+                    editDevice.dashboardLicensingExpiry
+                      ? new Date(editDevice.dashboardLicensingExpiry)
+                          .toISOString()
+                          .split('T')[0]
+                      : ''
+                  }
                   onChange={(e) =>
                     setEditDevice({
                       ...editDevice,
@@ -1045,7 +1055,13 @@ const Devices = () => {
                 <Input
                   name="commissioningDate"
                   type="date"
-                  value={editDevice.commissioningDate}
+                  value={
+                    editDevice.commissioningDate
+                      ? new Date(editDevice.commissioningDate)
+                          .toISOString()
+                          .split('T')[0]
+                      : ''
+                  }
                   onChange={(e) =>
                     setEditDevice({
                       ...editDevice,
@@ -1112,11 +1128,6 @@ const Devices = () => {
                 </div>
               </FormControl>
 
-              {/* <FormControl>
-                
-              </FormControl> */}
-
-              {/* Warranty and Validity Date Inputs */}
               <FormControl>
                 <FormLabel color={labelColor}>
                   Flowmeter Warranty Start Date
@@ -1124,7 +1135,13 @@ const Devices = () => {
                 <Input
                   name="flowmeterWarranty.startDate"
                   type="date"
-                  value={editDevice.flowmeterWarranty?.startDate || ''}
+                  value={
+                    editDevice?.flowmeterWarranty?.startDate
+                      ? new Date(editDevice?.flowmeterWarranty?.startDate)
+                          .toISOString()
+                          .split('T')[0]
+                      : ''
+                  }
                   onChange={(e) =>
                     setEditDevice((prev) => ({
                       ...prev,
@@ -1149,7 +1166,13 @@ const Devices = () => {
                 <Input
                   name="flowmeterWarranty.endDate"
                   type="date"
-                  value={editDevice.flowmeterWarranty?.endDate || ''}
+                  value={
+                    editDevice?.flowmeterWarranty?.endDate
+                      ? new Date(editDevice?.flowmeterWarranty?.endDate)
+                          .toISOString()
+                          .split('T')[0]
+                      : ''
+                  }
                   onChange={(e) =>
                     setEditDevice((prev) => ({
                       ...prev,
@@ -1175,8 +1198,13 @@ const Devices = () => {
                   name="flowmeterTelemetryWarrantyValidity.startDate"
                   type="date"
                   value={
-                    editDevice.flowmeterTelemetryWarrantyValidity?.startDate ||
-                    ''
+                    editDevice?.flowmeterTelemetryWarrantyValidity?.startDate
+                      ? new Date(
+                          editDevice?.flowmeterTelemetryWarrantyValidity?.startDate,
+                        )
+                          .toISOString()
+                          .split('T')[0]
+                      : ''
                   }
                   onChange={(e) =>
                     setEditDevice((prev) => ({
@@ -1203,7 +1231,13 @@ const Devices = () => {
                   name="flowmeterTelemetryWarrantyValidity.endDate"
                   type="date"
                   value={
-                    editDevice.flowmeterTelemetryWarrantyValidity?.endDate || ''
+                    editDevice?.flowmeterTelemetryWarrantyValidity?.endDate
+                      ? new Date(
+                          editDevice?.flowmeterTelemetryWarrantyValidity?.endDate,
+                        )
+                          .toISOString()
+                          .split('T')[0]
+                      : ''
                   }
                   onChange={(e) =>
                     setEditDevice((prev) => ({
@@ -1229,7 +1263,13 @@ const Devices = () => {
                 <Input
                   name="dashboardValidity.startDate"
                   type="date"
-                  value={editDevice.dashboardValidity?.startDate || ''}
+                  value={
+                    editDevice?.dashboardValidity?.startDate
+                      ? new Date(editDevice?.dashboardValidity?.startDatee)
+                          .toISOString()
+                          .split('T')[0]
+                      : ''
+                  }
                   onChange={(e) =>
                     setEditDevice((prev) => ({
                       ...prev,
@@ -1254,7 +1294,13 @@ const Devices = () => {
                 <Input
                   name="dashboardValidity.endDate"
                   type="date"
-                  value={editDevice.dashboardValidity?.endDate || ''}
+                  value={
+                    editDevice?.dashboardValidity?.endDate
+                      ? new Date(editDevice?.dashboardValidity?.endDate)
+                          .toISOString()
+                          .split('T')[0]
+                      : ''
+                  }
                   onChange={(e) =>
                     setEditDevice((prev) => ({
                       ...prev,
@@ -1279,7 +1325,13 @@ const Devices = () => {
                 <Input
                   name="simcardValidity.startDate"
                   type="date"
-                  value={editDevice.simcardValidity?.startDate || ''}
+                  value={
+                    editDevice?.simcardValidity?.startDate
+                      ? new Date(editDevice?.simcardValidity?.startDate)
+                          .toISOString()
+                          .split('T')[0]
+                      : ''
+                  }
                   onChange={(e) =>
                     setEditDevice((prev) => ({
                       ...prev,
@@ -1304,7 +1356,13 @@ const Devices = () => {
                 <Input
                   name="simcardValidity.endDate"
                   type="date"
-                  value={editDevice.simcardValidity?.endDate || ''}
+                  value={
+                    editDevice?.simcardValidity?.startDate
+                      ? new Date(editDevice?.simcardValidity?.startDate)
+                          .toISOString()
+                          .split('T')[0]
+                      : ''
+                  }
                   onChange={(e) =>
                     setEditDevice((prev) => ({
                       ...prev,

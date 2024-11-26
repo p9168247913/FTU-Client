@@ -16,6 +16,7 @@ import {
   Select as ChakraSelect,
   Button,
   IconButton,
+  Card,
 } from '@chakra-ui/react';
 import { ChevronLeftIcon, ChevronRightIcon } from '@chakra-ui/icons';
 import { Spinner } from '@chakra-ui/react';
@@ -43,6 +44,7 @@ const Dashboard = () => {
     value: '',
   });
   const Token = localStorage.getItem('token');
+  const role = localStorage.getItem('role');
   const [page, setPage] = useState(1);
   const [totalResult, setTotalResult] = useState();
   const [totalPages, setTotalPages] = useState(1);
@@ -222,7 +224,16 @@ const Dashboard = () => {
         },
       });
       if (response) {
+        const data = response?.data?.data?.data;
+
         setCompanyData(response?.data?.data?.data);
+        if (role === 'companyUser' || (role === 'user' && data?.length === 1)) {
+          setSelectedCompany(data[0]?._id);
+          setSelectedCompany2({
+            label: data[0]?.name,
+            value: data[0]?._id,
+          });
+        }
       }
     } catch (error) {
       console.log(error);
@@ -337,37 +348,84 @@ const Dashboard = () => {
       pt={{ base: '130px', md: '80px', xl: '80px' }}
       px={{ base: '4', md: '8' }}
     >
-      <Select
-        options={companyOptions}
-        value={companyOptions.find(
-          (option) => option.value === selectedCompany,
-        )}
-        onChange={(selectedOption) => {
-          setPage(1);
-          setSelectedCompany2(selectedOption);
-          setSelectedCompany(selectedOption.value);
-        }}
-        placeholder="Search Company"
-        isSearchable
-        styles={{
-          container: (base) => ({
-            ...base,
-            maxWidth: '50%',
-            marginBottom: '16px',
-          }),
-          control: (base) => ({
-            ...base,
-            backgroundColor: inputBg,
-            color: inputTextColor,
-          }),
-          placeholder: (base) => ({
-            ...base,
-            color: placeholderColor,
-          }),
-        }}
-      />
+      {role === 'companyUser' || role === 'user' ? (
+        <Card p={2} mb={4}>
+          <Text fontSize="2xl" fontWeight="bold" mb={4}>
+            {selectedCompany2?.label}
+          </Text>
+          <Box mb={2}>
+            <Flex gap={2} mb={1}>
+              <Text fontSize="lg" fontWeight="bold">
+                Total Consumption:
+              </Text>
+              <Text mt={0.5} fontSize="md" color={textColor}>
+                {convertReading(totalConsumption).toFixed(2) +
+                  ' / ' +
+                  convertReading(
+                    selectedCompanyData?.allowedLimit || 0,
+                  ).toFixed(2)}{' '}
+                {unit}
+              </Text>
+            </Flex>
+            <Progress
+              value={
+                (totalConsumption / (selectedCompanyData?.allowedLimit || 1)) *
+                100
+              }
+              colorScheme={
+                totalConsumption <= (selectedCompanyData?.allowedLimit || 0)
+                  ? 'green'
+                  : 'red'
+              }
+              bg={progressBg}
+              hasStripe
+              isAnimated
+              rounded="md"
+              height="12px"
+              w="20%"
+            />
+            <Text fontSize="sm" color={withinLimitColor} mt={2}>
+              {(
+                (totalConsumption / (selectedCompanyData?.allowedLimit || 1)) *
+                100
+              ).toFixed(1)}
+              % of limit
+            </Text>
+          </Box>
+        </Card>
+      ) : (
+        <Select
+          options={companyOptions}
+          value={companyOptions.find(
+            (option) => option.value === selectedCompany,
+          )}
+          onChange={(selectedOption) => {
+            setPage(1);
+            setSelectedCompany2(selectedOption);
+            setSelectedCompany(selectedOption.value);
+          }}
+          placeholder="Search Company"
+          isSearchable
+          styles={{
+            container: (base) => ({
+              ...base,
+              maxWidth: '50%',
+              marginBottom: '16px',
+            }),
+            control: (base) => ({
+              ...base,
+              backgroundColor: inputBg,
+              color: inputTextColor,
+            }),
+            placeholder: (base) => ({
+              ...base,
+              color: placeholderColor,
+            }),
+          }}
+        />
+      )}
 
-      {selectedCompany && (
+      {role !== 'companyUser' && role !== 'user' && selectedCompany && (
         <Box mb={8}>
           <Flex gap={2} mb={1}>
             <Text fontSize="lg" fontWeight="bold">
@@ -375,7 +433,7 @@ const Dashboard = () => {
             </Text>
             <Text fontSize="md" color={textColor}>
               {convertReading(totalConsumption).toFixed(2) +
-                '/' +
+                ' / ' +
                 convertReading(selectedCompanyData?.allowedLimit || 0).toFixed(
                   2,
                 )}{' '}
