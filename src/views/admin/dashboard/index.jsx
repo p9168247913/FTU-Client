@@ -552,7 +552,7 @@ const Dashboard = () => {
                   * {pid.productId}
                 </Text>
                 <Text fontSize="sm" color="gray.500">
-                  * {formatDate(pid.timestamp)}
+                 * Reading Date:- {formatDate(pid.timestamp)}
                 </Text>
               </div>
 
@@ -582,7 +582,7 @@ const Dashboard = () => {
                       { key: '100%', stopColor: 'blue', offset: '100%' },
                     ]}
                     circleStyle={{
-                      fill: 'lightgray', // Light gray background for the empty part
+                      fill: 'lightgray',
                     }}
                     waveStyle={{
                       fill: 'url(#gradient)',

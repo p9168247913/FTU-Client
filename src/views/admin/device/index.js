@@ -398,7 +398,6 @@ const Devices = () => {
         loading={loading}
       />
 
-      {/* Add Device Modal */}
       <Modal isOpen={isOpen} onClose={onClose} size="md">
         <ModalOverlay />
         <ModalContent

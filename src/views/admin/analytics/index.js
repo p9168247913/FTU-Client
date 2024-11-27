@@ -18,6 +18,7 @@ import {
   Progress,
   InputGroup,
   useToast,
+  Card,
 } from '@chakra-ui/react';
 import Select from 'react-select';
 import { useColorModeValue } from '@chakra-ui/react';
@@ -359,20 +360,27 @@ const AnalyticsPage = () => {
 
   return (
     <Box pt={{ base: '130px', md: '80px', xl: '80px' }}>
-      <Flex justify="space-between" mb={4}>
+      <Flex
+        justify={{ base: 'center', md: 'space-between' }}
+        align={{ base: 'stretch', md: 'center' }}
+        direction={{ base: 'column', md: 'row' }}
+        mb={4}
+        gap={{ base: 4, md: 0 }}
+      >
         <Select
           options={productIdOptions}
           value={productIdOptions?.find(
             (option) => option.value === selectedPID,
-          )} // Controlled value
-          onChange={handleSelectChange} // Update state on change
+          )}
+          onChange={handleSelectChange}
           placeholder="Select Product ID"
           isSearchable={true}
           styles={{
             container: (base) => ({
               ...base,
-              width: '200px',
+              width: '100%',
               maxWidth: '300px',
+              marginBottom: '8px',
             }),
             control: (base) => ({
               ...base,
@@ -381,12 +389,13 @@ const AnalyticsPage = () => {
             }),
           }}
         />
-        ;
+
         <Button
           p={5}
           leftIcon={<DownloadIcon />}
           colorScheme="green"
           onClick={() => setIsModalOpen(true)}
+          w={{ base: '100%', md: 'auto' }}
         >
           Download Report
         </Button>
@@ -402,7 +411,13 @@ const AnalyticsPage = () => {
       />
 
       <SimpleGrid columns={{ base: 1, md: 2 }} spacing={6}>
-        <Flex mb={4} gap={4} justifyContent={'space-between'}>
+        <Flex
+          direction={{ base: 'column', md: 'row' }}
+          mb={4}
+          gap={4}
+          justifyContent={{ base: 'center', md: 'space-between' }}
+          alignItems={{ base: 'stretch', md: 'center' }}
+        >
           <Select
             options={productIdOptions}
             value={productIdOptions?.find(
@@ -414,8 +429,8 @@ const AnalyticsPage = () => {
             styles={{
               container: (base) => ({
                 ...base,
-                width: '350px',
-                maxWidth: '300px',
+                width: '100%',
+                maxWidth: '350px',
               }),
               control: (base) => ({
                 ...base,
@@ -432,39 +447,48 @@ const AnalyticsPage = () => {
             variant="outline"
             borderColor="gray.300"
             focusBorderColor="blue.500"
+            bg={useColorModeValue('white', 'gray.700')}
+            color={useColorModeValue('black', 'white')}
+            _placeholder={{
+              color: useColorModeValue('gray.500', 'gray.400'),
+            }}
+            w={{ base: '100%', md: 'auto' }}
           >
             <option value="daily">Daily</option>
             <option value="monthly">Monthly</option>
             <option value="yearly">Yearly</option>
           </ChakraSelect>
-          {/* <Button width="100%" colorScheme="blue" onClick={() => generateGraph()}>
-            Generate Graph
-          </Button> */}
         </Flex>
       </SimpleGrid>
 
       {loadingGraph ? (
-        <Flex
-          justify="center"
-          align="center"
-          h="200px"
-          flexDirection={'column'}
-        >
+        <Flex justify="center" align="center" h="200px" flexDirection="column">
           <Progress
             isIndeterminate
             colorScheme="green"
             size="lg"
-            width={'50%'}
+            width={{ base: '70%', md: '50%' }} // Responsive width
           />
           <span>Please wait....</span>
         </Flex>
       ) : (
-        <Box m="auto" w="70%" h="50vh">
+        <Card
+          m="auto"
+          w={{ base: '100%', md: '80%', lg: '70%' }} // Responsive width
+          h={{ base: '40vh', md: '50vh', lg: '60vh' }} // Responsive height
+          p={4} // Add padding for spacing
+        >
           {graphData?.labels.length > 0 ? (
             <Bar
               data={graphData}
+              style={{
+                margin: 'auto',
+                width: '100%', // Take full width of the container
+                height: '100%', // Take full height of the container
+              }}
               options={{
                 responsive: true,
+                maintainAspectRatio: false, // Ensure proper resizing
                 plugins: {
                   legend: {
                     display: true,
@@ -472,7 +496,7 @@ const AnalyticsPage = () => {
                   },
                   title: {
                     display: true,
-                    text: `Graph Data for ${graphPid || 'All'} (${timeFrame})`,
+                    text: `Graph Data for ${graphPid} (${timeFrame})`,
                   },
                 },
               }}
@@ -482,7 +506,7 @@ const AnalyticsPage = () => {
               <p>No data available for the selected product and timeframe.</p>
             </Flex>
           )}
-        </Box>
+        </Card>
       )}
 
       <Modal

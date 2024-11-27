@@ -76,7 +76,7 @@ const DevelopmentTable = ({
         <Td>{item.productId}</Td>
         <Td>{item.location ? item.location.name : 'N/A'}</Td>
         <Td>{roundToTwoDecimalPlaces(item.todayTotal)}</Td>
-        <Td>{roundToTwoDecimalPlaces(item.weeklyCumulative)}</Td>
+        {/* <Td>{roundToTwoDecimalPlaces(item.weeklyCumulative)}</Td> */}
         <Td>{roundToTwoDecimalPlaces(item.monthlyCumulative)}</Td>
         <Td>{roundToTwoDecimalPlaces(item.annualCumulative)}</Td>
       </Tr>
@@ -173,7 +173,7 @@ const DevelopmentTable = ({
               <Th borderColor={borderColor}>PID</Th>
               <Th borderColor={borderColor}>Location Name</Th>
               <Th borderColor={borderColor}>Today Total</Th>
-              <Th borderColor={borderColor}>Weekly Cumulative</Th>
+              {/* <Th borderColor={borderColor}>Weekly Cumulative</Th> */}
               <Th borderColor={borderColor}>Monthly Cumulative</Th>
               <Th borderColor={borderColor}>Annual Cumulative</Th>
             </Tr>
