@@ -72,6 +72,8 @@ const AnalyticsPage = () => {
   const [graphPid, setGraphPid] = useState('');
   const [timeFrame, setTimeFrame] = useState('daily');
 
+  const [graphExpiry, setGraphExpiry] = useState('');
+
   const selectBg = useColorModeValue('white', 'gray.700');
   const selectTextColor = useColorModeValue('black', 'white');
 
@@ -167,13 +169,15 @@ const AnalyticsPage = () => {
       if (response) {
         const data = response?.data?.data?.data || [];
 
-        const today = new Date(); // Get today's date
+        setGraphExpiry(response?.data?.data);
+        
+
+        const today = new Date(); 
         const filteredData =
           timeFrame === 'daily'
-            ? data.filter((item) => new Date(item.key) <= today) // Exclude future dates
+            ? data.filter((item) => new Date(item.key) <= today) 
             : data;
 
-        // Dynamically format labels based on the timeframe
         const labels =
           timeFrame === 'monthly'
             ? filteredData.map((item) =>
@@ -191,7 +195,7 @@ const AnalyticsPage = () => {
                   month: 'short',
                 })}`;
               })
-            : filteredData.map((item) => item.key); // Default fallback for other timeframes
+            : filteredData.map((item) => item.key); 
 
         const usageData = filteredData.map((item) => item.usage);
 
@@ -226,11 +230,11 @@ const AnalyticsPage = () => {
   }, []);
 
   const handleSelectChange = (selectedOption) => {
-    setSelectedPID(selectedOption.value); // Update selectedPID state
+    setSelectedPID(selectedOption.value);
   };
 
   const handleSelectGraphChange = (selectedOption) => {
-    setGraphPid(selectedOption.value); // Update selectedPID state
+    setGraphPid(selectedOption.value);
   };
 
   const handleModalSelectChange = (selectedOption) => {
@@ -299,7 +303,6 @@ const AnalyticsPage = () => {
         },
       );
 
-      // Check if the response is a JSON message
       const contentType = response.headers['content-type'];
       if (contentType && contentType.includes('application/json')) {
         const reader = new FileReader();
@@ -316,7 +319,6 @@ const AnalyticsPage = () => {
         };
         reader.readAsText(response.data);
       } else {
-        // Handle file download
         const url = window.URL.createObjectURL(new Blob([response.data]));
         const link = document.createElement('a');
         link.href = url;
@@ -474,21 +476,31 @@ const AnalyticsPage = () => {
       ) : (
         <Card
           m="auto"
-          w={{ base: '100%', md: '80%', lg: '70%' }} // Responsive width
-          h={{ base: '40vh', md: '50vh', lg: '60vh' }} // Responsive height
-          p={4} // Add padding for spacing
+          w={{ base: '100%', md: '80%', lg: '70%' }} 
+          h={{ base: '40vh', md: '50vh', lg: '60vh' }} 
+          p={4} 
+          style={{
+            filter: graphExpiry?.dashboardLicensingExpiry &&
+                    new Date(graphExpiry.dashboardLicensingExpiry) < new Date()
+              ? 'blur(4px)'
+              : 'none',
+            pointerEvents: graphExpiry?.dashboardLicensingExpiry &&
+                    new Date(graphExpiry.dashboardLicensingExpiry) < new Date()
+              ? 'none'
+              : 'auto',
+          }}
         >
           {graphData?.labels.length > 0 ? (
             <Bar
               data={graphData}
               style={{
                 margin: 'auto',
-                width: '100%', // Take full width of the container
-                height: '100%', // Take full height of the container
+                width: '100%', 
+                height: '100%', 
               }}
               options={{
                 responsive: true,
-                maintainAspectRatio: false, // Ensure proper resizing
+                maintainAspectRatio: false, 
                 plugins: {
                   legend: {
                     display: true,

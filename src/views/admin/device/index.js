@@ -281,6 +281,7 @@ const Devices = () => {
       value: device?.value || 0,
       newFlowmeter: device?.newFlowmeter ?? true,
       resetCounter: device?.resetCounter || false,
+      isRepairing: device?.isRepairing || false,
       dashboardLicensingExpiry: device?.dashboardLicensingExpiry || '',
       flowmeterWarranty: {
         startDate: device?.flowmeterWarranty?.startDate || '',
@@ -335,10 +336,6 @@ const Devices = () => {
       });
     }
   };
-
-  useEffect(() => {
-    console.log(editDevice);
-  }, [editDevice]);
 
   return (
     <Box pt={{ base: '130px', md: '80px', xl: '80px' }}>
@@ -403,7 +400,7 @@ const Devices = () => {
         <ModalContent
           maxWidth="800px"
           mx="auto"
-          bg={modalBg} // Dark mode background color
+          bg={modalBg}
           style={{ height: '80vh', overflow: 'auto' }}
         >
           <div
@@ -655,7 +652,6 @@ const Devices = () => {
                 </div>
               </FormControl>
 
-              {/* Warranty and Validity Dates */}
               <FormControl>
                 <FormLabel color={labelColor}>
                   Flowmeter Warranty Start Date
@@ -672,6 +668,7 @@ const Devices = () => {
                   }}
                 />
               </FormControl>
+
               <FormControl>
                 <FormLabel color={labelColor}>
                   Flowmeter Warranty End Date
@@ -688,6 +685,7 @@ const Devices = () => {
                   }}
                 />
               </FormControl>
+
               <FormControl>
                 <FormLabel color={labelColor}>
                   Telemetry Warranty Start Date
@@ -706,6 +704,7 @@ const Devices = () => {
                   }}
                 />
               </FormControl>
+
               <FormControl>
                 <FormLabel color={labelColor}>
                   Telemetry Warranty End Date
@@ -724,6 +723,7 @@ const Devices = () => {
                   }}
                 />
               </FormControl>
+
               <FormControl>
                 <FormLabel color={labelColor}>
                   Dashboard Validity Start Date
@@ -740,6 +740,7 @@ const Devices = () => {
                   }}
                 />
               </FormControl>
+
               <FormControl>
                 <FormLabel color={labelColor}>
                   Dashboard Validity End Date
@@ -756,6 +757,7 @@ const Devices = () => {
                   }}
                 />
               </FormControl>
+
               <FormControl>
                 <FormLabel color={labelColor}>
                   SIM Card Validity Start Date
@@ -772,6 +774,7 @@ const Devices = () => {
                   }}
                 />
               </FormControl>
+
               <FormControl>
                 <FormLabel color={labelColor}>
                   SIM Card Validity End Date
@@ -817,7 +820,7 @@ const Devices = () => {
         <ModalContent
           maxWidth="800px"
           mx="auto"
-          bg={modalBg} // Dark mode background color
+          bg={modalBg}
           style={{ height: '80vh', overflow: 'auto' }}
         >
           <div
@@ -1097,9 +1100,10 @@ const Devices = () => {
                   display: 'flex',
                   flexDirection: 'row',
                   justifyContent: 'space-between',
+                  alignItems: 'center',
                 }}
               >
-                <div>
+                <div style={{ display: 'flex', flexDirection: 'column',  minWidth: '124px', }}>
                   <FormLabel color={labelColor}>New Flowmeter</FormLabel>
                   <Switch
                     name="newFlowmeter"
@@ -1112,7 +1116,7 @@ const Devices = () => {
                     }
                   />
                 </div>
-                <div>
+                <div style={{ display: 'flex', flexDirection: 'column',  minWidth: '114px' }}>
                   <FormLabel color={labelColor}>Reset Counter</FormLabel>
                   <Switch
                     name="resetCounter"
@@ -1121,6 +1125,23 @@ const Devices = () => {
                       setEditDevice({
                         ...editDevice,
                         resetCounter: e.target.checked,
+                      })
+                    }
+                  />
+                </div>
+                <div style={{ display: 'flex', flexDirection: 'column',  minWidth: '130px' }}>
+                  <FormLabel color={labelColor}>
+                    {editDevice.isRepairing
+                      ? 'Repair Enabled'
+                      : 'Not in Repair'}
+                  </FormLabel>
+                  <Switch
+                    name="resetCounter"
+                    isChecked={editDevice.isRepairing}
+                    onChange={(e) =>
+                      setEditDevice({
+                        ...editDevice,
+                        isRepairing: e.target.checked,
                       })
                     }
                   />

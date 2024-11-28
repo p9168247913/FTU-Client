@@ -66,21 +66,55 @@ const DevelopmentTable = ({
       );
     }
 
-    return tableData.map((item, index) => (
-      <Tr
-        key={item.productId}
-        onClick={() => handleRowClick(item)}
-        cursor="pointer"
-        _hover={{ backgroundColor: rowHoverBg }}
-      >
-        <Td>{item.productId}</Td>
-        <Td>{item.location ? item.location.name : 'N/A'}</Td>
-        <Td>{roundToTwoDecimalPlaces(item.todayTotal)}</Td>
-        {/* <Td>{roundToTwoDecimalPlaces(item.weeklyCumulative)}</Td> */}
-        <Td>{roundToTwoDecimalPlaces(item.monthlyCumulative)}</Td>
-        <Td>{roundToTwoDecimalPlaces(item.annualCumulative)}</Td>
-      </Tr>
-    ));
+    return tableData.map((item, index) => {
+      const isLicenseExpired =
+        item.dashboardLiscense &&
+        item.dashboardLiscense !== '' &&
+        new Date(item.dashboardLiscense) < new Date();
+      return (
+        <Tr
+          key={item.productId}
+          onClick={() => handleRowClick(item)}
+          cursor="pointer"
+          _hover={{ backgroundColor: rowHoverBg }}
+        >
+          <Td>{item.productId}</Td>
+          <Td
+            style={{
+              filter: isLicenseExpired ? 'blur(4px)' : 'none',
+              pointerEvents: isLicenseExpired ? 'none' : 'auto',
+            }}
+          >
+            {item.location ? item.location.name : 'N/A'}
+          </Td>
+          <Td
+            style={{
+              filter: isLicenseExpired ? 'blur(4px)' : 'none',
+              pointerEvents: isLicenseExpired ? 'none' : 'auto',
+            }}
+          >
+            {roundToTwoDecimalPlaces(item.todayTotal)}
+          </Td>
+          {/* <Td>{roundToTwoDecimalPlaces(item.weeklyCumulative)}</Td> */}
+          <Td
+            style={{
+              filter: isLicenseExpired ? 'blur(4px)' : 'none',
+              pointerEvents: isLicenseExpired ? 'none' : 'auto',
+            }}
+          >
+            {roundToTwoDecimalPlaces(item.monthlyCumulative)}
+          </Td>
+          <Td
+            style={{
+              filter: isLicenseExpired ? 'blur(4px)' : 'none',
+              pointerEvents: isLicenseExpired ? 'none' : 'auto',
+            }}
+          >
+            {roundToTwoDecimalPlaces(item.annualCumulative)}
+          </Td>
+        </Tr>
+      );
+    });
   };
 
   const renderPagination = () => {
@@ -172,10 +206,43 @@ const DevelopmentTable = ({
             <Tr>
               <Th borderColor={borderColor}>PID</Th>
               <Th borderColor={borderColor}>Location Name</Th>
-              <Th borderColor={borderColor}>Today Total</Th>
+              <Th borderColor={borderColor}>
+                Today Total{' '}
+                <span
+                  style={{
+                    fontWeight: 'normal',
+                    fontSize: '0.9em',
+                    textTransform: 'none',
+                  }}
+                >
+                  (m³)
+                </span>
+              </Th>
               {/* <Th borderColor={borderColor}>Weekly Cumulative</Th> */}
-              <Th borderColor={borderColor}>Monthly Cumulative</Th>
-              <Th borderColor={borderColor}>Annual Cumulative</Th>
+              <Th borderColor={borderColor}>
+                Monthly Cumulative{' '}
+                <span
+                  style={{
+                    fontWeight: 'normal',
+                    fontSize: '0.9em',
+                    textTransform: 'none',
+                  }}
+                >
+                  (m³)
+                </span>
+              </Th>
+              <Th borderColor={borderColor}>
+                Annual Cumulative{' '}
+                <span
+                  style={{
+                    fontWeight: 'normal',
+                    fontSize: '0.9em',
+                    textTransform: 'none',
+                  }}
+                >
+                  (m³)
+                </span>
+              </Th>
             </Tr>
           </Thead>
           <Tbody>{renderTableRows()}</Tbody>

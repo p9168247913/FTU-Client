@@ -22,7 +22,7 @@ import { ChevronLeftIcon, ChevronRightIcon } from '@chakra-ui/icons';
 import { Spinner } from '@chakra-ui/react';
 import { CircularProgress } from '@chakra-ui/react';
 import { Skeleton, SkeletonText, SkeletonCircle } from '@chakra-ui/react';
-
+import './index.css';
 import Select from 'react-select';
 import LiquidGauge from 'react-liquid-gauge';
 import { useEffect, useState } from 'react';
@@ -531,138 +531,212 @@ const Dashboard = () => {
         </Flex>
       ) : (
         <SimpleGrid columns={{ base: 1, md: 2 }} spacing={6}>
-          {filteredPidData.map((pid) => (
-            <Box
-              key={pid.id}
-              bg={cardBg}
-              border="1px"
-              borderColor={cardBorder}
-              rounded="lg"
-              p={4}
-              shadow="md"
-            >
-              <div>
-                <Text fontSize="lg" fontWeight="bold">
-                  {pid.productId}
-                </Text>
-                <Text fontSize="sm" color="gray.500">
-                  * {pid.location ? pid.location : 'N/A'}
-                </Text>
-                <Text fontSize="sm" color="gray.500">
-                  * {pid.productId}
-                </Text>
-                <Text fontSize="sm" color="gray.500">
-                 * Reading Date:- {formatDate(pid.timestamp)}
-                </Text>
-              </div>
+          {filteredPidData.map((pid) => {
+            const isOlderThan24Hours =
+              new Date() - new Date(pid.timestamp) > 24 * 60 * 60 * 1000;
 
-              <SimpleGrid columns={2} spacing={4} mt={4}>
-                <Stack
-                  spacing={2}
-                  align="center"
-                  p={4}
-                  bg={sectionBg}
-                  rounded="md"
-                  border="1px"
-                  borderColor={cardBorder}
-                >
-                  <Text fontSize="md" fontWeight="bold">
-                    TOTALIZER
-                  </Text>
-                  <LiquidGauge
-                    value={convertReading(pid.totalizer)}
-                    width={200}
-                    height={150}
-                    textSize={1}
-                    waveFrequency={2}
-                    waveAmplitude={3}
-                    gradient
-                    gradientStops={[
-                      { key: '0%', stopColor: '#3498db', offset: '0%' }, // Blue for water
-                      { key: '100%', stopColor: 'blue', offset: '100%' },
-                    ]}
-                    circleStyle={{
-                      fill: 'lightgray',
-                    }}
-                    waveStyle={{
-                      fill: 'url(#gradient)',
-                      animation: 'waveAnimation 2s ease-in-out infinite',
-                      transformOrigin: 'center',
-                    }}
-                    textRenderer={(value) => {
-                      const displayValue = parseFloat(value) || 0;
-                      return (
-                        <tspan>
-                          {convertReading(pid.totalizer)?.toFixed(2)} <br />{' '}
-                          {unit}
-                        </tspan>
-                      );
-                    }}
-                  />
+            const isLicenseValidDate =
+              pid?.dashboardLiscense &&
+              pid?.dashboardLiscense !== '' &&
+              new Date(pid.dashboardLiscense).toString() !== 'Invalid Date';
 
-                  <style>
-                    {`
-    @keyframes waveAnimation {
-      0% { transform: translateY(5px); }
-      50% { transform: translateY(-5px); }
-      100% { transform: translateY(5px); }
-    }
-  `}
-                  </style>
+            const licenseExpiryDate = isLicenseValidDate
+              ? new Date(pid.dashboardLiscense)
+              : null;
 
-                  <style>
-                    {`
-    @keyframes waveAnimation {
-      0% {
-        transform: translateY(5%);
-      }
-      50% {
-        transform: translateY(-50%);
-      }
-      100% {
-        transform: translateY(5%);
-      }
-    }
-  `}
-                  </style>
-                </Stack>
-                <Stack
-                  spacing={2}
-                  align="center"
-                  p={4}
-                  bg={sectionBg}
-                  rounded="md"
-                  border="1px"
-                  borderColor={cardBorder}
-                >
-                  <Text fontSize="md" fontWeight="bold">
-                    FLOWRATE
-                  </Text>
-                  <Box
-                    bg="gray.300"
-                    h="8px"
-                    w="full"
-                    position="relative"
-                    rounded="md"
-                    overflow="hidden"
+            const daysToExpiry = licenseExpiryDate
+              ? Math.ceil(
+                  (licenseExpiryDate - new Date()) / (1000 * 60 * 60 * 24),
+                )
+              : null;
+
+            const isLicenseExpired = daysToExpiry !== null && daysToExpiry <= 0;
+            const showDaysToExpiry =
+              daysToExpiry !== null && daysToExpiry > 0 && daysToExpiry <= 30;
+
+            return (
+              <Box
+                key={pid.id}
+                bg={cardBg}
+                border="1px"
+                borderColor={cardBorder}
+                rounded="lg"
+                p={4}
+                shadow="md"
+                position="relative"
+              >
+                <div>
+                  <div
+                    style={{ display: 'flex', justifyContent: 'space-between' }}
                   >
-                    <Box
-                      bg="green.400"
-                      width={`${convertFlowrate(pid.flowrate).value}%`}
-                      h="8px"
-                      position="absolute"
-                      top="0"
-                      left="0"
-                    />
-                  </Box>
-                  <Text fontSize="sm" color="gray.600">
-                    {convertFlowrate(pid.flowrate).value.toFixed(2)}{' '}
-                    {convertFlowrate(pid.flowrate).unit}
+                    <Text fontSize="lg" fontWeight="bold">
+                      {pid.productId}
+                    </Text>
+                    {isLicenseExpired ? (
+                      <div
+                        style={{
+                          display: 'flex',
+                          alignItems: 'center',
+                          animation: 'blink 1.5s infinite',
+                        }}
+                      >
+                        <Box
+                          w="8px"
+                          h="8px"
+                          bg="red.500"
+                          borderRadius="full"
+                          mr="4px"
+                        />
+                        <Text fontSize="sm" color="red.500" fontWeight="bold">
+                          License Expired
+                        </Text>
+                      </div>
+                    ) : showDaysToExpiry ? (
+                      <div
+                        style={{
+                          display: 'flex',
+                          alignItems: 'center',
+                          animation: 'blink 1.5s infinite',
+                        }}
+                      >
+                        <Box
+                          w="8px"
+                          h="8px"
+                          bg="orange.500"
+                          borderRadius="full"
+                          mr="4px"
+                        />
+                        <Text
+                          fontSize="sm"
+                          color="orange.500"
+                          fontWeight="bold"
+                        >
+                          {daysToExpiry} days to license expiry
+                        </Text>
+                      </div>
+                    ) : null}
+                  </div>
+
+                  <Text fontSize="sm" color="gray.500">
+                    * {pid.location ? pid.location : 'N/A'}
                   </Text>
-                </Stack>
-              </SimpleGrid>
-            </Box>
-          ))}
+                  <Text fontSize="sm" color="gray.500">
+                    * {pid.productId}
+                  </Text>
+                  <Text
+                    fontSize="sm"
+                    color="gray.500"
+                    style={{
+                      filter: isLicenseExpired ? 'blur(4px)' : 'none',
+                      pointerEvents: isLicenseExpired ? 'none' : 'auto',
+                    }}
+                  >
+                    * Reading Date:- {formatDate(pid.timestamp)}
+                  </Text>
+                </div>
+
+                <SimpleGrid columns={2} spacing={4} mt={4}>
+                  <Stack
+                    spacing={2}
+                    align="center"
+                    p={4}
+                    bgGradient={
+                      pid.isRepairing
+                        ? 'linear(to-r, yellow.100, yellow.200)'
+                        : isOlderThan24Hours
+                        ? 'linear(to-r, red.100, red.200)'
+                        : 'linear(to-r, green.100, green.200)'
+                    }
+                    rounded="md"
+                    border="1px"
+                    borderColor={cardBorder}
+                    style={{
+                      filter: isLicenseExpired ? 'blur(4px)' : 'none',
+                      pointerEvents: isLicenseExpired ? 'none' : 'auto',
+                    }}
+                  >
+                    <Text fontSize="md" fontWeight="bold">
+                      TOTALIZER
+                    </Text>
+                    <LiquidGauge
+                      value={convertReading(pid.totalizer)}
+                      width={200}
+                      height={150}
+                      textSize={1}
+                      waveFrequency={2}
+                      waveAmplitude={3}
+                      gradient
+                      gradientStops={[
+                        { key: '0%', stopColor: '#3498db', offset: '0%' },
+                        { key: '100%', stopColor: 'teal', offset: '100%' },
+                      ]}
+                      circleStyle={{
+                        fill: 'lightgray',
+                      }}
+                      waveStyle={{
+                        fill: 'url(#gradient)',
+                        animation: 'waveAnimation 2s ease-in-out infinite',
+                        transformOrigin: 'center',
+                      }}
+                      textRenderer={(value) => {
+                        const displayValue = parseFloat(value) || 0;
+                        return (
+                          <tspan>
+                            {convertReading(pid.totalizer)?.toFixed(2)} <br />{' '}
+                            {unit}
+                          </tspan>
+                        );
+                      }}
+                    />
+                  </Stack>
+                  <Stack
+                    spacing={2}
+                    align="center"
+                    p={4}
+                    bgGradient={
+                      pid.isRepairing
+                        ? 'linear(to-r, yellow.100, yellow.200)'
+                        : isOlderThan24Hours
+                        ? 'linear(to-r, red.100, red.200)'
+                        : 'linear(to-r, green.100, green.200)'
+                    }
+                    rounded="md"
+                    border="1px"
+                    borderColor={cardBorder}
+                    style={{
+                      filter: isLicenseExpired ? 'blur(4px)' : 'none',
+                      pointerEvents: isLicenseExpired ? 'none' : 'auto',
+                    }}
+                  >
+                    <Text fontSize="md" fontWeight="bold">
+                      FLOWRATE
+                    </Text>
+                    <Box
+                      bg="gray.300"
+                      h="8px"
+                      w="full"
+                      position="relative"
+                      rounded="md"
+                      overflow="hidden"
+                    >
+                      <Box
+                        bg="green.400"
+                        width={`${convertFlowrate(pid.flowrate).value}%`}
+                        h="8px"
+                        position="absolute"
+                        top="0"
+                        left="0"
+                      />
+                    </Box>
+                    <Text fontSize="sm" color="gray.600">
+                      {convertFlowrate(pid.flowrate).value.toFixed(2)}{' '}
+                      {convertFlowrate(pid.flowrate).unit}
+                    </Text>
+                  </Stack>
+                </SimpleGrid>
+              </Box>
+            );
+          })}
         </SimpleGrid>
       )}
 
