@@ -31,6 +31,7 @@ import { SearchIcon } from '@chakra-ui/icons';
 import baseUrl from 'Base_Url/baseUrl';
 import axiosInstance from 'axiosInstance';
 import { MdPinDrop } from 'react-icons/md';
+import { Table, Thead, Tbody, Tr, Th, Td } from '@chakra-ui/react';
 
 const Dashboard = () => {
   const [productId, setProductId] = useState([]);
@@ -57,6 +58,10 @@ const Dashboard = () => {
 
   const selectBg = useColorModeValue('white', 'gray.700');
   const selectTextColor = useColorModeValue('black', 'white');
+  const fieldColor = useColorModeValue('gray.600', 'gray.400');
+  const valueColor = useColorModeValue('gray.500', 'gray.300');
+  const bgColor = useColorModeValue('gray.50', 'gray.800');
+  const borderColor = useColorModeValue('gray.200', 'gray.600');
 
   const companyOptions = [
     { value: '', label: 'Select Company' },
@@ -617,22 +622,55 @@ const Dashboard = () => {
                     ) : null}
                   </div>
 
-                  <Text fontSize="sm" color="gray.500">
-                    * {pid.location ? pid.location : 'N/A'}
-                  </Text>
-                  <Text fontSize="sm" color="gray.500">
-                    * {pid.productId}
-                  </Text>
-                  <Text
-                    fontSize="sm"
-                    color="gray.500"
-                    style={{
-                      filter: isLicenseExpired ? 'blur(4px)' : 'none',
-                      pointerEvents: isLicenseExpired ? 'none' : 'auto',
-                    }}
-                  >
-                    * Reading Date:- {formatDate(pid.timestamp)}
-                  </Text>
+                  <Box mt={4}>
+                    <Table
+                      variant="simple"
+                      size="sm"
+                      style={{
+                        filter: isLicenseExpired ? 'blur(4px)' : 'none',
+                        pointerEvents: isLicenseExpired ? 'none' : 'auto',
+                      }}
+                      border="1px"
+                      borderColor={borderColor}
+                      bg={bgColor}
+                      rounded="md"
+                    >
+                      {/* <Thead>
+                        <Tr>
+                          <Th fontSize="sm" color={fieldColor}>
+                            Field
+                          </Th>
+                          <Th fontSize="sm" color={fieldColor}>
+                            Value
+                          </Th>
+                        </Tr>
+                      </Thead> */}
+                      <Tbody>
+                        <Tr>
+                          <Td fontWeight="bold" color={fieldColor}>
+                            Location
+                          </Td>
+                          <Td color={valueColor}>
+                            {pid.location ? pid.location : 'N/A'}
+                          </Td>
+                        </Tr>
+                        <Tr>
+                          <Td fontWeight="bold" color={fieldColor}>
+                            Product ID
+                          </Td>
+                          <Td color={valueColor}>{pid.productId}</Td>
+                        </Tr>
+                        <Tr>
+                          <Td fontWeight="bold" color={fieldColor}>
+                            Reading Date
+                          </Td>
+                          <Td color={valueColor}>
+                            {formatDate(pid.timestamp)}
+                          </Td>
+                        </Tr>
+                      </Tbody>
+                    </Table>
+                  </Box>
                 </div>
 
                 <SimpleGrid columns={2} spacing={4} mt={4}>
