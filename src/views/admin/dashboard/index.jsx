@@ -354,16 +354,30 @@ const Dashboard = () => {
       px={{ base: '4', md: '8' }}
     >
       {role === 'companyUser' || role === 'user' ? (
-        <Card p={2} mb={4}>
-          <Text fontSize="2xl" fontWeight="bold" mb={4}>
+        <Card p={{ base: 2, md: 4 }} mb={4}>
+          <Text
+            fontSize={{ base: 'lg', md: '2xl' }}
+            fontWeight="bold"
+            mb={{ base: 2, md: 4 }}
+            textAlign={{ base: 'center', md: 'left' }}
+          >
             {selectedCompany2?.label}
           </Text>
           <Box mb={2}>
-            <Flex gap={2} mb={1}>
-              <Text fontSize="lg" fontWeight="bold">
+            <Flex
+              gap={{ base: 1, md: 2 }}
+              mb={1}
+              flexDirection={{ base: 'column', md: 'row' }}
+              alignItems={{ base: 'center', md: 'flex-start' }}
+            >
+              <Text fontSize={{ base: 'md', md: 'lg' }} fontWeight="bold">
                 Total Consumption:
               </Text>
-              <Text mt={0.5} fontSize="md" color={textColor}>
+              <Text
+                mt={{ base: 0, md: 0.5 }}
+                fontSize={{ base: 'sm', md: 'md' }}
+                color={textColor}
+              >
                 {convertReading(totalConsumption).toFixed(2) +
                   ' / ' +
                   convertReading(
@@ -386,8 +400,9 @@ const Dashboard = () => {
               hasStripe
               isAnimated
               rounded="md"
-              height="12px"
-              w="20%"
+              height={{ base: '8px', md: '12px' }}
+              w={{ base: '80%', md: '20%' }}
+              mx={{ base: 'auto', md: 0 }}
             />
             <Text fontSize="sm" color={withinLimitColor} mt={2}>
               {(
@@ -399,44 +414,58 @@ const Dashboard = () => {
           </Box>
         </Card>
       ) : (
-        <Select
-          options={companyOptions}
-          value={companyOptions.find(
-            (option) => option.value === selectedCompany,
-          )}
-          onChange={(selectedOption) => {
-            setPage(1);
-            setSelectedCompany2(selectedOption);
-            setSelectedCompany(selectedOption.value);
-          }}
-          placeholder="Search Company"
-          isSearchable
-          styles={{
-            container: (base) => ({
-              ...base,
-              maxWidth: '50%',
-              marginBottom: '16px',
-            }),
-            control: (base) => ({
-              ...base,
-              backgroundColor: inputBg,
-              color: inputTextColor,
-            }),
-            placeholder: (base) => ({
-              ...base,
-              color: placeholderColor,
-            }),
-          }}
-        />
+        <Box w="100%" maxWidth="600px" mx="auto" mb={4}>
+          <Select
+            options={companyOptions}
+            value={companyOptions.find(
+              (option) => option.value === selectedCompany,
+            )}
+            onChange={(selectedOption) => {
+              setPage(1);
+              setSelectedCompany2(selectedOption);
+              setSelectedCompany(selectedOption.value);
+            }}
+            placeholder="Select Company"
+            isSearchable
+            styles={{
+              container: (base) => ({
+                ...base,
+                width: '100%',
+              }),
+              control: (base) => ({
+                ...base,
+                backgroundColor: inputBg,
+                color: inputTextColor,
+              }),
+              placeholder: (base) => ({
+                ...base,
+                color: placeholderColor,
+              }),
+            }}
+          />{' '}
+        </Box>
       )}
 
       {role !== 'companyUser' && role !== 'user' && selectedCompany && (
-        <Box mb={8}>
-          <Flex gap={2} mb={1}>
-            <Text fontSize="lg" fontWeight="bold">
+        <Box mb={{ base: 4, md: 8 }}>
+          <Flex
+            gap={{ base: 1, md: 2 }}
+            mb={1}
+            flexDirection={{ base: 'column', md: 'row' }}
+            alignItems={{ base: 'center', md: 'flex-start' }}
+          >
+            <Text
+              fontSize={{ base: 'md', md: 'lg' }}
+              fontWeight="bold"
+              textAlign={{ base: 'center', md: 'left' }}
+            >
               Total Consumption for {selectedCompany2?.label}:
             </Text>
-            <Text fontSize="md" color={textColor}>
+            <Text
+              fontSize={{ base: 'sm', md: 'md' }}
+              color={textColor}
+              textAlign={{ base: 'center', md: 'left' }}
+            >
               {convertReading(totalConsumption).toFixed(2) +
                 ' / ' +
                 convertReading(selectedCompanyData?.allowedLimit || 0).toFixed(
@@ -459,23 +488,31 @@ const Dashboard = () => {
             hasStripe
             isAnimated
             rounded="md"
-            height="12px"
-            w="20%"
+            height={{ base: '8px', md: '12px' }}
+            w={{ base: '80%', md: '20%' }}
+            mx={{ base: 'auto', md: 0 }}
           />
-          <Text fontSize="sm" color={progressColor} mt={2}>
+          <Text
+            fontSize={{ base: 'xs', md: 'sm' }}
+            color={progressColor}
+            mt={{ base: 1, md: 2 }}
+            textAlign={{ base: 'center', md: 'left' }}
+          >
             {(
               (totalConsumption / (selectedCompanyData?.allowedLimit || 1)) *
               100
             ).toFixed(1)}
-            % of limit
+            % of allowed limit
           </Text>
         </Box>
       )}
 
       <Flex
-        alignItems="center"
+        alignItems={{ base: 'flex-start', md: 'center' }}
+        flexDirection={{ base: 'column', md: 'row' }}
         width="full"
-        justifyContent={'space-between'}
+        justifyContent={{ base: 'center', md: 'space-between' }}
+        gap={{ base: 4, md: 0 }}
         mb={4}
       >
         <Select
@@ -489,7 +526,7 @@ const Dashboard = () => {
           styles={{
             container: (base) => ({
               ...base,
-              width: '200px',
+              width: '100%',
               maxWidth: '300px',
             }),
             control: (base) => ({
@@ -508,6 +545,7 @@ const Dashboard = () => {
           styles={{
             container: (base) => ({
               ...base,
+              width: '100%',
               maxWidth: '150px',
             }),
             control: (base) => ({
@@ -530,7 +568,7 @@ const Dashboard = () => {
             isIndeterminate
             colorScheme="green"
             size="lg"
-            width={'50%'}
+            width={{ base: '70%', md: '50%' }}
           />
           <span>Please wait....</span>
         </Flex>
@@ -569,22 +607,15 @@ const Dashboard = () => {
                 p={4}
                 shadow="md"
                 position="relative"
+                w="full"
               >
                 <div>
-                  <div
-                    style={{ display: 'flex', justifyContent: 'space-between' }}
-                  >
+                  <Flex justify="space-between" align="center">
                     <Text fontSize="lg" fontWeight="bold">
                       {pid.productId}
                     </Text>
                     {isLicenseExpired ? (
-                      <div
-                        style={{
-                          display: 'flex',
-                          alignItems: 'center',
-                          animation: 'blink 1.5s infinite',
-                        }}
-                      >
+                      <Flex align="center" animation="blink 1.5s infinite">
                         <Box
                           w="8px"
                           h="8px"
@@ -595,15 +626,9 @@ const Dashboard = () => {
                         <Text fontSize="sm" color="red.500" fontWeight="bold">
                           License Expired
                         </Text>
-                      </div>
+                      </Flex>
                     ) : showDaysToExpiry ? (
-                      <div
-                        style={{
-                          display: 'flex',
-                          alignItems: 'center',
-                          animation: 'blink 1.5s infinite',
-                        }}
-                      >
+                      <Flex align="center" animation="blink 1.5s infinite">
                         <Box
                           w="8px"
                           h="8px"
@@ -616,13 +641,14 @@ const Dashboard = () => {
                           color="orange.500"
                           fontWeight="bold"
                         >
-                          {daysToExpiry} days to license expiry
+                          {daysToExpiry} {daysToExpiry === 1 ? 'day' : 'days'}{' '}
+                          to license expiry
                         </Text>
-                      </div>
+                      </Flex>
                     ) : null}
-                  </div>
+                  </Flex>
 
-                  <Box mt={4}>
+                  <Box mt={4} w="full">
                     <Table
                       variant="simple"
                       size="sm"
@@ -673,7 +699,12 @@ const Dashboard = () => {
                   </Box>
                 </div>
 
-                <SimpleGrid columns={2} spacing={4} mt={4}>
+                <SimpleGrid
+                  columns={{ base: 1, md: 2 }}
+                  spacing={4}
+                  mt={4}
+                  w={'full'}
+                >
                   <Stack
                     spacing={2}
                     align="center"
@@ -779,18 +810,28 @@ const Dashboard = () => {
       )}
 
       {pidData.length > 0 && (
-        <Flex justifyContent="space-between" alignItems="center" mb={4} mt={3}>
+        <Flex
+          justifyContent={{ base: 'center', md: 'space-between' }}
+          alignItems="center"
+          mb={4}
+          mt={3}
+          direction={{ base: 'column', md: 'row' }}
+          gap={{ base: 4, md: 0 }}
+        >
           <ChakraSelect
             value={rowsPerPage}
             onChange={handleRowsPerPageChange}
-            width="150px"
+            width={{ base: '100%', md: '150px' }}
           >
+            <option value={null}>Select rows per page</option>
             <option value={20}>20</option>
             <option value={50}>50</option>
             <option value={100}>100</option>
           </ChakraSelect>
 
-          {renderPagination()}
+          <Box mt={{ base: 4, md: 0 }} w={{ base: '100%', md: 'auto' }}>
+            {renderPagination()}
+          </Box>
         </Flex>
       )}
     </Box>

@@ -385,9 +385,21 @@ const User = () => {
 
   return (
     <Box pt={{ base: '130px', md: '80px', xl: '80px' }}>
-      <Flex justifyContent="space-between" mb={5} wrap="wrap">
-        <HStack spacing={3} mb={{ base: 3, md: 0 }}>
-          <InputGroup>
+      <Flex
+        mb="5"
+        justifyContent={{ base: 'center', md: 'space-between' }}
+        alignItems="center"
+        flexDirection={{ base: 'column', md: 'row' }}
+        gap={{ base: 4, md: 0 }}
+      >
+        <HStack
+          spacing={3}
+          mb={{ base: 3, md: 0 }}
+          width="100%"
+          flexWrap="wrap"
+          gap={3}
+        >
+          <InputGroup width={{ base: '100%', sm: '100%', md: 'auto' }}>
             <InputLeftElement pointerEvents="none">
               <SearchIcon color="gray.300" />
             </InputLeftElement>
@@ -405,7 +417,7 @@ const User = () => {
             />
           </InputGroup>
 
-          <InputGroup>
+          <InputGroup width={{ base: '100%', sm: '100%', md: 'auto' }}>
             <InputLeftElement pointerEvents="none">
               <SearchIcon color="gray.300" />
             </InputLeftElement>
@@ -423,7 +435,7 @@ const User = () => {
             />
           </InputGroup>
 
-          <InputGroup>
+          <InputGroup width={{ base: '100%', sm: '100%', md: 'auto' }}>
             <InputLeftElement pointerEvents="none">
               <SearchIcon color="gray.300" />
             </InputLeftElement>
@@ -441,7 +453,12 @@ const User = () => {
             />
           </InputGroup>
         </HStack>
-        <Button colorScheme="blue" leftIcon={<AddIcon />} onClick={onOpen}>
+        <Button
+          colorScheme="blue"
+          leftIcon={<AddIcon />}
+          onClick={onOpen}
+          width={{ base: '100%', md: 'auto' }}
+        >
           Add User
         </Button>
       </Flex>
@@ -817,9 +834,9 @@ const User = () => {
         <ModalOverlay />
         <ModalContent maxWidth="800px" mx="auto">
           {/* <ModalHeader>User Details</ModalHeader> */}
-          <ModalBody>
+          <ModalBody p={5}>
             <ModalCloseButton />
-            <Box borderWidth="1px" borderRadius="lg" p={5} boxShadow="lg">
+            {/* <Box borderWidth="1px" borderRadius="lg" p={5} boxShadow="lg"> */}
               <Flex alignItems="center" mb={4}>
                 <Avatar size="lg" name={viewUser?.name} mr={4} />
                 <Box>
@@ -888,7 +905,7 @@ const User = () => {
                   </Table>
                 </>
               ) : null}
-            </Box>
+            {/* </Box> */}
           </ModalBody>
           {/* <ModalFooter>
             <Button onClick={onViewClose} colorScheme="blue" variant="outline">

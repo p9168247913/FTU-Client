@@ -339,9 +339,15 @@ const Devices = () => {
 
   return (
     <Box pt={{ base: '130px', md: '80px', xl: '80px' }}>
-      <Flex mb="5" justifyContent="space-between" alignItems="center">
-        <HStack spacing={3} mb={{ base: 3, md: 0 }}>
-          <InputGroup>
+      <Flex
+        mb="5"
+        justifyContent={{ base: 'center', md: 'space-between' }}
+        alignItems="center"
+        flexDirection={{ base: 'column', md: 'row' }}
+        gap={{ base: 4, md: 0 }}
+      >
+        <HStack spacing={3} mb={{ base: 3, md: 0 }} width={{ base: '100%', md: 'auto' }}>
+          <InputGroup width={{ base: '100%', md: 'auto' }}>
             <InputLeftElement pointerEvents="none">
               <SearchIcon color="gray.300" />
             </InputLeftElement>
@@ -380,7 +386,7 @@ const Devices = () => {
             ))}
           </Select> */}
         </HStack>
-        <Button onClick={onOpen} colorScheme="blue" leftIcon={<AddIcon />}>
+        <Button onClick={onOpen} colorScheme="blue" leftIcon={<AddIcon />} width={{ base: '100%', md: 'auto' }}>
           Add Device
         </Button>
       </Flex>
@@ -1103,7 +1109,13 @@ const Devices = () => {
                   alignItems: 'center',
                 }}
               >
-                <div style={{ display: 'flex', flexDirection: 'column',  minWidth: '124px', }}>
+                <div
+                  style={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                    minWidth: '124px',
+                  }}
+                >
                   <FormLabel color={labelColor}>New Flowmeter</FormLabel>
                   <Switch
                     name="newFlowmeter"
@@ -1116,7 +1128,13 @@ const Devices = () => {
                     }
                   />
                 </div>
-                <div style={{ display: 'flex', flexDirection: 'column',  minWidth: '114px' }}>
+                <div
+                  style={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                    minWidth: '114px',
+                  }}
+                >
                   <FormLabel color={labelColor}>Reset Counter</FormLabel>
                   <Switch
                     name="resetCounter"
@@ -1129,7 +1147,13 @@ const Devices = () => {
                     }
                   />
                 </div>
-                <div style={{ display: 'flex', flexDirection: 'column',  minWidth: '130px' }}>
+                <div
+                  style={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                    minWidth: '130px',
+                  }}
+                >
                   <FormLabel color={labelColor}>
                     {editDevice.isRepairing
                       ? 'Repair Enabled'

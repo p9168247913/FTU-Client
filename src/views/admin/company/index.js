@@ -415,9 +415,15 @@ const Company = () => {
 
   return (
     <Box pt={{ base: '130px', md: '80px', xl: '80px' }}>
-      <Flex mb="5" justifyContent="space-between" alignItems="center">
-        <HStack spacing={3} mb={{ base: 3, md: 0 }}>
-          <InputGroup>
+      <Flex
+        mb="5"
+        justifyContent={{ base: 'center', md: 'space-between' }}
+        alignItems="center"
+        flexDirection={{ base: 'column', md: 'row' }}
+        gap={{ base: 4, md: 0 }}
+      >
+        <HStack spacing={3} mb={{ base: 3, md: 0 }} width={{ base: '100%', md: 'auto' }}>
+          <InputGroup width={{ base: '100%', md: 'auto' }}>
             <InputLeftElement pointerEvents="none">
               <SearchIcon color="gray.300" />
             </InputLeftElement>
@@ -439,7 +445,7 @@ const Company = () => {
             />
           </InputGroup>
         </HStack>
-        <Button colorScheme="blue" onClick={onOpen} leftIcon={<AddIcon />}>
+        <Button colorScheme="blue" onClick={onOpen} leftIcon={<AddIcon />} width={{ base: '100%', md: 'auto' }}>
           Add Company
         </Button>
       </Flex>
