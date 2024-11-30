@@ -137,11 +137,11 @@ const DevelopmentTable = ({
           <Thead>
             <Tr>
               <Th borderColor={borderColor}>No.</Th>
-              <Th borderColor={borderColor}>Product ID</Th>
-              <Th borderColor={borderColor}>Product Name</Th>
+              <Th borderColor={borderColor} whiteSpace="nowrap">Product ID</Th>
+              <Th borderColor={borderColor} whiteSpace="nowrap">Product Name</Th>
               {/* <Th borderColor={borderColor}>Product Passcode</Th> */}
-              <Th borderColor={borderColor}>Company Name</Th>
-              <Th borderColor={borderColor}>Product Type</Th>
+              <Th borderColor={borderColor} whiteSpace="nowrap">Company Name</Th>
+              <Th borderColor={borderColor} whiteSpace="nowrap">Product Type</Th>
               <Th borderColor={borderColor}>Actions</Th>
             </Tr>
           </Thead>

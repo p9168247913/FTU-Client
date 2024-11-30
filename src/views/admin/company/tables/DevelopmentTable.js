@@ -74,7 +74,7 @@ const DevelopmentTable = ({
         >
           {company.name}
         </Td>
-        <Td>{company.companyId}</Td>
+        {/* <Td>{company.companyId}</Td> */}
         <Td whiteSpace="nowrap" textOverflow="ellipsis" overflow="hidden">
           {`${company.address.addressLine}, ${company.address.city}, ${company.address.state}, ${company.address.country}-${company.address.zipcode}`}
         </Td>
@@ -154,11 +154,19 @@ const DevelopmentTable = ({
           <Thead>
             <Tr>
               <Th borderColor={borderColor}>No.</Th>
-              <Th borderColor={borderColor}>Company Name</Th>
-              <Th borderColor={borderColor}>Company ID</Th>
+              <Th borderColor={borderColor} whiteSpace="nowrap">
+                Company Name
+              </Th>
+              {/* <Th borderColor={borderColor} whiteSpace="nowrap">
+                Company ID
+              </Th> */}
               <Th borderColor={borderColor}>Address</Th>
-              <Th borderColor={borderColor}>Contact Emails</Th>
-              <Th borderColor={borderColor}>Contact Numbers</Th>
+              <Th borderColor={borderColor} whiteSpace="nowrap">
+                Contact Emails
+              </Th>
+              <Th borderColor={borderColor} whiteSpace="nowrap">
+                Contact Numbers
+              </Th>
               <Th borderColor={borderColor}>Actions</Th>
             </Tr>
           </Thead>

@@ -205,8 +205,8 @@ const DevelopmentTable = ({
           >
             <Tr>
               <Th borderColor={borderColor}>PID</Th>
-              <Th borderColor={borderColor}>Location Name</Th>
-              <Th borderColor={borderColor}>
+              <Th borderColor={borderColor} whiteSpace="nowrap">Location Name</Th>
+              <Th borderColor={borderColor} whiteSpace="nowrap">
                 Today Total{' '}
                 <span
                   style={{
@@ -219,7 +219,7 @@ const DevelopmentTable = ({
                 </span>
               </Th>
               {/* <Th borderColor={borderColor}>Weekly Cumulative</Th> */}
-              <Th borderColor={borderColor}>
+              <Th borderColor={borderColor} whiteSpace="nowrap">
                 Monthly Cumulative{' '}
                 <span
                   style={{
@@ -231,7 +231,7 @@ const DevelopmentTable = ({
                   (m³)
                 </span>
               </Th>
-              <Th borderColor={borderColor}>
+              <Th borderColor={borderColor} whiteSpace="nowrap">
                 Annual Cumulative{' '}
                 <span
                   style={{

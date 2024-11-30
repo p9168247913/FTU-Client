@@ -87,7 +87,10 @@ function SignIn() {
           response?.data?.data?.tokens?.access?.token,
         );
         localStorage.setItem('name', response?.data?.data?.user?.name);
-        localStorage.setItem('companyId', response?.data?.data?.user?.companyId);
+        localStorage.setItem(
+          'companyId',
+          response?.data?.data?.user?.companyId,
+        );
         localStorage.setItem('username', response?.data?.data?.user?.username);
         if (response?.data?.data?.user?.email !== undefined) {
           localStorage.setItem('email', response?.data?.data?.user?.email);
@@ -211,7 +214,7 @@ function SignIn() {
             </Text>
             <HSeparator />
           </Flex> */}
-          <FormControl>
+          <FormControl as="form" onSubmit={login}>
             <FormLabel
               display="flex"
               ms="4px"
@@ -228,7 +231,7 @@ function SignIn() {
               variant="auth"
               fontSize="sm"
               ms={{ base: '0px', md: '0px' }}
-              type="email"
+              type="text"
               value={formData.emailOrUsername}
               placeholder="mail@simmmple.com"
               mb="24px"
@@ -302,7 +305,8 @@ function SignIn() {
               w="100%"
               h="50"
               mb="24px"
-              onClick={login}
+              type="submit"
+              isLoading={loading}
             >
               Sign In
             </Button>

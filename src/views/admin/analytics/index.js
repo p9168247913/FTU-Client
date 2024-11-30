@@ -170,12 +170,11 @@ const AnalyticsPage = () => {
         const data = response?.data?.data?.data || [];
 
         setGraphExpiry(response?.data?.data);
-        
 
-        const today = new Date(); 
+        const today = new Date();
         const filteredData =
           timeFrame === 'daily'
-            ? data.filter((item) => new Date(item.key) <= today) 
+            ? data.filter((item) => new Date(item.key) <= today)
             : data;
 
         const labels =
@@ -195,7 +194,7 @@ const AnalyticsPage = () => {
                   month: 'short',
                 })}`;
               })
-            : filteredData.map((item) => item.key); 
+            : filteredData.map((item) => item.key);
 
         const usageData = filteredData.map((item) => item.usage);
 
@@ -476,18 +475,20 @@ const AnalyticsPage = () => {
       ) : (
         <Card
           m="auto"
-          w={{ base: '100%', md: '80%', lg: '70%' }} 
-          h={{ base: '40vh', md: '50vh', lg: '60vh' }} 
-          p={4} 
+          w={{ base: '100%', md: '80%', lg: '70%' }}
+          h={{ base: '40vh', md: '50vh', lg: '60vh' }}
+          p={4}
           style={{
-            filter: graphExpiry?.dashboardLicensingExpiry &&
-                    new Date(graphExpiry.dashboardLicensingExpiry) < new Date()
-              ? 'blur(4px)'
-              : 'none',
-            pointerEvents: graphExpiry?.dashboardLicensingExpiry &&
-                    new Date(graphExpiry.dashboardLicensingExpiry) < new Date()
-              ? 'none'
-              : 'auto',
+            filter:
+              graphExpiry?.dashboardLicensingExpiry &&
+              new Date(graphExpiry.dashboardLicensingExpiry) < new Date()
+                ? 'blur(4px)'
+                : 'none',
+            pointerEvents:
+              graphExpiry?.dashboardLicensingExpiry &&
+              new Date(graphExpiry.dashboardLicensingExpiry) < new Date()
+                ? 'none'
+                : 'auto',
           }}
         >
           {graphData?.labels.length > 0 ? (
@@ -495,12 +496,12 @@ const AnalyticsPage = () => {
               data={graphData}
               style={{
                 margin: 'auto',
-                width: '100%', 
-                height: '100%', 
+                width: '100%',
+                height: '100%',
               }}
               options={{
                 responsive: true,
-                maintainAspectRatio: false, 
+                maintainAspectRatio: false,
                 plugins: {
                   legend: {
                     display: true,
@@ -590,11 +591,13 @@ const AnalyticsPage = () => {
               Close
             </Button>
             <Button
-              onClick={() =>
-                downloadExcel(selectedProductId, startDate, endDate)
-              }
+              onClick={() => {
+                downloadExcel(selectedProductId, startDate, endDate);
+                setIsModalOpen(false);
+              }}
               colorScheme="teal"
               ml={3}
+              isLoading={loading}
             >
               Download
             </Button>

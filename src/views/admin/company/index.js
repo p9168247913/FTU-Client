@@ -28,6 +28,7 @@ import {
   Tr,
   Th,
   Td,
+  InputRightElement,
 } from '@chakra-ui/react';
 import {
   AddIcon,
@@ -60,11 +61,12 @@ const Company = () => {
   const [company, setCompany] = useState([]);
   const [editCompany, setEditCompany] = useState({
     name: '',
-    companyId: '',
+    // companyId: '',
     email1: '',
     email2: '',
     contact1: '',
     contact2: '',
+    allowedLimit: null,
     companyRepresentativeName: '',
     aquasenseSalesRepresentative: '',
     aquasenseIRMUser: '',
@@ -81,6 +83,7 @@ const Company = () => {
     email2: '',
     contact1: '',
     contact2: '',
+    allowedLimit: null,
     companyRepresentativeName: '',
     aquasenseSalesRepresentative: '',
     aquasenseIRMUser: '',
@@ -99,6 +102,9 @@ const Company = () => {
   const [selectedCompany, setSelectedCompany] = useState(null);
   const [editId, setEditId] = useState('');
   const [users, setUsers] = useState([]);
+
+  const modalBg = useColorModeValue('white', 'gray.800');
+  const labelColor = useColorModeValue('gray.800', 'gray.300');
   // Open view modal with company data
   const handleRowClick = (company) => {
     setSelectedCompany(company);
@@ -167,11 +173,12 @@ const Company = () => {
     setEditCompany({
       ...editCompany,
       name: company.name,
-      companyId: company.companyId,
+      // companyId: company.companyId,
       email1: company.email1,
       email2: company.email2,
       contact1: company.contact1,
       contact2: company.contact2,
+      allowedLimit: company.allowedLimit,
       companyRepresentativeName: company.companyRepresentativeName,
       aquasenseSalesRepresentative: company.aquasenseSalesRepresentative._id,
       aquasenseIRMUser: company.aquasenseIRMUser._id,
@@ -302,7 +309,7 @@ const Company = () => {
       !addCompany.aquasenseIRMUser
     ) {
       toast({
-        title: 'Please fill all fields!',
+        title: 'Please fill all required fields!',
         status: 'info',
         duration: 3000,
         isClosable: true,
@@ -422,7 +429,11 @@ const Company = () => {
         flexDirection={{ base: 'column', md: 'row' }}
         gap={{ base: 4, md: 0 }}
       >
-        <HStack spacing={3} mb={{ base: 3, md: 0 }} width={{ base: '100%', md: 'auto' }}>
+        <HStack
+          spacing={3}
+          mb={{ base: 3, md: 0 }}
+          width={{ base: '100%', md: 'auto' }}
+        >
           <InputGroup width={{ base: '100%', md: 'auto' }}>
             <InputLeftElement pointerEvents="none">
               <SearchIcon color="gray.300" />
@@ -445,7 +456,12 @@ const Company = () => {
             />
           </InputGroup>
         </HStack>
-        <Button colorScheme="blue" onClick={onOpen} leftIcon={<AddIcon />} width={{ base: '100%', md: 'auto' }}>
+        <Button
+          colorScheme="blue"
+          onClick={onOpen}
+          leftIcon={<AddIcon />}
+          width={{ base: '100%', md: 'auto' }}
+        >
           Add Company
         </Button>
       </Flex>
@@ -462,12 +478,26 @@ const Company = () => {
 
       <Modal isOpen={isOpen} onClose={onClose} size="lg">
         <ModalOverlay />
-        <ModalContent maxWidth="800px" mx="auto">
-          <ModalHeader>Add Company</ModalHeader>
-          <ModalCloseButton />
+        <ModalContent
+          maxWidth="800px"
+          mx="auto"
+          bg={modalBg}
+          style={{ height: '80vh', overflow: 'auto' }}
+        >
+          <div
+            style={{
+              position: 'sticky',
+              top: 0,
+              backgroundColor: modalBg,
+              zIndex: '1',
+            }}
+          >
+            <ModalHeader>Add Company</ModalHeader>
+            <ModalCloseButton />
+          </div>
           <ModalBody>
             <SimpleGrid columns={{ base: 1, md: 2 }} spacing="4">
-              <FormControl mb="4">
+              <FormControl mb="4" isRequired>
                 <FormLabel>Company Name</FormLabel>
                 <Input
                   name="name"
@@ -481,7 +511,7 @@ const Company = () => {
                   }}
                 />
               </FormControl>
-              <FormControl mb="4">
+              <FormControl mb="4" isRequired>
                 <FormLabel>Primary Email</FormLabel>
                 <Input
                   name="email1"
@@ -496,7 +526,7 @@ const Company = () => {
                   }}
                 />
               </FormControl>
-              <FormControl mb="4">
+              <FormControl mb="4" isRequired>
                 <FormLabel>Secondary Email</FormLabel>
                 <Input
                   name="email2"
@@ -511,7 +541,7 @@ const Company = () => {
                   }}
                 />
               </FormControl>
-              <FormControl mb="4">
+              <FormControl mb="4" isRequired>
                 <FormLabel>Primary Contact</FormLabel>
                 <Input
                   name="contact1"
@@ -525,7 +555,7 @@ const Company = () => {
                   }}
                 />
               </FormControl>
-              <FormControl mb="4">
+              <FormControl mb="4" isRequired>
                 <FormLabel>Secondary Contact</FormLabel>
                 <Input
                   name="contact2"
@@ -539,7 +569,31 @@ const Company = () => {
                   }}
                 />
               </FormControl>
-              <FormControl mb="4">
+              <FormControl mb="4" >
+                <FormLabel>Allowed Limit</FormLabel>
+                <InputGroup>
+                  <Input
+                    name="allowedLimit"
+                    placeholder="Enter allowed limit"
+                    value={addCompany.allowedLimit}
+                    onChange={handleAddChange}
+                    bg={useColorModeValue('white', 'gray.700')}
+                    color={useColorModeValue('black', 'white')}
+                    _placeholder={{
+                      color: useColorModeValue('gray.500', 'gray.400'),
+                    }}
+                  />
+                  <InputRightElement>
+                    <Text
+                      color={useColorModeValue('gray.500', 'gray.400')}
+                      fontSize="sm"
+                    >
+                      m³
+                    </Text>
+                  </InputRightElement>
+                </InputGroup>
+              </FormControl>
+              <FormControl mb="4" isRequired>
                 <FormLabel>Address Line</FormLabel>
                 <Input
                   name="addressLine"
@@ -553,7 +607,7 @@ const Company = () => {
                   }}
                 />
               </FormControl>
-              <FormControl mb="4">
+              <FormControl mb="4" isRequired>
                 <FormLabel>City</FormLabel>
                 <Input
                   name="city"
@@ -567,7 +621,7 @@ const Company = () => {
                   }}
                 />
               </FormControl>
-              <FormControl mb="4">
+              <FormControl mb="4" isRequired>
                 <FormLabel>State</FormLabel>
                 <Input
                   name="state"
@@ -581,7 +635,7 @@ const Company = () => {
                   }}
                 />
               </FormControl>
-              <FormControl mb="4">
+              <FormControl mb="4" isRequired>
                 <FormLabel>Country</FormLabel>
                 <Input
                   name="country"
@@ -595,7 +649,7 @@ const Company = () => {
                   }}
                 />
               </FormControl>
-              <FormControl mb="4">
+              <FormControl mb="4" isRequired>
                 <FormLabel>Zipcode</FormLabel>
                 <Input
                   name="zipcode"
@@ -609,7 +663,7 @@ const Company = () => {
                   }}
                 />
               </FormControl>
-              <FormControl mb="4">
+              <FormControl mb="4" isRequired>
                 <FormLabel>Company Contact Person</FormLabel>
                 <Input
                   name="companyRepresentativeName"
@@ -623,7 +677,7 @@ const Company = () => {
                   }}
                 />
               </FormControl>
-              <FormControl mb="4">
+              <FormControl mb="4" isRequired>
                 <FormLabel>Aquasense Sales Executive</FormLabel>
                 <Select
                   name="aquasenseSalesRepresentative"
@@ -640,7 +694,7 @@ const Company = () => {
                     ))}
                 </Select>
               </FormControl>
-              <FormControl mb="4">
+              <FormControl mb="4" isRequired>
                 <FormLabel>Aquasense IRM Executive</FormLabel>
                 <Select
                   name="aquasenseIRMUser"
@@ -659,7 +713,14 @@ const Company = () => {
               </FormControl>
             </SimpleGrid>
           </ModalBody>
-          <ModalFooter>
+          <ModalFooter
+            style={{
+              position: 'sticky',
+              bottom: 0,
+              backgroundColor: modalBg,
+              zIndex: '1',
+            }}
+          >
             <Button variant="ghost" onClick={onClose}>
               Cancel
             </Button>
@@ -677,9 +738,23 @@ const Company = () => {
 
       <Modal isOpen={isEditOpen} onClose={onEditClose} size="lg">
         <ModalOverlay />
-        <ModalContent maxWidth="800px" mx="auto">
-          <ModalHeader>Edit Company</ModalHeader>
-          <ModalCloseButton />
+        <ModalContent
+          maxWidth="800px"
+          mx="auto"
+          bg={modalBg}
+          style={{ height: '80vh', overflow: 'auto' }}
+        >
+          <div
+            style={{
+              position: 'sticky',
+              top: 0,
+              backgroundColor: modalBg,
+              zIndex: '1',
+            }}
+          >
+            <ModalHeader>Edit Company</ModalHeader>
+            <ModalCloseButton />
+          </div>
           <ModalBody>
             <SimpleGrid columns={{ base: 1, md: 2 }} spacing="4">
               <FormControl>
@@ -754,6 +829,31 @@ const Company = () => {
                   }}
                 />
               </FormControl>
+              <FormControl>
+                <FormLabel>Allowed Limit</FormLabel>
+                <InputGroup>
+                  <Input
+                    name="allowedLimit"
+                    placeholder="Enter allowed limit"
+                    value={editCompany.allowedLimit}
+                    onChange={handleEditChange}
+                    bg={useColorModeValue('white', 'gray.700')}
+                    color={useColorModeValue('black', 'white')}
+                    _placeholder={{
+                      color: useColorModeValue('gray.500', 'gray.400'),
+                    }}
+                  />
+                  <InputRightElement>
+                    <Text
+                      color={useColorModeValue('gray.500', 'gray.400')}
+                      fontSize="sm"
+                    >
+                      m³
+                    </Text>
+                  </InputRightElement>
+                </InputGroup>
+              </FormControl>
+
               <FormControl>
                 <FormLabel>Address Line</FormLabel>
                 <Input
@@ -874,7 +974,14 @@ const Company = () => {
               </FormControl>
             </SimpleGrid>
           </ModalBody>
-          <ModalFooter>
+          <ModalFooter
+            style={{
+              position: 'sticky',
+              bottom: 0,
+              backgroundColor: modalBg,
+              zIndex: '1',
+            }}
+          >
             <Button variant="ghost" onClick={onEditClose}>
               Cancel
             </Button>
@@ -892,10 +999,24 @@ const Company = () => {
 
       <Modal isOpen={isViewOpen} onClose={onViewClose} size="lg">
         <ModalOverlay />
-        <ModalContent maxWidth="800px" mx="auto">
-          <ModalHeader fontSize="2xl" fontWeight="bold" textAlign="center">
-            Company Details
-          </ModalHeader>
+        <ModalContent
+          maxWidth="800px"
+          mx="auto"
+          bg={modalBg}
+          style={{ height: '80vh', overflow: 'auto' }}
+        >
+          <div
+            style={{
+              position: 'sticky',
+              top: 0,
+              backgroundColor: modalBg,
+              zIndex: '1',
+            }}
+          >
+            <ModalHeader fontSize="2xl" fontWeight="bold" textAlign="center">
+              Company Details
+            </ModalHeader>
+          </div>
           <ModalCloseButton />
           <ModalBody>
             {selectedCompany && (
@@ -909,10 +1030,10 @@ const Company = () => {
                     <Text fontWeight="bold">Company Name:</Text>
                     <Text>{selectedCompany.name}</Text>
                   </Box>
-                  <Box>
+                  {/* <Box>
                     <Text fontWeight="bold">Company ID:</Text>
                     <Text>{selectedCompany.companyId}</Text>
-                  </Box>
+                  </Box> */}
                   <Box>
                     <Text fontWeight="bold">Primary Email:</Text>
                     <Text>{selectedCompany.email1}</Text>
@@ -989,7 +1110,14 @@ const Company = () => {
               </Box>
             )}
           </ModalBody>
-          <ModalFooter>
+          <ModalFooter
+            style={{
+              position: 'sticky',
+              bottom: 0,
+              backgroundColor: modalBg,
+              zIndex: '1',
+            }}
+          >
             <Button onClick={onViewClose} variant="ghost">
               Close
             </Button>
