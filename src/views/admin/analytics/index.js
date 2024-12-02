@@ -19,6 +19,7 @@ import {
   InputGroup,
   useToast,
   Card,
+  useColorMode,
 } from '@chakra-ui/react';
 import Select from 'react-select';
 import { useColorModeValue } from '@chakra-ui/react';
@@ -68,14 +69,68 @@ const AnalyticsPage = () => {
   const [totalPages, setTotalPages] = useState(1);
   const [rowsPerPage, setRowsPerPage] = useState(20);
   const productIdOptions = [{ value: '', label: 'All' }, ...productId];
+  const productIdOptions2 = [...productId];
   const toast = useToast();
   const [graphPid, setGraphPid] = useState('');
   const [timeFrame, setTimeFrame] = useState('daily');
-
+  const { colorMode } = useColorMode();
   const [graphExpiry, setGraphExpiry] = useState('');
 
   const selectBg = useColorModeValue('white', 'gray.700');
   const selectTextColor = useColorModeValue('black', 'white');
+
+  const customStyles = {
+    container: (base) => ({
+      ...base,
+      width: '100%',
+      zIndex: '999',
+      maxWidth: '400px',
+      marginBottom: '8px',
+    }),
+    control: (base, state) => ({
+      ...base,
+      backgroundColor: colorMode === 'dark' ? '#2D3748' : '#ffffff',
+      color: colorMode === 'dark' ? '#E2E8F0' : '#2D3748',
+      borderColor: state.isFocused
+        ? colorMode === 'dark'
+          ? '#63B3ED'
+          : '#3182CE'
+        : '#CBD5E0',
+      boxShadow: state.isFocused ? '0 0 0 1px #63B3ED' : 'none',
+      '&:hover': {
+        borderColor: colorMode === 'dark' ? '#63B3ED' : '#3182CE',
+      },
+    }),
+    singleValue: (base) => ({
+      ...base,
+      color: colorMode === 'dark' ? '#E2E8F0' : '#2D3748',
+    }),
+    placeholder: (base) => ({
+      ...base,
+      color: colorMode === 'dark' ? '#A0AEC0' : '#A0AEC0',
+    }),
+    menu: (base) => ({
+      ...base,
+      backgroundColor: colorMode === 'dark' ? '#2D3748' : '#ffffff',
+      color: colorMode === 'dark' ? '#E2E8F0' : '#2D3748',
+    }),
+    option: (base, state) => ({
+      ...base,
+      backgroundColor: state.isFocused
+        ? colorMode === 'dark'
+          ? '#4A5568'
+          : '#EDF2F7'
+        : 'transparent',
+      color: state.isSelected
+        ? colorMode === 'dark'
+          ? '#63B3ED'
+          : '#3182CE'
+        : base.color,
+      '&:hover': {
+        backgroundColor: colorMode === 'dark' ? '#4A5568' : '#EDF2F7',
+      },
+    }),
+  };
 
   const getQueryString = (params) => {
     return Object.keys(params)
@@ -376,19 +431,7 @@ const AnalyticsPage = () => {
           onChange={handleSelectChange}
           placeholder="Select Product ID"
           isSearchable={true}
-          styles={{
-            container: (base) => ({
-              ...base,
-              width: '100%',
-              maxWidth: '300px',
-              marginBottom: '8px',
-            }),
-            control: (base) => ({
-              ...base,
-              backgroundColor: selectBg,
-              color: selectTextColor,
-            }),
-          }}
+          styles={customStyles}
         />
 
         <Button
@@ -417,31 +460,19 @@ const AnalyticsPage = () => {
           mb={4}
           gap={4}
           justifyContent={{ base: 'center', md: 'space-between' }}
-          alignItems={{ base: 'stretch', md: 'center' }}
         >
           <Select
-            options={productIdOptions}
-            value={productIdOptions?.find(
+            options={productIdOptions2}
+            value={productIdOptions2?.find(
               (option) => option.value === graphPid,
             )}
             onChange={handleSelectGraphChange}
             placeholder="Select Product ID"
             isSearchable={true}
-            styles={{
-              container: (base) => ({
-                ...base,
-                width: '100%',
-                maxWidth: '350px',
-              }),
-              control: (base) => ({
-                ...base,
-                backgroundColor: selectBg,
-                color: selectTextColor,
-              }),
-            }}
+            styles={customStyles}
           />
           <ChakraSelect
-            placeholder={'Select an option'}
+            placeholder={'Select timeline'}
             value={timeFrame}
             onChange={(e) => handleTimeFrameChange(e.target.value)}
             size="md"
@@ -453,7 +484,7 @@ const AnalyticsPage = () => {
             _placeholder={{
               color: useColorModeValue('gray.500', 'gray.400'),
             }}
-            w={{ base: '100%', md: 'auto' }}
+            w={{ base: '200px', md: 'auto' }}
           >
             <option value="daily">Daily</option>
             <option value="monthly">Monthly</option>
@@ -542,13 +573,7 @@ const AnalyticsPage = () => {
                 onChange={handleModalSelectChange}
                 placeholder="Select Product ID"
                 isSearchable={true}
-                styles={{
-                  control: (base) => ({
-                    ...base,
-                    backgroundColor: selectBg,
-                    color: selectTextColor,
-                  }),
-                }}
+                styles={{ ...customStyles, width: '100%' }}
               />
             </FormControl>
             <FormControl mb={4}>

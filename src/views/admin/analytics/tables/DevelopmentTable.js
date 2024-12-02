@@ -30,7 +30,8 @@ const DevelopmentTable = ({
   const textColor = useColorModeValue('secondaryGray.900', 'white');
   const borderColor = useColorModeValue('gray.200', 'whiteAlpha.100');
   const rowHoverBg = useColorModeValue('gray.100', 'gray.700');
-
+  const theadBgColor = useColorModeValue('gray.100', 'gray.800'); // Dynamically adapt to color mode
+  const theadTextColor = useColorModeValue('gray.900', 'whiteAlpha.900');
   const roundToTwoDecimalPlaces = (value) => {
     const numericValue = parseFloat(value);
     if (isNaN(numericValue)) {
@@ -201,11 +202,19 @@ const DevelopmentTable = ({
       <Box style={{ maxHeight: '500px' }} overflowX="auto">
         <Table variant="simple" color="gray.500" mb={2}>
           <Thead
-            style={{ backgroundColor: 'white', position: 'sticky', top: '0' }}
+            style={{
+              backgroundColor: theadBgColor,
+              color: theadTextColor,
+              position: 'sticky',
+              top: '0',
+              zIndex: 1, 
+            }}
           >
             <Tr>
               <Th borderColor={borderColor}>PID</Th>
-              <Th borderColor={borderColor} whiteSpace="nowrap">Location Name</Th>
+              <Th borderColor={borderColor} whiteSpace="nowrap">
+                Location Name
+              </Th>
               <Th borderColor={borderColor} whiteSpace="nowrap">
                 Today Total{' '}
                 <span

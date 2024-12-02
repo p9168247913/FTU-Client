@@ -17,6 +17,7 @@ import {
   Button,
   IconButton,
   Card,
+  useColorMode,
 } from '@chakra-ui/react';
 import { ChevronLeftIcon, ChevronRightIcon } from '@chakra-ui/icons';
 import { Spinner } from '@chakra-ui/react';
@@ -51,6 +52,7 @@ const Dashboard = () => {
   const [totalPages, setTotalPages] = useState(1);
   const [rowsPerPage, setRowsPerPage] = useState(20);
   const [loading, setLoading] = useState(false);
+  const { colorMode } = useColorMode();
 
   const cardBg = useColorModeValue('white', 'gray.700');
   const cardBorder = useColorModeValue('gray.200', 'gray.600');
@@ -82,14 +84,69 @@ const Dashboard = () => {
   const textColor = useColorModeValue('gray.600', 'gray.400');
   const progressBg = useColorModeValue('gray.200', 'gray.700');
 
+  const customStyles = {
+    container: (base) => ({
+      ...base,
+      width: '100%',
+      zIndex: '999',
+      maxWidth: '400px',
+      marginBottom: '8px',
+    }),
+    control: (base, state) => ({
+      ...base,
+      backgroundColor: colorMode === 'dark' ? '#2D3748' : '#ffffff',
+      color: colorMode === 'dark' ? '#E2E8F0' : '#2D3748',
+      borderColor: state.isFocused
+        ? colorMode === 'dark'
+          ? '#63B3ED'
+          : '#3182CE'
+        : '#CBD5E0',
+      boxShadow: state.isFocused ? '0 0 0 1px #63B3ED' : 'none',
+      '&:hover': {
+        borderColor: colorMode === 'dark' ? '#63B3ED' : '#3182CE',
+      },
+    }),
+    singleValue: (base) => ({
+      ...base,
+      color: colorMode === 'dark' ? '#E2E8F0' : '#2D3748',
+    }),
+    placeholder: (base) => ({
+      ...base,
+      color: colorMode === 'dark' ? '#A0AEC0' : '#A0AEC0',
+    }),
+    menu: (base) => ({
+      ...base,
+      backgroundColor: colorMode === 'dark' ? '#2D3748' : '#ffffff',
+      color: colorMode === 'dark' ? '#E2E8F0' : '#2D3748',
+    }),
+    option: (base, state) => ({
+      ...base,
+      backgroundColor: state.isFocused
+        ? colorMode === 'dark'
+          ? '#4A5568'
+          : '#EDF2F7'
+        : 'transparent',
+      color: state.isSelected
+        ? colorMode === 'dark'
+          ? '#63B3ED'
+          : '#3182CE'
+        : base.color,
+      '&:hover': {
+        backgroundColor: colorMode === 'dark' ? '#4A5568' : '#EDF2F7',
+      },
+    }),
+  };
+
   const selectedCompanyData = companyData.find(
     (company) => company._id === selectedCompany,
   );
 
   const inputBg = useColorModeValue('white', 'gray.700');
-  const inputTextColor = useColorModeValue('gray.600', 'white');
+  const inputTextColor = useColorModeValue('black', 'white');
   const placeholderColor = useColorModeValue('gray.500', 'gray.400');
-
+  const hoverBorderColor = useColorModeValue('gray.400', 'gray.500');
+  const selectedBg = useColorModeValue('#EDF2F7', '#2D3748');
+  const focusedBg = useColorModeValue('#E2E8F0', '#4A5568');
   const progressPercentage = selectedCompanyData
     ? (selectedCompanyData?.consumption / selectedCompanyData?.limit) * 100
     : 0;
@@ -431,10 +488,25 @@ const Dashboard = () => {
               container: (base) => ({
                 ...base,
                 width: '100%',
+                zIndex: '999',
+                bgColor:"gray.100"
               }),
               control: (base) => ({
                 ...base,
                 backgroundColor: inputBg,
+                color: inputTextColor,
+                borderColor: borderColor,
+                boxShadow: 'none',
+                '&:hover': {
+                  borderColor: hoverBorderColor,
+                },
+              }),
+              singleValue: (base) => ({
+                ...base,
+                color: inputTextColor,
+              }),
+              input: (base) => ({
+                ...base,
                 color: inputTextColor,
               }),
               placeholder: (base) => ({
@@ -443,11 +515,28 @@ const Dashboard = () => {
               }),
               menu: (base) => ({
                 ...base,
+                backgroundColor: inputBg,
                 maxHeight: '200px',
                 overflowY: 'auto',
               }),
+              menuList: (base) => ({
+                ...base,
+                backgroundColor: inputBg,
+              }),
+              option: (base, { isFocused, isSelected }) => ({
+                ...base,
+                backgroundColor: isSelected
+                  ? selectedBg
+                  : isFocused
+                  ? focusedBg
+                  : 'transparent',
+                color: inputTextColor,
+                '&:hover': {
+                  backgroundColor: selectedBg,
+                },
+              }),
             }}
-          />{' '}
+          />
         </Box>
       )}
 
@@ -617,7 +706,7 @@ const Dashboard = () => {
                 <div>
                   <Flex justify="space-between" align="center">
                     <Text fontSize="lg" fontWeight="bold">
-                      {pid.productId}
+                      {pid.productName !== "Unknown" ? pid.productName : pid.productId}
                     </Text>
                     {isLicenseExpired ? (
                       <Flex align="center" animation="blink 1.5s infinite">
