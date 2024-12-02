@@ -441,6 +441,11 @@ const Dashboard = () => {
                 ...base,
                 color: placeholderColor,
               }),
+              menu: (base) => ({
+                ...base,
+                maxHeight: '200px',
+                overflowY: 'auto',
+              }),
             }}
           />{' '}
         </Box>
