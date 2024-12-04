@@ -488,7 +488,6 @@ const Dashboard = () => {
               container: (base) => ({
                 ...base,
                 width: '100%',
-                zIndex: '999',
                 bgColor:"gray.100"
               }),
               control: (base) => ({
@@ -517,7 +516,7 @@ const Dashboard = () => {
                 ...base,
                 backgroundColor: inputBg,
                 maxHeight: '200px',
-                overflowY: 'auto',
+                // overflowY: 'auto',
               }),
               menuList: (base) => ({
                 ...base,
@@ -553,7 +552,7 @@ const Dashboard = () => {
               fontWeight="bold"
               textAlign={{ base: 'center', md: 'left' }}
             >
-              Total Consumption for {selectedCompany2?.label}:
+              Total Consumption:
             </Text>
             <Text
               fontSize={{ base: 'sm', md: 'md' }}

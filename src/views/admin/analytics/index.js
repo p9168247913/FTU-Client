@@ -83,7 +83,7 @@ const AnalyticsPage = () => {
     container: (base) => ({
       ...base,
       width: '100%',
-      zIndex: '999',
+      // zIndex: '3',
       maxWidth: '400px',
       marginBottom: '8px',
     }),

@@ -43,7 +43,7 @@ const DevelopmentTable = ({
   const renderTableRows = () => {
     if (loading) {
       return (
-        <Tr>
+        <Tr style={{zIndex: 0}}>
           <Td colSpan="7" textAlign="center">
             <CircularProgress
               isIndeterminate
@@ -207,7 +207,7 @@ const DevelopmentTable = ({
               color: theadTextColor,
               position: 'sticky',
               top: '0',
-              zIndex: 1, 
+              // zIndex: 1, 
             }}
           >
             <Tr>

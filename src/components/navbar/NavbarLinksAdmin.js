@@ -21,6 +21,7 @@ import { SearchBar } from 'components/navbar/searchBar/SearchBar';
 import { SidebarResponsive } from 'components/sidebar/Sidebar';
 import PropTypes from 'prop-types';
 import React from 'react';
+import './index.css';
 // Assets
 import navImage from 'assets/img/layout/Navbar.png';
 import { MdNotificationsNone, MdInfoOutline } from 'react-icons/md';
@@ -69,14 +70,16 @@ export default function HeaderLinks(props) {
 
   return (
     <Flex
-      w={{ sm: '100%', md: 'auto' }}
+      w="100%"
       alignItems="center"
-      flexDirection="row"
+      justifyContent="space-between"
+      flexDirection={{ base: 'column', md: 'row' }}
       bg={menuBg}
-      flexWrap={secondary ? { base: 'wrap', md: 'nowrap' } : 'unset'}
-      p="10px"
+      flexWrap={{ base: 'wrap', md: 'nowrap' }}
+      p={{ base: '5px', md: '10px' }}
       borderRadius="30px"
       boxShadow={shadow}
+      style={{ zIndex: '9999', }}
     >
       {/* <SearchBar
         mb={() => {
@@ -108,22 +111,48 @@ export default function HeaderLinks(props) {
         >
           <Icon color={ethColor} w="9px" h="14px" as={FaEthereum} />
         </Flex>
+      </Flex> */}
+      <Flex
+        w={{ base: '100%', md: 'auto' }}
+        alignItems="center"
+        justifyContent={{ base: 'center', md: 'flex-start' }}
+        mb={{ base: '10px', md: '0' }}
+      >
         <Text
           w="max-content"
           color={ethColor}
-          fontSize="sm"
-          fontWeight="700"
+          fontSize={{ base: 'md', md: 'lg' }}
+          fontWeight="200"
+          fontFamily="'Great Vibes', cursive" 
+          textAlign="center"
           me="6px"
+          style={{
+            animation: 'fadeIn 2s ease-in-out, slideIn 1s ease-out',
+          }}
         >
-          1,924
-          <Text as="span" display={{ base: 'none', md: 'unset' }}>
-            {' '}
-            ETH
-          </Text>
+          <span
+            style={{ display: 'inline-block', animation: 'bounce 2s infinite' }}
+          >
+            👋
+          </span>{' '}
+          <span>Hello, Welcome to </span>
+          <span
+            style={{
+              color: '#4CAF50',
+              fontWeight: '400',
+              textShadow: '1px 1px 1px teal',
+            }}
+          >
+            Aquasense FTU - Dashboard
+          </span>
+          {/* <span
+          style={{ display: 'inline-block', animation: 'bounce 2s infinite' }}
+        >
+          🚀
+        </span> */}
         </Text>
-      </Flex> */}
-      <SidebarResponsive routes={routes} />
-      <Menu>
+      </Flex>
+      {/* <Menu>
         <MenuButton p="0px">
           <Icon
             mt="6px"
@@ -180,9 +209,9 @@ export default function HeaderLinks(props) {
             </MenuItem>
           </Flex>
         </MenuList>
-      </Menu>
+      </Menu> */}
 
-      <Menu>
+      {/* <Menu>
         <MenuButton p="0px">
           <Icon
             mt="6px"
@@ -245,63 +274,72 @@ export default function HeaderLinks(props) {
             </Link>
           </Flex>
         </MenuList>
-      </Menu>
-
-      <Button
-        variant="no-hover"
-        bg="transparent"
-        p="0px"
-        minW="unset"
-        minH="unset"
-        h="18px"
-        w="max-content"
-        onClick={toggleColorMode}
+      </Menu> */}
+      <Flex
+        w={{ sm: '100%', md: 'auto' }}
+        alignItems="center"
+        justifyContent="space-between"
+         flexWrap="wrap"
+        gap={{ base: 0, md: 0 }}
       >
-        <Icon
-          me="10px"
-          h="18px"
-          w="18px"
-          color={navbarIcon}
-          as={colorMode === 'light' ? IoMdMoon : IoMdSunny}
-        />
-      </Button>
-      <Menu>
-        <MenuButton p="0px">
-          <Avatar
-            _hover={{ cursor: 'pointer' }}
-            color="white"
-            name={name}
-            bg="#11047A"
-            size="sm"
-            w="40px"
-            h="40px"
-          />
-        </MenuButton>
-        <MenuList
-          boxShadow={shadow}
+        <SidebarResponsive routes={routes} />
+
+        <Button
+          variant="no-hover"
+          bg="transparent"
           p="0px"
-          mt="10px"
-          borderRadius="20px"
-          bg={menuBg}
-          border="none"
+          minW="unset"
+          minH="unset"
+          h="18px"
+          w="max-content"
+          onClick={toggleColorMode}
         >
-          <Flex w="100%" mb="0px">
-            <Text
-              ps="20px"
-              pt="16px"
-              pb="10px"
-              w="100%"
-              borderBottom="1px solid"
-              borderColor={borderColor}
-              fontSize="sm"
-              fontWeight="700"
-              color={textColor}
-            >
-              &nbsp;{`👋 Hey, ${name}`}
-            </Text>
-          </Flex>
-          <Flex flexDirection="column" p="10px">
-            {/* <MenuItem
+          <Icon
+            me="10px"
+            h="18px"
+            w="18px"
+            color={navbarIcon}
+            as={colorMode === 'light' ? IoMdMoon : IoMdSunny}
+          />
+        </Button>
+
+        <Menu>
+          <MenuButton p="0px">
+            <Avatar
+              _hover={{ cursor: 'pointer' }}
+              color="white"
+              name={name}
+              bg="#11047A"
+              size="sm"
+              w="40px"
+              h="40px"
+            />
+          </MenuButton>
+          <MenuList
+            boxShadow={shadow}
+            p="0px"
+            mt="10px"
+            borderRadius="20px"
+            bg={menuBg}
+            border="none"
+          >
+            <Flex w="100%" mb="0px">
+              <Text
+                ps="20px"
+                pt="16px"
+                pb="10px"
+                w="100%"
+                borderBottom="1px solid"
+                borderColor={borderColor}
+                fontSize="sm"
+                fontWeight="700"
+                color={textColor}
+              >
+                &nbsp;{`👋 Hey, ${name}`}
+              </Text>
+            </Flex>
+            <Flex flexDirection="column" p="10px">
+              {/* <MenuItem
               _hover={{ bg: 'none' }}
               _focus={{ bg: 'none' }}
               borderRadius="8px"
@@ -317,19 +355,20 @@ export default function HeaderLinks(props) {
             >
               <Text fontSize="sm">Newsletter Settings</Text>
             </MenuItem> */}
-            <MenuItem
-              _hover={{ bg: 'none' }}
-              _focus={{ bg: 'none' }}
-              color="red.400"
-              borderRadius="8px"
-              px="14px"
-              onClick={handleLogout}
-            >
-              <Text fontSize="sm">Log out</Text>
-            </MenuItem>
-          </Flex>
-        </MenuList>
-      </Menu>
+              <MenuItem
+                _hover={{ bg: 'none' }}
+                _focus={{ bg: 'none' }}
+                color="red.400"
+                borderRadius="8px"
+                px="14px"
+                onClick={handleLogout}
+              >
+                <Text fontSize="sm">Log out</Text>
+              </MenuItem>
+            </Flex>
+          </MenuList>
+        </Menu>
+      </Flex>
     </Flex>
   );
 }

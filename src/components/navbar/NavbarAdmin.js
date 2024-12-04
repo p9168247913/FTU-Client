@@ -53,7 +53,7 @@ export default function AdminNavbar(props) {
     <Box
       position={navbarPosition}
       boxShadow={navbarShadow}
-      bg={navbarBg}
+      // bg={navbarBg}
       borderColor={navbarBorder}
       filter={navbarFilter}
       // backdropFilter={navbarBackdrop}
@@ -84,13 +84,8 @@ export default function AdminNavbar(props) {
       }}
       pt="8px"
       top={{ base: '12px', md: '16px', lg: '20px', xl: '20px' }}
-      w={{
-        base: 'calc(100vw - 6%)',
-        md: 'calc(100vw - 8%)',
-        lg: 'calc(100vw - 6%)',
-        xl: 'calc(100vw - 350px)',
-        '2xl': 'calc(100vw - 365px)',
-      }}
+      w="auto"
+      zIndex={"999"}
     >
       <Flex
         w="100%"

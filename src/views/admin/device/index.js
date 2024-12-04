@@ -140,7 +140,7 @@ const Devices = () => {
 
   const getAllCompanies = async () => {
     try {
-      const response = await axiosInstance.get(`${baseUrl}/company`, {
+      const response = await axiosInstance.get(`${baseUrl}/company/list`, {
         headers: { Authorization: `Bearer ${Token}` },
       });
       setCompany(response.data.data.data);

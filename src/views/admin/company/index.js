@@ -147,8 +147,6 @@ const Company = () => {
         },
       );
       if (response) {
-        console.log('-----', response);
-
         setCompany(response?.data?.data?.data);
         setPage(response?.data?.data?.page);
         setTotalResult(response?.data?.data?.totalResults);
@@ -169,25 +167,25 @@ const Company = () => {
   };
 
   const handleEdit = (company, event) => {
-    setEditId(company._id);
+    setEditId(company?._id);
     setEditCompany({
       ...editCompany,
-      name: company.name,
-      // companyId: company.companyId,
-      email1: company.email1,
-      email2: company.email2,
-      contact1: company.contact1,
-      contact2: company.contact2,
-      allowedLimit: company.allowedLimit,
-      companyRepresentativeName: company.companyRepresentativeName,
-      aquasenseSalesRepresentative: company.aquasenseSalesRepresentative._id,
-      aquasenseIRMUser: company.aquasenseIRMUser._id,
-      addressId: company.address._id,
-      addressLine: company.address.addressLine,
-      city: company.address.city,
-      state: company.address.state,
-      country: company.address.country,
-      zipcode: company.address.zipcode,
+      name: company?.name,
+      companyId: company.companyId,
+      email1: company?.email1,
+      email2: company?.email2,
+      contact1: company?.contact1,
+      contact2: company?.contact2,
+      allowedLimit: company?.allowedLimit,
+      companyRepresentativeName: company?.companyRepresentativeName,
+      aquasenseSalesRepresentative: company?.aquasenseSalesRepresentative?._id,
+      aquasenseIRMUser: company?.aquasenseIRMUser?._id,
+      addressId: company?.address?._id,
+      addressLine: company?.address?.addressLine,
+      city: company?.address?.city,
+      state: company?.address?.state,
+      country: company?.address?.country,
+      zipcode: company?.address?.zipcode,
     });
     onEditOpen();
   };
@@ -233,30 +231,6 @@ const Company = () => {
   };
 
   const handleSave = async () => {
-    if (
-      !editCompany.name ||
-      !editCompany.email1 ||
-      !editCompany.email2 ||
-      !editCompany.contact1 ||
-      !editCompany.contact2 ||
-      !editCompany.addressLine ||
-      !editCompany.city ||
-      !editCompany.state ||
-      !editCompany.country ||
-      !editCompany.zipcode ||
-      !editCompany.companyRepresentativeName ||
-      !editCompany.aquasenseSalesRepresentative ||
-      !editCompany.aquasenseIRMUser
-    ) {
-      toast({
-        title: 'Please fill all fields!',
-        status: 'info',
-        duration: 3000,
-        isClosable: true,
-      });
-      return;
-    }
-
     try {
       setLoading(true);
       const response = await axiosInstance.put(
@@ -293,29 +267,29 @@ const Company = () => {
   };
 
   const handleAddCompany = async () => {
-    if (
-      !addCompany.name ||
-      !addCompany.email1 ||
-      !addCompany.email2 ||
-      !addCompany.contact1 ||
-      !addCompany.contact2 ||
-      !addCompany.addressLine ||
-      !addCompany.city ||
-      !addCompany.state ||
-      !addCompany.country ||
-      !addCompany.zipcode ||
-      !addCompany.companyRepresentativeName ||
-      !addCompany.aquasenseSalesRepresentative ||
-      !addCompany.aquasenseIRMUser
-    ) {
-      toast({
-        title: 'Please fill all required fields!',
-        status: 'info',
-        duration: 3000,
-        isClosable: true,
-      });
-      return;
-    }
+    // if (
+    //   !addCompany.name ||
+    //   !addCompany.email1 ||
+    //   !addCompany.email2 ||
+    //   !addCompany.contact1 ||
+    //   !addCompany.contact2 ||
+    //   !addCompany.addressLine ||
+    //   !addCompany.city ||
+    //   !addCompany.state ||
+    //   !addCompany.country ||
+    //   !addCompany.zipcode ||
+    //   !addCompany.companyRepresentativeName ||
+    //   !addCompany.aquasenseSalesRepresentative ||
+    //   !addCompany.aquasenseIRMUser
+    // ) {
+    //   toast({
+    //     title: 'Please fill all required fields!',
+    //     status: 'info',
+    //     duration: 3000,
+    //     isClosable: true,
+    //   });
+    //   return;
+    // }
 
     try {
       setLoading(true);
@@ -465,6 +439,7 @@ const Company = () => {
           Add Company
         </Button>
       </Flex>
+      
       <DevelopmentTable
         tableData={company}
         handleEditUser={(device, e) => handleEdit(device, e)}
@@ -502,7 +477,7 @@ const Company = () => {
                 <Input
                   name="name"
                   placeholder="Enter company name"
-                  value={addCompany.name}
+                  value={addCompany?.name}
                   onChange={handleAddChange}
                   bg={useColorModeValue('white', 'gray.700')}
                   color={useColorModeValue('black', 'white')}
@@ -517,7 +492,7 @@ const Company = () => {
                   name="email1"
                   type="email"
                   placeholder="Enter primary email address"
-                  value={addCompany.email1}
+                  value={addCompany?.email1}
                   onChange={handleAddChange}
                   bg={useColorModeValue('white', 'gray.700')}
                   color={useColorModeValue('black', 'white')}
@@ -532,7 +507,7 @@ const Company = () => {
                   name="email2"
                   type="email"
                   placeholder="Enter secondary email address"
-                  value={addCompany.email2}
+                  value={addCompany?.email2}
                   onChange={handleAddChange}
                   bg={useColorModeValue('white', 'gray.700')}
                   color={useColorModeValue('black', 'white')}
@@ -546,7 +521,7 @@ const Company = () => {
                 <Input
                   name="contact1"
                   placeholder="Enter primary contact"
-                  value={addCompany.contact1}
+                  value={addCompany?.contact1}
                   onChange={handleAddChange}
                   bg={useColorModeValue('white', 'gray.700')}
                   color={useColorModeValue('black', 'white')}
@@ -560,7 +535,7 @@ const Company = () => {
                 <Input
                   name="contact2"
                   placeholder="Enter secondary contact"
-                  value={addCompany.contact2}
+                  value={addCompany?.contact2}
                   onChange={handleAddChange}
                   bg={useColorModeValue('white', 'gray.700')}
                   color={useColorModeValue('black', 'white')}
@@ -575,7 +550,7 @@ const Company = () => {
                   <Input
                     name="allowedLimit"
                     placeholder="Enter allowed limit"
-                    value={addCompany.allowedLimit}
+                    value={addCompany?.allowedLimit}
                     onChange={handleAddChange}
                     bg={useColorModeValue('white', 'gray.700')}
                     color={useColorModeValue('black', 'white')}
@@ -598,7 +573,7 @@ const Company = () => {
                 <Input
                   name="addressLine"
                   placeholder="Enter address"
-                  value={addCompany.addressLine}
+                  value={addCompany?.addressLine}
                   onChange={handleAddChange}
                   bg={useColorModeValue('white', 'gray.700')}
                   color={useColorModeValue('black', 'white')}
@@ -612,7 +587,7 @@ const Company = () => {
                 <Input
                   name="city"
                   placeholder="Enter city"
-                  value={addCompany.city}
+                  value={addCompany?.city}
                   onChange={handleAddChange}
                   bg={useColorModeValue('white', 'gray.700')}
                   color={useColorModeValue('black', 'white')}
@@ -626,7 +601,7 @@ const Company = () => {
                 <Input
                   name="state"
                   placeholder="Enter state"
-                  value={addCompany.state}
+                  value={addCompany?.state}
                   onChange={handleAddChange}
                   bg={useColorModeValue('white', 'gray.700')}
                   color={useColorModeValue('black', 'white')}
@@ -640,7 +615,7 @@ const Company = () => {
                 <Input
                   name="country"
                   placeholder="Enter country"
-                  value={addCompany.country}
+                  value={addCompany?.country}
                   onChange={handleAddChange}
                   bg={useColorModeValue('white', 'gray.700')}
                   color={useColorModeValue('black', 'white')}
@@ -654,7 +629,7 @@ const Company = () => {
                 <Input
                   name="zipcode"
                   placeholder="Enter zipcode"
-                  value={addCompany.zipcode}
+                  value={addCompany?.zipcode}
                   onChange={handleAddChange}
                   bg={useColorModeValue('white', 'gray.700')}
                   color={useColorModeValue('black', 'white')}
@@ -668,7 +643,7 @@ const Company = () => {
                 <Input
                   name="companyRepresentativeName"
                   placeholder="Enter contact person name"
-                  value={addCompany.companyRepresentativeName}
+                  value={addCompany?.companyRepresentativeName}
                   onChange={handleAddChange}
                   bg={useColorModeValue('white', 'gray.700')}
                   color={useColorModeValue('black', 'white')}
@@ -682,14 +657,14 @@ const Company = () => {
                 <Select
                   name="aquasenseSalesRepresentative"
                   placeholder="Select Sales Executive"
-                  value={addCompany.aquasenseSalesRepresentative}
+                  value={addCompany?.aquasenseSalesRepresentative}
                   onChange={handleAddChange}
                 >
                   {users
-                    ?.filter((user) => user.role === 'sales')
+                    ?.filter((user) => user?.role === 'sales')
                     .map((filteredUser) => (
-                      <option key={filteredUser._id} value={filteredUser._id}>
-                        {filteredUser.name}
+                      <option key={filteredUser?._id} value={filteredUser?._id}>
+                        {filteredUser?.name}
                       </option>
                     ))}
                 </Select>
@@ -699,14 +674,14 @@ const Company = () => {
                 <Select
                   name="aquasenseIRMUser"
                   placeholder="Select IRM Executive"
-                  value={addCompany.aquasenseIRMUser}
+                  value={addCompany?.aquasenseIRMUser}
                   onChange={handleAddChange}
                 >
                   {users
-                    ?.filter((user) => user.role === 'IRM')
+                    ?.filter((user) => user?.role === 'IRM')
                     .map((filteredUser) => (
-                      <option key={filteredUser._id} value={filteredUser._id}>
-                        {filteredUser.name}
+                      <option key={filteredUser?._id} value={filteredUser?._id}>
+                        {filteredUser?.name}
                       </option>
                     ))}
                 </Select>
@@ -762,7 +737,7 @@ const Company = () => {
                 <Input
                   name="name"
                   placeholder="Enter company name"
-                  value={editCompany.name}
+                  value={editCompany?.name}
                   onChange={handleEditChange}
                   bg={useColorModeValue('white', 'gray.700')}
                   color={useColorModeValue('black', 'white')}
@@ -777,7 +752,7 @@ const Company = () => {
                   name="email1"
                   type="email"
                   placeholder="Enter primary email address"
-                  value={editCompany.email1}
+                  value={editCompany?.email1}
                   onChange={handleEditChange}
                   bg={useColorModeValue('white', 'gray.700')}
                   color={useColorModeValue('black', 'white')}
@@ -792,7 +767,7 @@ const Company = () => {
                   name="email2"
                   type="email"
                   placeholder="Enter secondary email address"
-                  value={editCompany.email2}
+                  value={editCompany?.email2}
                   onChange={handleEditChange}
                   bg={useColorModeValue('white', 'gray.700')}
                   color={useColorModeValue('black', 'white')}
@@ -806,7 +781,7 @@ const Company = () => {
                 <Input
                   name="contact1"
                   placeholder="Enter primary contact"
-                  value={editCompany.contact1}
+                  value={editCompany?.contact1}
                   onChange={handleEditChange}
                   bg={useColorModeValue('white', 'gray.700')}
                   color={useColorModeValue('black', 'white')}
@@ -820,7 +795,7 @@ const Company = () => {
                 <Input
                   name="contact2"
                   placeholder="Enter secondary contact"
-                  value={editCompany.contact2}
+                  value={editCompany?.contact2}
                   onChange={handleEditChange}
                   bg={useColorModeValue('white', 'gray.700')}
                   color={useColorModeValue('black', 'white')}
@@ -835,7 +810,7 @@ const Company = () => {
                   <Input
                     name="allowedLimit"
                     placeholder="Enter allowed limit"
-                    value={editCompany.allowedLimit}
+                    value={editCompany?.allowedLimit}
                     onChange={handleEditChange}
                     bg={useColorModeValue('white', 'gray.700')}
                     color={useColorModeValue('black', 'white')}
@@ -859,7 +834,7 @@ const Company = () => {
                 <Input
                   name="addressLine"
                   placeholder="Enter address"
-                  value={editCompany.addressLine}
+                  value={editCompany?.addressLine}
                   onChange={handleEditChange}
                   bg={useColorModeValue('white', 'gray.700')}
                   color={useColorModeValue('black', 'white')}
@@ -873,7 +848,7 @@ const Company = () => {
                 <Input
                   name="city"
                   placeholder="Enter city"
-                  value={editCompany.city}
+                  value={editCompany?.city}
                   onChange={handleEditChange}
                   bg={useColorModeValue('white', 'gray.700')}
                   color={useColorModeValue('black', 'white')}
@@ -887,7 +862,7 @@ const Company = () => {
                 <Input
                   name="state"
                   placeholder="Enter state"
-                  value={editCompany.state}
+                  value={editCompany?.state}
                   onChange={handleEditChange}
                   bg={useColorModeValue('white', 'gray.700')}
                   color={useColorModeValue('black', 'white')}
@@ -901,7 +876,7 @@ const Company = () => {
                 <Input
                   name="country"
                   placeholder="Enter country"
-                  value={editCompany.country}
+                  value={editCompany?.country}
                   onChange={handleEditChange}
                   bg={useColorModeValue('white', 'gray.700')}
                   color={useColorModeValue('black', 'white')}
@@ -915,7 +890,7 @@ const Company = () => {
                 <Input
                   name="zipcode"
                   placeholder="Enter zipcode"
-                  value={editCompany.zipcode}
+                  value={editCompany?.zipcode}
                   onChange={handleEditChange}
                   bg={useColorModeValue('white', 'gray.700')}
                   color={useColorModeValue('black', 'white')}
@@ -929,7 +904,7 @@ const Company = () => {
                 <Input
                   name="companyRepresentativeName"
                   placeholder="Enter contact person name"
-                  value={editCompany.companyRepresentativeName}
+                  value={editCompany?.companyRepresentativeName}
                   onChange={handleEditChange}
                   bg={useColorModeValue('white', 'gray.700')}
                   color={useColorModeValue('black', 'white')}
@@ -943,14 +918,14 @@ const Company = () => {
                 <Select
                   name="aquasenseSalesRepresentative"
                   placeholder="Select Sales Executive"
-                  value={editCompany.aquasenseSalesRepresentative}
+                  value={editCompany?.aquasenseSalesRepresentative}
                   onChange={handleEditChange}
                 >
                   {users
-                    ?.filter((user) => user.role === 'sales')
+                    ?.filter((user) => user?.role === 'sales')
                     .map((filteredUser) => (
-                      <option key={filteredUser._id} value={filteredUser._id}>
-                        {filteredUser.name}
+                      <option key={filteredUser?._id} value={filteredUser?._id}>
+                        {filteredUser?.name}
                       </option>
                     ))}
                 </Select>
@@ -960,14 +935,14 @@ const Company = () => {
                 <Select
                   name="aquasenseIRMUser"
                   placeholder="Select IRM Executive"
-                  value={editCompany.aquasenseIRMUser}
+                  value={editCompany?.aquasenseIRMUser}
                   onChange={handleEditChange}
                 >
                   {users
-                    ?.filter((user) => user.role === 'IRM')
+                    ?.filter((user) => user?.role === 'IRM')
                     .map((filteredUser) => (
-                      <option key={filteredUser._id} value={filteredUser._id}>
-                        {filteredUser.name}
+                      <option key={filteredUser?._id} value={filteredUser?._id}>
+                        {filteredUser?.name}
                       </option>
                     ))}
                 </Select>
@@ -1028,7 +1003,7 @@ const Company = () => {
                 <SimpleGrid columns={2} spacing={4} mb="4">
                   <Box>
                     <Text fontWeight="bold">Company Name:</Text>
-                    <Text>{selectedCompany.name}</Text>
+                    <Text>{selectedCompany?.name}</Text>
                   </Box>
                   {/* <Box>
                     <Text fontWeight="bold">Company ID:</Text>
@@ -1036,23 +1011,23 @@ const Company = () => {
                   </Box> */}
                   <Box>
                     <Text fontWeight="bold">Primary Email:</Text>
-                    <Text>{selectedCompany.email1}</Text>
+                    <Text>{selectedCompany?.email1}</Text>
                   </Box>
                   <Box>
                     <Text fontWeight="bold">Secondary Email:</Text>
-                    <Text>{selectedCompany.email2}</Text>
+                    <Text>{selectedCompany?.email2}</Text>
                   </Box>
                   <Box>
                     <Text fontWeight="bold">Primary Contact:</Text>
-                    <Text>{selectedCompany.contact1}</Text>
+                    <Text>{selectedCompany?.contact1}</Text>
                   </Box>
                   <Box>
                     <Text fontWeight="bold">Secondary Contact:</Text>
-                    <Text>{selectedCompany.contact2}</Text>
+                    <Text>{selectedCompany?.contact2}</Text>
                   </Box>
                   <Box>
                     <Text fontWeight="bold">Representative:</Text>
-                    <Text>{selectedCompany.companyRepresentativeName}</Text>
+                    <Text>{selectedCompany?.companyRepresentativeName}</Text>
                   </Box>
                 </SimpleGrid>
 
@@ -1063,23 +1038,23 @@ const Company = () => {
                 <SimpleGrid columns={2} spacing={4} mb="4">
                   <Box>
                     <Text fontWeight="bold">Address Line:</Text>
-                    <Text>{selectedCompany.address.addressLine}</Text>
+                    <Text>{selectedCompany.address?.addressLine}</Text>
                   </Box>
                   <Box>
                     <Text fontWeight="bold">City:</Text>
-                    <Text>{selectedCompany.address.city}</Text>
+                    <Text>{selectedCompany.address?.city}</Text>
                   </Box>
                   <Box>
                     <Text fontWeight="bold">State:</Text>
-                    <Text>{selectedCompany.address.state}</Text>
+                    <Text>{selectedCompany.address?.state}</Text>
                   </Box>
                   <Box>
                     <Text fontWeight="bold">Country:</Text>
-                    <Text>{selectedCompany.address.country}</Text>
+                    <Text>{selectedCompany?.address?.country}</Text>
                   </Box>
                   <Box>
                     <Text fontWeight="bold">Zipcode:</Text>
-                    <Text>{selectedCompany.address.zipcode}</Text>
+                    <Text>{selectedCompany?.address?.zipcode}</Text>
                   </Box>
                 </SimpleGrid>
 
@@ -1099,10 +1074,10 @@ const Company = () => {
                     </Tr>
                   </Thead>
                   <Tbody>
-                    {selectedCompany.devices.map((device) => (
+                    {selectedCompany?.devices.map((device) => (
                       <Tr key={device._id}>
-                        <Td>{device.productName}</Td>
-                        <Td>{device.productId}</Td>
+                        <Td>{device?.productName}</Td>
+                        <Td>{device?.productId}</Td>
                       </Tr>
                     ))}
                   </Tbody>

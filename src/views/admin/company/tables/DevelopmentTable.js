@@ -59,7 +59,7 @@ const DevelopmentTable = ({
 
     return tableData.map((company, index) => (
       <Tr
-        key={company._id}
+        key={company?._id}
         onClick={() => handleRowClick(company)}
         cursor="pointer"
         _hover={{ backgroundColor: rowHoverBg }}
@@ -72,17 +72,19 @@ const DevelopmentTable = ({
             textOverflow: 'ellipsis',
           }}
         >
-          {company.name}
+          {company?.name}
         </Td>
         {/* <Td>{company.companyId}</Td> */}
         <Td whiteSpace="nowrap" textOverflow="ellipsis" overflow="hidden">
-          {`${company.address.addressLine}, ${company.address.city}, ${company.address.state}, ${company.address.country}-${company.address.zipcode}`}
+          {company?.address
+            ? `${company?.address?.addressLine}, ${company?.address?.city}, ${company?.address?.state}, ${company?.address?.country}-${company?.address?.zipcode}`
+            : ''}
         </Td>
         <Td>
-          {company.email1} <br /> {company.email2}
+          {company?.email1} <br /> {company?.email2}
         </Td>
         <Td>
-          {company.contact1} <br /> {company.contact2}
+          {company?.contact1} <br /> {company?.contact2}
         </Td>
         <Td>
           <Flex gap="2">
@@ -103,7 +105,7 @@ const DevelopmentTable = ({
               colorScheme="red"
               onClick={(e) => {
                 e.stopPropagation();
-                handleDeleteUser(company._id);
+                handleDeleteUser(company?._id);
               }}
             />
           </Flex>
@@ -112,35 +114,76 @@ const DevelopmentTable = ({
     ));
   };
 
-  const renderPagination = () => (
-    <Flex mt="4" justify="center" align="center">
-      <IconButton
-        aria-label="Previous Page"
-        icon={<ChevronLeftIcon />}
-        isDisabled={page <= 1}
-        onClick={() => handlePageChange(page - 1)}
-        mr="2"
-      />
-      {Array.from({ length: totalPages }, (_, index) => (
-        <Button
-          key={index + 1}
-          onClick={() => handlePageChange(index + 1)}
-          colorScheme={page === index + 1 ? 'blue' : 'gray'}
-          variant={page === index + 1 ? 'solid' : 'outline'}
-          mx="1"
-        >
-          {index + 1}
-        </Button>
-      ))}
-      <IconButton
-        aria-label="Next Page"
-        icon={<ChevronRightIcon />}
-        isDisabled={page >= totalPages}
-        onClick={() => handlePageChange(page + 1)}
-        ml="2"
-      />
-    </Flex>
-  );
+  const renderPagination = () => {
+    const maxPagesToShow = 5;
+    const pages = [];
+    const isEllipsisShown = totalPages > maxPagesToShow;
+
+    const createPageButton = (pageNumber) => (
+      <Button
+        key={pageNumber}
+        onClick={() => handlePageChange(pageNumber)}
+        colorScheme={page === pageNumber ? 'blue' : 'gray'}
+        variant={page === pageNumber ? 'solid' : 'outline'}
+        mx="1"
+      >
+        {pageNumber}
+      </Button>
+    );
+
+    if (isEllipsisShown) {
+      if (page > Math.ceil(maxPagesToShow / 2)) {
+        pages.push(createPageButton(1));
+        pages.push(
+          <Text key="ellipsis-start" mx="1" fontSize="lg">
+            ...
+          </Text>,
+        );
+      }
+
+      const startPage = Math.max(page - Math.floor(maxPagesToShow / 2), 1);
+      const endPage = Math.min(
+        page + Math.floor(maxPagesToShow / 2),
+        totalPages,
+      );
+      for (let i = startPage; i <= endPage; i++) {
+        pages.push(createPageButton(i));
+      }
+
+      if (page < totalPages - Math.floor(maxPagesToShow / 2)) {
+        pages.push(
+          <Text key="ellipsis-end" mx="1" fontSize="lg">
+            ...
+          </Text>,
+        );
+        pages.push(createPageButton(totalPages));
+      }
+    } else {
+      for (let i = 1; i <= totalPages; i++) {
+        pages.push(createPageButton(i));
+      }
+    }
+
+    return (
+      <Flex mt="4" justify="center" align="center">
+        <IconButton
+          aria-label="Previous Page"
+          icon={<ChevronLeftIcon />}
+          isDisabled={page <= 1}
+          onClick={() => handlePageChange(page - 1)}
+          mr="2"
+        />
+        {pages}
+        <IconButton
+          aria-label="Next Page"
+          icon={<ChevronRightIcon />}
+          isDisabled={page >= totalPages}
+          onClick={() => handlePageChange(page + 1)}
+          ml="2"
+        />
+      </Flex>
+    );
+  };
 
   return (
     <Card flexDirection="column" w="100%" px="0px" overflowX="auto">
