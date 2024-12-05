@@ -33,6 +33,10 @@ import baseUrl from 'Base_Url/baseUrl';
 import axiosInstance from 'axiosInstance';
 import { MdPinDrop } from 'react-icons/md';
 import { Table, Thead, Tbody, Tr, Th, Td } from '@chakra-ui/react';
+import ReactSpeedometer from 'react-d3-speedometer';
+import { CircularProgressbar, buildStyles } from 'react-circular-progressbar';
+import 'react-circular-progressbar/dist/styles.css';
+import { motion } from 'framer-motion';
 
 const Dashboard = () => {
   const [productId, setProductId] = useState([]);
@@ -147,6 +151,14 @@ const Dashboard = () => {
   const hoverBorderColor = useColorModeValue('gray.400', 'gray.500');
   const selectedBg = useColorModeValue('#EDF2F7', '#2D3748');
   const focusedBg = useColorModeValue('#E2E8F0', '#4A5568');
+
+  // const selectBg = useColorModeValue('white', 'gray.700');
+  // const selectTextColor = useColorModeValue('black', 'white');
+  const selectBorderColor = useColorModeValue('gray.300', 'gray.600');
+  const selectHoverBorderColor = useColorModeValue('gray.400', 'gray.500');
+  const selectMenuBg = useColorModeValue('white', 'gray.800');
+  const selectOptionHoverBg = useColorModeValue('gray.100', 'gray.700');
+
   const progressPercentage = selectedCompanyData
     ? (selectedCompanyData?.consumption / selectedCompanyData?.limit) * 100
     : 0;
@@ -405,6 +417,19 @@ const Dashboard = () => {
     0,
   );
 
+  const speedometerAnimation = {
+    hidden: { opacity: 0, scale: 0.8 },
+    visible: {
+      opacity: 1,
+      scale: 1,
+      transition: { duration: 0.8, ease: 'easeOut' },
+    },
+  };
+
+  const gaugeStartColor = '#6a1b9a';
+  const gaugeEndColor = '#6ec6ff';
+  const radius = 100;
+
   return (
     <Box
       pt={{ base: '130px', md: '80px', xl: '80px' }}
@@ -481,6 +506,7 @@ const Dashboard = () => {
               setPage(1);
               setSelectedCompany2(selectedOption);
               setSelectedCompany(selectedOption.value);
+              setSelectedPID('');
             }}
             placeholder="Select Company"
             isSearchable
@@ -488,7 +514,7 @@ const Dashboard = () => {
               container: (base) => ({
                 ...base,
                 width: '100%',
-                bgColor:"gray.100"
+                bgColor: 'gray.100',
               }),
               control: (base) => ({
                 ...base,
@@ -624,11 +650,39 @@ const Dashboard = () => {
             }),
             control: (base) => ({
               ...base,
-              backgroundColor: selectBg,
+              backgroundColor: selectBg, // Use pre-defined dark/light color
               color: selectTextColor,
+              borderColor: selectBorderColor,
+              ':hover': {
+                borderColor: selectHoverBorderColor,
+              },
+            }),
+            menu: (base) => ({
+              ...base,
+              backgroundColor: selectBg, // Set a solid background color
+              zIndex: 10, // Ensure it appears above other content
+            }),
+            menuList: (base) => ({
+              ...base,
+              backgroundColor: selectBg, // Consistent background
+              maxHeight: '200px', // Limit height for scrolling
+              overflowY: 'auto', // Allow scroll when content overflows
+            }),
+            option: (base, state) => ({
+              ...base,
+              backgroundColor: state.isFocused ? selectOptionHoverBg : selectBg, // Highlight focused option
+              color: selectTextColor,
+              ':active': {
+                backgroundColor: selectOptionHoverBg,
+              },
+            }),
+            singleValue: (base) => ({
+              ...base,
+              color: selectTextColor, // Ensure selected value is readable
             }),
           }}
         />
+
         <Select
           options={unitOptions}
           value={unitOptions.find((option) => option.value === unit)}
@@ -644,6 +698,26 @@ const Dashboard = () => {
             control: (base) => ({
               ...base,
               backgroundColor: selectBg,
+              color: selectTextColor,
+              borderColor: selectBorderColor,
+              ':hover': {
+                borderColor: selectHoverBorderColor,
+              },
+            }),
+            menu: (base) => ({
+              ...base,
+              backgroundColor: selectMenuBg,
+              color: selectTextColor,
+            }),
+            option: (base, state) => ({
+              ...base,
+              backgroundColor: state.isFocused
+                ? selectOptionHoverBg
+                : selectMenuBg,
+              color: selectTextColor,
+            }),
+            singleValue: (base) => ({
+              ...base,
               color: selectTextColor,
             }),
           }}
@@ -690,6 +764,35 @@ const Dashboard = () => {
             const showDaysToExpiry =
               daysToExpiry !== null && daysToExpiry > 0 && daysToExpiry <= 30;
 
+            const convertReading = (reading) => {
+              if (unit === 'Liters') {
+                return reading * 1000;
+              } else if (unit === 'Gallons') {
+                return reading * 264.172;
+              }
+              return reading;
+            };
+
+            const convertFlowrate = (flowrate) => {
+              if (unit === 'Liters') {
+                return {
+                  value: flowrate * 1000,
+                  unit: 'L/hr',
+                };
+              } else if (unit === 'Gallons') {
+                return {
+                  value: flowrate * 264.172,
+                  unit: 'gal/hr',
+                };
+              }
+              return {
+                value: flowrate,
+                unit: 'm³/hr',
+              };
+            };
+
+            const totalizerValue = convertReading(pid.totalizer);
+            const flowrateData = convertFlowrate(pid.flowrate);
             return (
               <Box
                 key={pid.id}
@@ -705,7 +808,9 @@ const Dashboard = () => {
                 <div>
                   <Flex justify="space-between" align="center">
                     <Text fontSize="lg" fontWeight="bold">
-                      {pid.productName !== "Unknown" ? pid.productName : pid.productId}
+                      {pid.productName !== 'Unknown'
+                        ? pid.productName
+                        : pid.productId}
                     </Text>
                     {isLicenseExpired ? (
                       <Flex align="center" animation="blink 1.5s infinite">
@@ -821,7 +926,11 @@ const Dashboard = () => {
                       TOTALIZER
                     </Text>
                     <LiquidGauge
-                      value={convertReading(pid.totalizer)}
+                      value={
+                        (convertReading(pid.totalizer) /
+                          Math.max(convertReading(pid.totalizer) * 1.25, 10)) *
+                        100
+                      }
                       width={200}
                       height={150}
                       textSize={1}
@@ -838,20 +947,81 @@ const Dashboard = () => {
                       waveStyle={{
                         fill: 'url(#gradient)',
                         animation: 'waveAnimation 2s ease-in-out infinite',
-                        transformOrigin: 'center',
                       }}
                       textRenderer={(value) => {
-                        const displayValue = parseFloat(value) || 0;
+                        const actualValue = convertReading(pid.totalizer);
                         return (
                           <tspan>
-                            {convertReading(pid.totalizer)?.toFixed(2)} <br />{' '}
-                            {unit}
+                            {actualValue?.toFixed(2)}{' '}
+                            <tspan fontSize="12">{unit}</tspan>
                           </tspan>
                         );
                       }}
                     />
                   </Stack>
+
                   <Stack
+                    spacing={2}
+                    align="center"
+                    p={4}
+                    bgGradient={
+                      pid.isRepairing
+                        ? 'linear(to-r, yellow.100, yellow.200)'
+                        : isOlderThan24Hours
+                        ? 'linear(to-r, red.100, red.200)'
+                        : 'linear(to-r, green.100, green.200)'
+                    }
+                    rounded="md"
+                    border="1px"
+                    borderColor={cardBorder}
+                    style={{
+                      filter: isLicenseExpired ? 'blur(4px)' : 'none',
+                      pointerEvents: isLicenseExpired ? 'none' : 'auto',
+                    }}
+                  >
+                    <Text fontSize="md" fontWeight="bold">
+                      FLOWRATE
+                    </Text>
+                    <Box w="200px" h="150px">
+                      <motion.div
+                        initial="hidden"
+                        animate="visible"
+                        exit="hidden"
+                        variants={speedometerAnimation}
+                      >
+                        <ReactSpeedometer
+                          value={flowrateData.value}
+                          needleColor="rgb(247, 132, 56)"
+                          startColor="rgb(183, 223, 244)"
+                          endColor="rgb(17, 113, 165)"
+                          segments={5}
+                          height={150}
+                          width={200}
+                          minValue={0}
+                          maxValue={Math.max(
+                            Math.ceil(flowrateData.value * 1.25),
+                            10,
+                          )}
+                          customSegmentStops={[
+                            0,
+                            Math.max(flowrateData.value * 0.25, 2.5),
+                            Math.max(flowrateData.value * 0.5, 5),
+                            Math.max(flowrateData.value * 0.75, 7.5),
+                            Math.max(Math.ceil(flowrateData.value * 1.25), 10),
+                          ]}
+                          forceRender={true}
+                          animate={true}
+                          animationDuration={9000}
+                          animationEasing="easeOutExpo"
+                          currentValueText={`${flowrateData.value.toFixed(2)} ${
+                            flowrateData.unit
+                          }`}
+                        />
+                      </motion.div>
+                    </Box>
+                  </Stack>
+
+                  {/* <Stack
                     spacing={2}
                     align="center"
                     p={4}
@@ -894,7 +1064,7 @@ const Dashboard = () => {
                       {convertFlowrate(pid.flowrate).value.toFixed(2)}{' '}
                       {convertFlowrate(pid.flowrate).unit}
                     </Text>
-                  </Stack>
+                  </Stack> */}
                 </SimpleGrid>
               </Box>
             );

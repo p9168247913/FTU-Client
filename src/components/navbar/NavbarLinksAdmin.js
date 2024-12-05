@@ -80,6 +80,7 @@ export default function HeaderLinks(props) {
       borderRadius="30px"
       boxShadow={shadow}
       style={{ zIndex: '9999', }}
+      gap={3}
     >
       {/* <SearchBar
         mb={() => {
@@ -278,13 +279,13 @@ export default function HeaderLinks(props) {
       <Flex
         w={{ sm: '100%', md: 'auto' }}
         alignItems="center"
-        justifyContent="space-between"
+        justifyContent="flex-end"
          flexWrap="wrap"
-        gap={{ base: 0, md: 0 }}
+        gap={{ base: 1, md: 0 }}
       >
         <SidebarResponsive routes={routes} />
 
-        <Button
+        {/* <Button
           variant="no-hover"
           bg="transparent"
           p="0px"
@@ -301,7 +302,7 @@ export default function HeaderLinks(props) {
             color={navbarIcon}
             as={colorMode === 'light' ? IoMdMoon : IoMdSunny}
           />
-        </Button>
+        </Button> */}
 
         <Menu>
           <MenuButton p="0px">

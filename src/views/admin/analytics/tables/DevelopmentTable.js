@@ -203,11 +203,11 @@ const DevelopmentTable = ({
         <Table variant="simple" color="gray.500" mb={2}>
           <Thead
             style={{
-              backgroundColor: theadBgColor,
+              backgroundColor: "white",
               color: theadTextColor,
               position: 'sticky',
               top: '0',
-              // zIndex: 1, 
+              zIndex: 1, 
             }}
           >
             <Tr>

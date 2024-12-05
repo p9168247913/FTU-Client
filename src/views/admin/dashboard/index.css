@@ -9,4 +9,25 @@
       opacity: 1;
     }
   }
+
+body{
+  color: rgb(6, 105, 116);
+}
+
+.car{
+  color: rgb(247, 132, 56)
+}
   
+.speedometer-container {
+  animation: glow 2s infinite alternate;
+  box-shadow: 0 0 15px rgba(0, 255, 0, 0.8);
+}
+
+@keyframes glow {
+  0% {
+    box-shadow: 0 0 10px rgba(0, 255, 0, 0.5);
+  }
+  100% {
+    box-shadow: 0 0 20px rgba(0, 255, 0, 1);
+  }
+}
