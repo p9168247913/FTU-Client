@@ -807,11 +807,28 @@ const Dashboard = () => {
               >
                 <div>
                   <Flex justify="space-between" align="center">
-                    <Text fontSize="lg" fontWeight="bold">
-                      {pid.productName !== 'Unknown'
-                        ? pid.productName
-                        : pid.productId}
-                    </Text>
+                    <Box
+                      w="calc(100% - 40px)" // Adjust width to fit marquee in card layout
+                      overflow="hidden"
+                      position="relative"
+                    >
+                      <Text
+                        fontSize="lg"
+                        fontWeight="bold"
+                        whiteSpace="nowrap"
+                        display="inline-block"
+                        animation={
+                          pid.productName?.length >= 45 || pid.productId?.length >= 45
+                            ? "marquee 10s linear infinite"
+                            : "none"
+                        }
+                        overflow="hidden"
+                      >
+                        {pid.productName !== 'Unknown'
+                          ? pid.productName
+                          : pid.productId}
+                      </Text>
+                    </Box>
                     {isLicenseExpired ? (
                       <Flex align="center" animation="blink 1.5s infinite">
                         <Box
@@ -936,6 +953,9 @@ const Dashboard = () => {
                       textSize={1}
                       waveFrequency={2}
                       waveAmplitude={3}
+                      animation={"infinite ease-in-out 1s running waveAnimation"}
+                      animationDuration={6000}
+                      animationDirection={"alternate"}
                       gradient
                       gradientStops={[
                         { key: '0%', stopColor: '#3498db', offset: '0%' },

@@ -207,7 +207,7 @@ const DevelopmentTable = ({
               color: theadTextColor,
               position: 'sticky',
               top: '0',
-              zIndex: 1, 
+              // zIndex: 1, 
             }}
           >
             <Tr>
