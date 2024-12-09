@@ -114,10 +114,12 @@ function SignIn() {
       }
     } catch (error) {
       setLoading(false);
+      console.log(error);
+      
       toast({
         title: error?.response?.data?.data
           ? error?.response?.data?.data
-          : error?.response?.data?.message,
+          : error?.response?.data?.message ? error?.response?.data?.message : "An error occured!",
         status: 'error',
         duration: 3000,
         isClosable: true,
