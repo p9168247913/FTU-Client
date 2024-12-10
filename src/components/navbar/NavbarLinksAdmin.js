@@ -27,6 +27,8 @@ import navImage from 'assets/img/layout/Navbar.png';
 import { MdNotificationsNone, MdInfoOutline } from 'react-icons/md';
 import { IoMdMoon, IoMdSunny } from 'react-icons/io';
 import { FaEthereum } from 'react-icons/fa';
+
+import logoWhite from '../../assets/img/aqualogo.png';
 import routes from 'routes';
 export default function HeaderLinks(props) {
   const { secondary } = props;
@@ -73,236 +75,95 @@ export default function HeaderLinks(props) {
       w="100%"
       alignItems="center"
       justifyContent="space-between"
-      flexDirection={{ base: 'column', md: 'row' }}
+      flexWrap="wrap"
       bg={menuBg}
-      flexWrap={{ base: 'wrap', md: 'nowrap' }}
-      p={{ base: '5px', md: '10px' }}
-      borderRadius="30px"
+      p={2}
+      borderRadius="25px"
       boxShadow={shadow}
-      style={{ zIndex: '9999', }}
-      gap={3}
+      style={{ zIndex: '9999' }}
+      gap={4}
+      pl={4}
+      pt={3}
     >
-      {/* <SearchBar
-        mb={() => {
-          if (secondary) {
-            return { base: '10px', md: 'unset' };
-          }
-          return 'unset';
-        }}
-        me="10px"
-        borderRadius="30px"
-      /> */}
-      {/* <Flex
-        bg={ethBg}
-        display={secondary ? 'flex' : 'none'}
-        borderRadius="30px"
-        ms="auto"
-        p="6px"
-        align="center"
-        me="6px"
-      >
-        <Flex
-          align="center"
-          justify="center"
-          bg={ethBox}
-          h="29px"
-          w="29px"
-          borderRadius="30px"
-          me="7px"
-        >
-          <Icon color={ethColor} w="9px" h="14px" as={FaEthereum} />
-        </Flex>
-      </Flex> */}
       <Flex
         w={{ base: '100%', md: 'auto' }}
-        alignItems="center"
-        justifyContent={{ base: 'center', md: 'flex-start' }}
-        mb={{ base: '10px', md: '0' }}
+        textAlign={{ base: 'center', md: 'left' }}
+        justifyContent={{ base: 'center', md: 'center' }}
+        gap={2}
+        style={{
+          animation: 'fadeIn 2s ease-in-out, slideIn 1s ease-out',
+        }}
       >
-        <Text
+        {/* <Text
           w="max-content"
           color={ethColor}
-          fontSize={{ base: 'md', md: 'lg' }}
+          fontSize={{ base: 'md', md: 'md' }}
           fontWeight="200"
-          fontFamily="'Great Vibes', cursive" 
+          fontFamily="'Great Vibes', cursive"
           textAlign="center"
           me="6px"
           style={{
             animation: 'fadeIn 2s ease-in-out, slideIn 1s ease-out',
           }}
-        >
-          <span
-            style={{ display: 'inline-block', animation: 'bounce 2s infinite' }}
+          whiteSpace={'wrap'}
+          display={'flex'}
+        > */}
+        {/* <span
+            style={{
+              display: 'inline-block',
+              // animation: 'bounce 2s infinite'
+              border: '1px solid #4CAF50',
+              padding: '2px',
+            }}
           >
-            👋
-          </span>{' '}
-          <span>Hello, Welcome to </span>
-          <span
+            <Image src={logoWhite} alt="logo" width={'15px'} />
+          </span>{' '} */}
+        {/* <span>Hello, Welcome to </span> */}
+        <Image
+          src={logoWhite}
+          alt="logo"
+          width={{ base: '20px', md: '20px' }}
+        />
+        {/* <span
             style={{
               color: '#4CAF50',
               fontWeight: '400',
               textShadow: '1px 1px 1px teal',
+              // border: '1px solid #4CAF50',
             }}
           >
-            Aquasense FTU - Dashboard
-          </span>
-          {/* <span
+            Aquasense Flowmeter Dashboard
+          </span> */}
+        
+        <Text
+          style={{
+            color: '#4CAF50',
+            fontWeight: '400',
+            textShadow: '1px 1px 1px teal',
+          }}
+          fontSize={{ base: 'md', md: 'lg' }}
+          fontWeight="100"
+          textAlign={{ base: 'center', md: 'left' }}
+          lineHeight="1.2"
+        >
+          <i>Aquasense Flowmeter Dashboard</i>
+        </Text>
+        {/* <span
           style={{ display: 'inline-block', animation: 'bounce 2s infinite' }}
         >
           🚀
         </span> */}
-        </Text>
+        {/* </Text> */}
       </Flex>
-      {/* <Menu>
-        <MenuButton p="0px">
-          <Icon
-            mt="6px"
-            as={MdNotificationsNone}
-            color={navbarIcon}
-            w="18px"
-            h="18px"
-            me="10px"
-          />
-        </MenuButton>
-        <MenuList
-          boxShadow={shadow}
-          p="20px"
-          borderRadius="20px"
-          bg={menuBg}
-          border="none"
-          mt="22px"
-          me={{ base: '30px', md: 'unset' }}
-          minW={{ base: 'unset', md: '400px', xl: '450px' }}
-          maxW={{ base: '360px', md: 'unset' }}
-        >
-          <Flex w="100%" mb="20px">
-            <Text fontSize="md" fontWeight="600" color={textColor}>
-              Notifications
-            </Text>
-            <Text
-              fontSize="sm"
-              fontWeight="500"
-              color={textColorBrand}
-              ms="auto"
-              cursor="pointer"
-            >
-              Mark all read
-            </Text>
-          </Flex>
-          <Flex flexDirection="column">
-            <MenuItem
-              _hover={{ bg: 'none' }}
-              _focus={{ bg: 'none' }}
-              px="0"
-              borderRadius="8px"
-              mb="10px"
-            >
-              <ItemContent info="Horizon UI Dashboard PRO" />
-            </MenuItem>
-            <MenuItem
-              _hover={{ bg: 'none' }}
-              _focus={{ bg: 'none' }}
-              px="0"
-              borderRadius="8px"
-              mb="10px"
-            >
-              <ItemContent info="Horizon Design System Free" />
-            </MenuItem>
-          </Flex>
-        </MenuList>
-      </Menu> */}
 
-      {/* <Menu>
-        <MenuButton p="0px">
-          <Icon
-            mt="6px"
-            as={MdInfoOutline}
-            color={navbarIcon}
-            w="18px"
-            h="18px"
-            me="10px"
-          />
-        </MenuButton>
-        <MenuList
-          boxShadow={shadow}
-          p="20px"
-          me={{ base: '30px', md: 'unset' }}
-          borderRadius="20px"
-          bg={menuBg}
-          border="none"
-          mt="22px"
-          minW={{ base: 'unset' }}
-          maxW={{ base: '360px', md: 'unset' }}
-        >
-          <Image src={navImage} borderRadius="16px" mb="28px" />
-          <Flex flexDirection="column">
-            <Link
-              w="100%"
-              //  href="https://horizon-ui.com/pro"
-            >
-              <Button w="100%" h="44px" mb="10px" variant="brand">
-                Buy Horizon UI PRO
-              </Button>
-            </Link>
-            <Link
-              w="100%"
-              // href="https://horizon-ui.com/documentation/docs/introduction"
-            >
-              <Button
-                w="100%"
-                h="44px"
-                mb="10px"
-                border="1px solid"
-                bg="transparent"
-                borderColor={borderButton}
-              >
-                See Documentation
-              </Button>
-            </Link>
-            <Link
-              w="100%"
-              href="https://github.com/horizon-ui/horizon-ui-chakra-ts"
-            >
-              <Button
-                w="100%"
-                h="44px"
-                variant="no-hover"
-                color={textColor}
-                bg="transparent"
-              >
-                Try Horizon Free
-              </Button>
-            </Link>
-          </Flex>
-        </MenuList>
-      </Menu> */}
       <Flex
         w={{ sm: '100%', md: 'auto' }}
         alignItems="center"
         justifyContent="flex-end"
-         flexWrap="wrap"
+        flexWrap="wrap"
         gap={{ base: 1, md: 0 }}
       >
         <SidebarResponsive routes={routes} />
-
-        {/* <Button
-          variant="no-hover"
-          bg="transparent"
-          p="0px"
-          minW="unset"
-          minH="unset"
-          h="18px"
-          w="max-content"
-          onClick={toggleColorMode}
-        >
-          <Icon
-            me="10px"
-            h="18px"
-            w="18px"
-            color={navbarIcon}
-            as={colorMode === 'light' ? IoMdMoon : IoMdSunny}
-          />
-        </Button> */}
 
         <Menu>
           <MenuButton p="0px">
@@ -340,22 +201,6 @@ export default function HeaderLinks(props) {
               </Text>
             </Flex>
             <Flex flexDirection="column" p="10px">
-              {/* <MenuItem
-              _hover={{ bg: 'none' }}
-              _focus={{ bg: 'none' }}
-              borderRadius="8px"
-              px="14px"
-            >
-              <Text fontSize="sm">Profile Settings</Text>
-            </MenuItem>
-            <MenuItem
-              _hover={{ bg: 'none' }}
-              _focus={{ bg: 'none' }}
-              borderRadius="8px"
-              px="14px"
-            >
-              <Text fontSize="sm">Newsletter Settings</Text>
-            </MenuItem> */}
               <MenuItem
                 _hover={{ bg: 'none' }}
                 _focus={{ bg: 'none' }}

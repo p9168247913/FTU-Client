@@ -808,7 +808,7 @@ const Dashboard = () => {
                 <div>
                   <Flex justify="space-between" align="center">
                     <Box
-                      w="calc(100% - 40px)" // Adjust width to fit marquee in card layout
+                      w="calc(100% - 40px)"
                       overflow="hidden"
                       position="relative"
                     >
@@ -818,9 +818,10 @@ const Dashboard = () => {
                         whiteSpace="nowrap"
                         display="inline-block"
                         animation={
-                          pid.productName?.length >= 45 || pid.productId?.length >= 45
-                            ? "marquee 10s linear infinite"
-                            : "none"
+                          pid.productName?.length >= 45 ||
+                          pid.productId?.length >= 45
+                            ? 'marquee 10s linear infinite'
+                            : 'none'
                         }
                         overflow="hidden"
                       >
@@ -948,14 +949,16 @@ const Dashboard = () => {
                           Math.max(convertReading(pid.totalizer) * 1.25, 10)) *
                         100
                       }
-                      width={200}
+                      width={130}
                       height={150}
                       textSize={1}
                       waveFrequency={2}
                       waveAmplitude={3}
-                      animation={"infinite ease-in-out 1s running waveAnimation"}
+                      animation={
+                        'infinite ease-in-out 1s running waveAnimation'
+                      }
                       animationDuration={6000}
-                      animationDirection={"alternate"}
+                      animationDirection={'alternate'}
                       gradient
                       gradientStops={[
                         { key: '0%', stopColor: '#3498db', offset: '0%' },
@@ -972,8 +975,10 @@ const Dashboard = () => {
                         const actualValue = convertReading(pid.totalizer);
                         return (
                           <tspan>
-                            {actualValue?.toFixed(2)}{' '}
-                            <tspan fontSize="12">{unit}</tspan>
+                            <tspan fontSize="11">
+                              {actualValue?.toFixed(2)}{' '}
+                            </tspan>
+                            <tspan fontSize="11">{unit}</tspan>
                           </tspan>
                         );
                       }}
@@ -981,9 +986,9 @@ const Dashboard = () => {
                   </Stack>
 
                   <Stack
-                    spacing={2}
+                    spacing={3}
                     align="center"
-                    p={4}
+                    pt={4}
                     bgGradient={
                       pid.isRepairing
                         ? 'linear(to-r, yellow.100, yellow.200)'
@@ -992,7 +997,7 @@ const Dashboard = () => {
                         : 'linear(to-r, green.100, green.200)'
                     }
                     rounded="md"
-                    border="1px"
+                    border={'1px solid red'}
                     borderColor={cardBorder}
                     style={{
                       filter: isLicenseExpired ? 'blur(4px)' : 'none',
@@ -1002,7 +1007,16 @@ const Dashboard = () => {
                     <Text fontSize="md" fontWeight="bold">
                       FLOWRATE
                     </Text>
-                    <Box w="200px" h="150px">
+                    <Box
+                      display="flex"
+                      justifyContent="center"
+                      alignItems="center"
+                      w="auto"
+                      h="auto"
+                      maxWidth="150px"
+                      pt={8}
+                      mr={2}
+                    >
                       <motion.div
                         initial="hidden"
                         animate="visible"
@@ -1014,12 +1028,12 @@ const Dashboard = () => {
                           needleColor="rgb(247, 132, 56)"
                           startColor="rgb(183, 223, 244)"
                           endColor="rgb(17, 113, 165)"
-                          segments={5}
-                          height={150}
-                          width={200}
+                          segments={4}
+                          height={170}
+                          width={170}
                           minValue={0}
                           maxValue={Math.max(
-                            Math.ceil(flowrateData.value * 1.25),
+                            Math.ceil(flowrateData.value * 1.2),
                             10,
                           )}
                           customSegmentStops={[
@@ -1027,8 +1041,9 @@ const Dashboard = () => {
                             Math.max(flowrateData.value * 0.25, 2.5),
                             Math.max(flowrateData.value * 0.5, 5),
                             Math.max(flowrateData.value * 0.75, 7.5),
-                            Math.max(Math.ceil(flowrateData.value * 1.25), 10),
-                          ]}
+                            Math.max(flowrateData.value, 10),
+                            Math.max(Math.ceil(flowrateData.value * 1.2), 10),
+                          ].map((value) => Number(value.toFixed(1)))}
                           forceRender={true}
                           animate={true}
                           animationDuration={9000}
@@ -1036,55 +1051,18 @@ const Dashboard = () => {
                           currentValueText={`${flowrateData.value.toFixed(2)} ${
                             flowrateData.unit
                           }`}
+                          textStyle={{
+                            fontSize: 'clamp(8px, 1vw, 12px)',
+                            fontWeight: '100',
+                          }}
+                          labelFontSize="clamp(8px, 1vw, 5px)"
+                          valueTextFontSize="clamp(15px, 1.2vw, 15px)"
+                          arcPadding={0.02}
+                          arcWidth={0.3}
                         />
                       </motion.div>
                     </Box>
                   </Stack>
-
-                  {/* <Stack
-                    spacing={2}
-                    align="center"
-                    p={4}
-                    bgGradient={
-                      pid.isRepairing
-                        ? 'linear(to-r, yellow.100, yellow.200)'
-                        : isOlderThan24Hours
-                        ? 'linear(to-r, red.100, red.200)'
-                        : 'linear(to-r, green.100, green.200)'
-                    }
-                    rounded="md"
-                    border="1px"
-                    borderColor={cardBorder}
-                    style={{
-                      filter: isLicenseExpired ? 'blur(4px)' : 'none',
-                      pointerEvents: isLicenseExpired ? 'none' : 'auto',
-                    }}
-                  >
-                    <Text fontSize="md" fontWeight="bold">
-                      FLOWRATE
-                    </Text>
-                    <Box
-                      bg="gray.300"
-                      h="8px"
-                      w="full"
-                      position="relative"
-                      rounded="md"
-                      overflow="hidden"
-                    >
-                      <Box
-                        bg="green.400"
-                        width={`${convertFlowrate(pid.flowrate).value}%`}
-                        h="8px"
-                        position="absolute"
-                        top="0"
-                        left="0"
-                      />
-                    </Box>
-                    <Text fontSize="sm" color="gray.600">
-                      {convertFlowrate(pid.flowrate).value.toFixed(2)}{' '}
-                      {convertFlowrate(pid.flowrate).unit}
-                    </Text>
-                  </Stack> */}
                 </SimpleGrid>
               </Box>
             );
