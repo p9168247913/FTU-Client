@@ -137,7 +137,7 @@ export default function HeaderLinks(props) {
         
         <Text
           style={{
-            color: '#4CAF50',
+            color: 'teal',
             fontWeight: '400',
             textShadow: '1px 1px 1px teal',
           }}

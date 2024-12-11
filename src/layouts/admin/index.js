@@ -129,14 +129,14 @@ export default function Dashboard(props) {
             transitionProperty="top, bottom, width"
             transitionTimingFunction="linear, linear, ease"
             // border={"1px solid RED"}
-            // background="linear-gradient(to right, #eef2f3, #ffffff)"
+            background="linear-gradient(to right, #eef2f3, #ffffff)"
             // bgImage="url('https://media.giphy.com/media/mmv4ATlqgLC81TvAyg/giphy.gif')"
           >
             <Portal>
               <Box>
                 <Navbar
                   onOpen={onOpen}
-                  logoText={'Horizon UI Dashboard PRO'}
+                  logoText={'Aquasense Pvt. Ltd.'}
                   brandText={getActiveRoute(routes)}
                   secondary={getActiveNavbar(routes)}
                   message={getActiveNavbarText(routes)}
