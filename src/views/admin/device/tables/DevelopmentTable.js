@@ -85,8 +85,6 @@ const DevelopmentTable = ({
               colorScheme="red"
               onClick={(e) => {
                 e.stopPropagation();
-                console.log(device);
-                
                 handleDeleteUser(device?._id, e);
               }}
             />
