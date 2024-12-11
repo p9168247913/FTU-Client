@@ -269,7 +269,7 @@ const Devices = () => {
     setEditDevice({
       productName: device?.productName || '',
       productId: device?.productId || '',
-      productType: device?.productType._id || '',
+      productType: device?.productType?._id || '',
       company: device?.company?._id || '',
       flowmeterSerialNumber: device?.flowmeterSerialNumber || '',
       make: device?.make || '',
