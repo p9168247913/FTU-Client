@@ -1071,14 +1071,14 @@ const Dashboard = () => {
 
       {pidData.length > 0 && (
         <Flex
-          justifyContent={{ base: 'center', md: 'space-between' }}
+          justifyContent={{ base: 'center', md: 'flex-end' }}
           alignItems="center"
           mb={4}
           mt={3}
           direction={{ base: 'column', md: 'row' }}
           gap={{ base: 4, md: 0 }}
         >
-          <ChakraSelect
+          {/* <ChakraSelect
             value={rowsPerPage}
             onChange={handleRowsPerPageChange}
             width={{ base: '100%', md: '150px' }}
@@ -1087,7 +1087,7 @@ const Dashboard = () => {
             <option value={20}>20</option>
             <option value={50}>50</option>
             <option value={100}>100</option>
-          </ChakraSelect>
+          </ChakraSelect> */}
 
           <Box mt={{ base: 4, md: 0 }} w={{ base: '100%', md: 'auto' }}>
             {renderPagination()}
