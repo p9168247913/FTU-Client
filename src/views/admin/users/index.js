@@ -384,7 +384,10 @@ const User = () => {
   };
 
   return (
-    <Box pt={{ base: '130px', md: '80px', xl: '80px' }}>
+    <Box
+      pt={{ base: '140px', md: '90px', xl: '90px', sm: '100px' }}
+      px={{ base: '4', md: '8' }}
+    >
       <Flex
         mb="5"
         justifyContent={{ base: 'center', md: 'space-between' }}
@@ -837,74 +840,72 @@ const User = () => {
           <ModalBody p={5}>
             <ModalCloseButton />
             {/* <Box borderWidth="1px" borderRadius="lg" p={5} boxShadow="lg"> */}
-              <Flex alignItems="center" mb={4}>
-                <Avatar size="lg" name={viewUser?.name} mr={4} />
-                <Box>
-                  <Text fontSize="2xl" fontWeight="bold">
-                    {viewUser?.name}
-                  </Text>
-                  <Text color="gray.500">{viewUser?.designation}</Text>
-                </Box>
-              </Flex>
-              <SimpleGrid columns={2} spacing={4}>
-                <Box>
-                  <Text fontSize="sm" color="gray.500">
-                    Email
-                  </Text>
-                  <Text fontSize="md">{viewUser?.email}</Text>
-                </Box>
-                <Box>
-                  <Text fontSize="sm" color="gray.500">
-                    Username
-                  </Text>
-                  <Text fontSize="md">{viewUser?.username}</Text>
-                </Box>
-                <Box>
-                  <Text fontSize="sm" color="gray.500">
-                    Role
-                  </Text>
-                  <Text fontSize="md">{viewUser?.role}</Text>
-                </Box>
-                <Box>
-                  <Text fontSize="sm" color="gray.500">
-                    Phone No.
-                  </Text>
-                  <Text fontSize="md">{viewUser?.phoneNo}</Text>
-                </Box>
-                <Box>
-                  <Text fontSize="sm" color="gray.500">
-                    Company
-                  </Text>
-                  <Text fontSize="md">
-                    {viewUser?.companyId?.name || 'N/A'}
-                  </Text>
-                </Box>
-              </SimpleGrid>
+            <Flex alignItems="center" mb={4}>
+              <Avatar size="lg" name={viewUser?.name} mr={4} />
+              <Box>
+                <Text fontSize="2xl" fontWeight="bold">
+                  {viewUser?.name}
+                </Text>
+                <Text color="gray.500">{viewUser?.designation}</Text>
+              </Box>
+            </Flex>
+            <SimpleGrid columns={2} spacing={4}>
+              <Box>
+                <Text fontSize="sm" color="gray.500">
+                  Email
+                </Text>
+                <Text fontSize="md">{viewUser?.email}</Text>
+              </Box>
+              <Box>
+                <Text fontSize="sm" color="gray.500">
+                  Username
+                </Text>
+                <Text fontSize="md">{viewUser?.username}</Text>
+              </Box>
+              <Box>
+                <Text fontSize="sm" color="gray.500">
+                  Role
+                </Text>
+                <Text fontSize="md">{viewUser?.role}</Text>
+              </Box>
+              <Box>
+                <Text fontSize="sm" color="gray.500">
+                  Phone No.
+                </Text>
+                <Text fontSize="md">{viewUser?.phoneNo}</Text>
+              </Box>
+              <Box>
+                <Text fontSize="sm" color="gray.500">
+                  Company
+                </Text>
+                <Text fontSize="md">{viewUser?.companyId?.name || 'N/A'}</Text>
+              </Box>
+            </SimpleGrid>
 
-              {/* Assigned Devices Table */}
-              {viewUser?.role === 'user' || viewUser?.role === 'companyUser' ? (
-                <>
-                  <Text fontSize="lg" fontWeight="bold" mt={6}>
-                    Assigned Devices
-                  </Text>
-                  <Table variant="simple" color="gray.500" mt={2}>
-                    <Thead>
-                      <Tr>
-                        <Th>Device Name</Th>
-                        <Th>Product ID</Th>
+            {/* Assigned Devices Table */}
+            {viewUser?.role === 'user' || viewUser?.role === 'companyUser' ? (
+              <>
+                <Text fontSize="lg" fontWeight="bold" mt={6}>
+                  Assigned Devices
+                </Text>
+                <Table variant="simple" color="gray.500" mt={2}>
+                  <Thead>
+                    <Tr>
+                      <Th>Device Name</Th>
+                      <Th>Product ID</Th>
+                    </Tr>
+                  </Thead>
+                  <Tbody>
+                    {viewUser?.assignedDevices?.map((device) => (
+                      <Tr key={device._id}>
+                        <Td>{device.productName}</Td>
+                        <Td>{device.productId}</Td>
                       </Tr>
-                    </Thead>
-                    <Tbody>
-                      {viewUser?.assignedDevices?.map((device) => (
-                        <Tr key={device._id}>
-                          <Td>{device.productName}</Td>
-                          <Td>{device.productId}</Td>
-                        </Tr>
-                      ))}
-                    </Tbody>
-                  </Table>
-                </>
-              ) : null}
+                    ))}
+                  </Tbody>
+                </Table>
+              </>
+            ) : null}
             {/* </Box> */}
           </ModalBody>
           {/* <ModalFooter>

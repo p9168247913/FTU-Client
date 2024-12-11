@@ -128,6 +128,9 @@ export default function Dashboard(props) {
             transitionDuration=".2s, .2s, .35s"
             transitionProperty="top, bottom, width"
             transitionTimingFunction="linear, linear, ease"
+            // border={"1px solid RED"}
+            // background="linear-gradient(to right, #eef2f3, #ffffff)"
+            // bgImage="url('https://media.giphy.com/media/mmv4ATlqgLC81TvAyg/giphy.gif')"
           >
             <Portal>
               <Box>
@@ -146,7 +149,7 @@ export default function Dashboard(props) {
             {getRoute() ? (
               <Box
                 mx="auto"
-                p={{ base: '20px', md: '30px' }}
+                p={{ base: '20px', md: '15px' }}
                 pe="20px"
                 minH="100vh"
                 pt="50px"

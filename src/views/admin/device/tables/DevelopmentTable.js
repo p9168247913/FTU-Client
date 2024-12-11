@@ -75,8 +75,6 @@ const DevelopmentTable = ({
               size="sm"
               colorScheme="blue"
               onClick={(e) => {
-                console.log(device);
-
                 handleEditUser(device, e);
               }}
             />

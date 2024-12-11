@@ -432,7 +432,7 @@ const Dashboard = () => {
 
   return (
     <Box
-      pt={{ base: '130px', md: '80px', xl: '80px' }}
+      pt={{ base: '140px', md: '90px', xl: '90px', sm: '100px' }}
       px={{ base: '4', md: '8' }}
     >
       {role === 'companyUser' || role === 'user' ? (
@@ -916,7 +916,7 @@ const Dashboard = () => {
                 </div>
 
                 <SimpleGrid
-                  columns={{ base: 1, md: 2 }}
+                  columns={{ base: 1, md: 2, lg: 2 }}
                   spacing={4}
                   mt={4}
                   w={'full'}
@@ -997,7 +997,6 @@ const Dashboard = () => {
                         : 'linear(to-r, green.100, green.200)'
                     }
                     rounded="md"
-                    border={'1px solid red'}
                     borderColor={cardBorder}
                     style={{
                       filter: isLicenseExpired ? 'blur(4px)' : 'none',

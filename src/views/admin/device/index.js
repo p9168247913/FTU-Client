@@ -338,7 +338,10 @@ const Devices = () => {
   };
 
   return (
-    <Box pt={{ base: '130px', md: '80px', xl: '80px' }}>
+    <Box
+      pt={{ base: '140px', md: '90px', xl: '90px', sm: '100px' }}
+      px={{ base: '4', md: '8' }}
+    >
       <Flex
         mb="5"
         justifyContent={{ base: 'center', md: 'space-between' }}
@@ -346,7 +349,11 @@ const Devices = () => {
         flexDirection={{ base: 'column', md: 'row' }}
         gap={{ base: 4, md: 0 }}
       >
-        <HStack spacing={3} mb={{ base: 3, md: 0 }} width={{ base: '100%', md: 'auto' }}>
+        <HStack
+          spacing={3}
+          mb={{ base: 3, md: 0 }}
+          width={{ base: '100%', md: 'auto' }}
+        >
           <InputGroup width={{ base: '100%', md: 'auto' }}>
             <InputLeftElement pointerEvents="none">
               <SearchIcon color="gray.300" />
@@ -386,7 +393,12 @@ const Devices = () => {
             ))}
           </Select> */}
         </HStack>
-        <Button onClick={onOpen} colorScheme="blue" leftIcon={<AddIcon />} width={{ base: '100%', md: 'auto' }}>
+        <Button
+          onClick={onOpen}
+          colorScheme="blue"
+          leftIcon={<AddIcon />}
+          width={{ base: '100%', md: 'auto' }}
+        >
           Add Device
         </Button>
       </Flex>

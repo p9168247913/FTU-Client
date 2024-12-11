@@ -395,7 +395,10 @@ const Company = () => {
   };
 
   return (
-    <Box pt={{ base: '130px', md: '80px', xl: '80px' }}>
+    <Box
+      pt={{ base: '140px', md: '90px', xl: '90px', sm: '100px' }}
+      px={{ base: '4', md: '8' }}
+    >
       <Flex
         mb="5"
         justifyContent={{ base: 'center', md: 'space-between' }}
@@ -439,7 +442,7 @@ const Company = () => {
           Add Company
         </Button>
       </Flex>
-      
+
       <DevelopmentTable
         tableData={company}
         handleEditUser={(device, e) => handleEdit(device, e)}
@@ -544,7 +547,7 @@ const Company = () => {
                   }}
                 />
               </FormControl>
-              <FormControl mb="4" >
+              <FormControl mb="4">
                 <FormLabel>Allowed Limit</FormLabel>
                 <InputGroup>
                   <Input

@@ -21,7 +21,8 @@ export default function Overview() {
     role: localStorage.getItem('role') || 'role',
   };
   return (
-    <Box pt={{ base: '130px', md: '80px', xl: '80px' }}>
+    <Box pt={{ base: '140px', md: '90px', xl: '90px', sm: '100px' }}
+    px={{ base: '4', md: '8' }}>
       {/* Main Fields */}
       <Grid
         templateColumns={{
