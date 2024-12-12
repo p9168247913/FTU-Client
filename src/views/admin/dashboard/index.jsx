@@ -37,6 +37,7 @@ import ReactSpeedometer from 'react-d3-speedometer';
 import { CircularProgressbar, buildStyles } from 'react-circular-progressbar';
 import 'react-circular-progressbar/dist/styles.css';
 import { motion } from 'framer-motion';
+import { use } from 'react';
 
 const Dashboard = () => {
   const [productId, setProductId] = useState([]);
@@ -57,6 +58,7 @@ const Dashboard = () => {
   const [rowsPerPage, setRowsPerPage] = useState(20);
   const [loading, setLoading] = useState(false);
   const { colorMode } = useColorMode();
+  const [totalConsumption, setTotalConsumption] = useState(0);
 
   const cardBg = useColorModeValue('white', 'gray.700');
   const cardBorder = useColorModeValue('gray.200', 'gray.600');
@@ -412,10 +414,36 @@ const Dashboard = () => {
     setPage(1);
   };
 
-  const totalConsumption = pidData.reduce(
-    (sum, device) => sum + (device.totalizer || 0),
-    0,
-  );
+  const getTotalConsumption = async (companyId) => {
+    try {
+      const queryParams = {};
+      let filter = {};
+
+      filter = {
+        ...filter,
+        companyId: companyId,
+      };
+
+      if (Object.keys(filter).length > 0) {
+        queryParams.filter = JSON.stringify(filter);
+      }
+      const response = await axiosInstance.get(
+        `${baseUrl}/device-readings/total-consumption?${getQueryString(
+          queryParams,
+        )}`,
+        {
+          headers: {
+            Authorization: `Bearer ${Token}`,
+          },
+        },
+      );
+      if (response) {
+        setTotalConsumption(response?.data?.data?.totalConsumption || 0);
+      }
+    } catch (error) {
+      setTotalConsumption(0);
+    }
+  };
 
   const speedometerAnimation = {
     hidden: { opacity: 0, scale: 0.8 },
@@ -430,6 +458,20 @@ const Dashboard = () => {
   const gaugeEndColor = '#6ec6ff';
   const radius = 100;
 
+  const handleCompanyChange = (selectedOption) => {
+    setPage(1);
+    setSelectedCompany2(selectedOption);
+    setSelectedCompany(selectedOption.value);
+    setSelectedPID('');
+    getTotalConsumption(selectedOption.value);
+  };
+
+  useEffect(() => {
+    if (selectedCompany) {
+      getTotalConsumption(selectedCompany);
+    }
+  }, [selectedCompany]);
+  
   return (
     <Box
       pt={{ base: '140px', md: '90px', xl: '90px', sm: '100px' }}
@@ -503,10 +545,7 @@ const Dashboard = () => {
               (option) => option.value === selectedCompany,
             )}
             onChange={(selectedOption) => {
-              setPage(1);
-              setSelectedCompany2(selectedOption);
-              setSelectedCompany(selectedOption.value);
-              setSelectedPID('');
+              handleCompanyChange(selectedOption)
             }}
             placeholder="Select Company"
             isSearchable
