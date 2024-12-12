@@ -746,12 +746,12 @@ const Dashboard = () => {
               new Date() - new Date(pid.timestamp) > 24 * 60 * 60 * 1000;
 
             const isLicenseValidDate =
-              pid?.dashboardLiscense &&
-              pid?.dashboardLiscense !== '' &&
-              new Date(pid.dashboardLiscense).toString() !== 'Invalid Date';
+              pid?.dashboardLicense &&
+              pid?.dashboardLicense !== '' &&
+              new Date(pid.dashboardLicense).toString() !== 'Invalid Date';
 
             const licenseExpiryDate = isLicenseValidDate
-              ? new Date(pid.dashboardLiscense)
+              ? new Date(pid.dashboardLicense)
               : null;
 
             const daysToExpiry = licenseExpiryDate
