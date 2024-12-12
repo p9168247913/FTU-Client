@@ -320,7 +320,7 @@ const Dashboard = () => {
 
   useEffect(() => {
     getDeviceData();
-  }, [selectedPID, unit, selectedCompany, page, rowsPerPage]);
+  }, [selectedPID, selectedCompany, page, rowsPerPage]);
 
   useEffect(() => {
     getCompanyList();

@@ -112,7 +112,7 @@ const Company = () => {
   };
   useEffect(() => {
     getCompany();
-  }, [page, searchTerm]);
+  }, [page, searchTerm, rowsPerPage]);
 
   const getQueryString = (params) => {
     return Object.keys(params)
@@ -352,7 +352,6 @@ const Company = () => {
   };
 
   useEffect(() => {
-    getCompany();
     getUsers();
   }, [page, rowsPerPage, searchTerm]);
 
