@@ -42,6 +42,7 @@ import { SearchIcon } from '@chakra-ui/icons';
 import { SearchBar } from 'components/navbar/searchBar/SearchBar';
 import { useColorModeValue } from '@chakra-ui/react';
 import Select from 'react-select';
+import { set } from 'date-fns';
 
 const User = () => {
   const [users, setUsers] = useState([]);
@@ -155,13 +156,6 @@ const User = () => {
     getAllDeviceList();
   }, [page, rowsPerPage, searchTerm]);
 
-  useEffect(() => {
-    console.log('DEVICE data', device);
-  }, [device]);
-
-  useEffect(() => {
-    console.log('EDIT DEVICE', editUser);
-  }, [editUser]);
   const handleDelete = async (id) => {
     Swal.fire({
       title: 'Are you sure?',
@@ -208,6 +202,7 @@ const User = () => {
   };
 
   const handleSave = async () => {
+    setLoading(true);
     try {
       // Transform assignedDevices to array of device IDs
       const payload = {
@@ -253,8 +248,10 @@ const User = () => {
           duration: 3000,
           isClosable: true,
         });
+        setLoading(false);
       }
     } catch (error) {
+      setLoading(false);
       toast({
         title: error?.response?.data?.message || 'Error updating user',
         status: 'error',
@@ -265,6 +262,8 @@ const User = () => {
   };
 
   const handleAddUser = async () => {
+    setLoading(true);
+
     const payload = {
       name: addUser.name,
       email: addUser.email,
@@ -280,7 +279,6 @@ const User = () => {
     }
 
     try {
-      setLoading(true);
       const response = await axiosInstance.post(
         `${baseUrl}/auth/register`,
         payload,
@@ -822,7 +820,12 @@ const User = () => {
             </SimpleGrid>
           </ModalBody>
           <ModalFooter>
-            <Button onClick={handleSave} colorScheme="blue" mr={3}>
+            <Button
+              onClick={handleSave}
+              colorScheme="blue"
+              mr={3}
+              isLoading={loading}
+            >
               Save Changes
             </Button>
             <Button onClick={onEditClose} variant="ghost">

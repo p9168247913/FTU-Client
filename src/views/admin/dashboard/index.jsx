@@ -18,6 +18,7 @@ import {
   IconButton,
   Card,
   useColorMode,
+  useToast,
 } from '@chakra-ui/react';
 import { ChevronLeftIcon, ChevronRightIcon } from '@chakra-ui/icons';
 import { Spinner } from '@chakra-ui/react';
@@ -34,12 +35,12 @@ import axiosInstance from 'axiosInstance';
 import { MdPinDrop } from 'react-icons/md';
 import { Table, Thead, Tbody, Tr, Th, Td } from '@chakra-ui/react';
 import ReactSpeedometer from 'react-d3-speedometer';
-import { CircularProgressbar, buildStyles } from 'react-circular-progressbar';
 import 'react-circular-progressbar/dist/styles.css';
 import { motion } from 'framer-motion';
 import { use } from 'react';
 
 const Dashboard = () => {
+  const toast = useToast();
   const [productId, setProductId] = useState([]);
   const [selectedPID, setSelectedPID] = useState('');
   const [pidData, setPidData] = useState([]);
@@ -89,59 +90,6 @@ const Dashboard = () => {
   const exceededLimitColor = useColorModeValue('red.400', 'red.300');
   const textColor = useColorModeValue('gray.600', 'gray.400');
   const progressBg = useColorModeValue('gray.200', 'gray.700');
-
-  const customStyles = {
-    container: (base) => ({
-      ...base,
-      width: '100%',
-      zIndex: '999',
-      maxWidth: '400px',
-      marginBottom: '8px',
-    }),
-    control: (base, state) => ({
-      ...base,
-      backgroundColor: colorMode === 'dark' ? '#2D3748' : '#ffffff',
-      color: colorMode === 'dark' ? '#E2E8F0' : '#2D3748',
-      borderColor: state.isFocused
-        ? colorMode === 'dark'
-          ? '#63B3ED'
-          : '#3182CE'
-        : '#CBD5E0',
-      boxShadow: state.isFocused ? '0 0 0 1px #63B3ED' : 'none',
-      '&:hover': {
-        borderColor: colorMode === 'dark' ? '#63B3ED' : '#3182CE',
-      },
-    }),
-    singleValue: (base) => ({
-      ...base,
-      color: colorMode === 'dark' ? '#E2E8F0' : '#2D3748',
-    }),
-    placeholder: (base) => ({
-      ...base,
-      color: colorMode === 'dark' ? '#A0AEC0' : '#A0AEC0',
-    }),
-    menu: (base) => ({
-      ...base,
-      backgroundColor: colorMode === 'dark' ? '#2D3748' : '#ffffff',
-      color: colorMode === 'dark' ? '#E2E8F0' : '#2D3748',
-    }),
-    option: (base, state) => ({
-      ...base,
-      backgroundColor: state.isFocused
-        ? colorMode === 'dark'
-          ? '#4A5568'
-          : '#EDF2F7'
-        : 'transparent',
-      color: state.isSelected
-        ? colorMode === 'dark'
-          ? '#63B3ED'
-          : '#3182CE'
-        : base.color,
-      '&:hover': {
-        backgroundColor: colorMode === 'dark' ? '#4A5568' : '#EDF2F7',
-      },
-    }),
-  };
 
   const selectedCompanyData = companyData.find(
     (company) => company._id === selectedCompany,
@@ -235,7 +183,14 @@ const Dashboard = () => {
         setProductId(formattedProductIds || []);
       }
     } catch (error) {
-      console.log(error);
+      toast({
+        title: error?.response?.data?.data
+          ? error?.response?.data?.data
+          : error?.response?.data?.message,
+        status: 'error',
+        duration: 3000,
+        isClosable: true,
+      });
     }
   };
 
@@ -286,7 +241,14 @@ const Dashboard = () => {
         setTotalResult(response?.data?.data?.totalResults);
       }
     } catch (error) {
-      console.log(error);
+      toast({
+        title: error?.response?.data?.data
+          ? error?.response?.data?.data
+          : error?.response?.data?.message,
+        status: 'error',
+        duration: 3000,
+        isClosable: true,
+      });
     } finally {
       setLoading(false);
     }
@@ -312,7 +274,14 @@ const Dashboard = () => {
         }
       }
     } catch (error) {
-      console.log(error);
+      toast({
+        title: error?.response?.data?.data
+          ? error?.response?.data?.data
+          : error?.response?.data?.message,
+        status: 'error',
+        duration: 3000,
+        isClosable: true,
+      });
     }
   };
 
@@ -442,6 +411,14 @@ const Dashboard = () => {
       }
     } catch (error) {
       setTotalConsumption(0);
+      toast({
+        title: error?.response?.data?.data
+          ? error?.response?.data?.data
+          : error?.response?.data?.message,
+        status: 'error',
+        duration: 3000,
+        isClosable: true,
+      });
     }
   };
 
@@ -471,7 +448,7 @@ const Dashboard = () => {
       getTotalConsumption(selectedCompany);
     }
   }, [selectedCompany]);
-  
+
   return (
     <Box
       pt={{ base: '140px', md: '90px', xl: '90px', sm: '100px' }}
@@ -545,7 +522,7 @@ const Dashboard = () => {
               (option) => option.value === selectedCompany,
             )}
             onChange={(selectedOption) => {
-              handleCompanyChange(selectedOption)
+              handleCompanyChange(selectedOption);
             }}
             placeholder="Select Company"
             isSearchable

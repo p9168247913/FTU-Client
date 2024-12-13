@@ -164,7 +164,14 @@ const AnalyticsPage = () => {
         setProductId(formattedProductIds || []);
       }
     } catch (error) {
-      console.log(error);
+      toast({
+        title: error?.response?.data?.data
+          ? error?.response?.data?.data
+          : error?.response?.data?.message,
+        status: 'error',
+        duration: 3000,
+        isClosable: true,
+      });
     } finally {
       setLoadingProductId(false);
     }
@@ -203,7 +210,14 @@ const AnalyticsPage = () => {
         setTotalResult(response?.data?.data?.totalResults);
       }
     } catch (error) {
-      console.log(error);
+      toast({
+        title: error?.response?.data?.data
+          ? error?.response?.data?.data
+          : error?.response?.data?.message,
+        status: 'error',
+        duration: 3000,
+        isClosable: true,
+      });
     } finally {
       setLoading(false);
     }
@@ -269,7 +283,14 @@ const AnalyticsPage = () => {
         });
       }
     } catch (error) {
-      console.log(error);
+      toast({
+        title: error?.response?.data?.data
+          ? error?.response?.data?.data
+          : error?.response?.data?.message,
+        status: 'error',
+        duration: 3000,
+        isClosable: true,
+      });
     } finally {
       setLoadingGraph(false);
     }

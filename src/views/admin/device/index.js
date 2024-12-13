@@ -827,7 +827,7 @@ const Devices = () => {
               onClick={handleSaveNewDevice}
               isLoading={loading}
             >
-              Save
+              Add
             </Button>
           </ModalFooter>
         </ModalContent>
