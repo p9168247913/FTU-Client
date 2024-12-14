@@ -21,11 +21,11 @@ import {
   Card,
   Tooltip as ChakraToolTip,
   useColorMode,
-  keyframes,
 } from '@chakra-ui/react';
 import Select from 'react-select';
 import { useColorModeValue } from '@chakra-ui/react';
 import { Bar } from 'react-chartjs-2';
+import { keyframes } from '@emotion/react';
 import {
   Chart as ChartJS,
   CategoryScale,
