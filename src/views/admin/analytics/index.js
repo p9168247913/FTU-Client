@@ -19,7 +19,9 @@ import {
   InputGroup,
   useToast,
   Card,
+  Tooltip as ChakraToolTip,
   useColorMode,
+  keyframes,
 } from '@chakra-ui/react';
 import Select from 'react-select';
 import { useColorModeValue } from '@chakra-ui/react';
@@ -38,8 +40,9 @@ import DevelopmentTable from './tables/DevelopmentTable';
 import { SearchIcon, DownloadIcon } from '@chakra-ui/icons';
 import axiosInstance from 'axiosInstance';
 import baseUrl from 'Base_Url/baseUrl';
+import { CloseIcon } from '@chakra-ui/icons';
+import { useBreakpointValue } from '@chakra-ui/react';
 
-// Register Chart.js components
 ChartJS.register(
   CategoryScale,
   LinearScale,
@@ -435,6 +438,26 @@ const AnalyticsPage = () => {
     }
   }, [graphPid, timeFrame]);
 
+  const [isTooltipVisible, setIsTooltipVisible] = useState(true);
+  const tooltipPlacement = useBreakpointValue({ base: 'left', md: 'bottom', sm: 'bottom', lg: 'left' });
+  const blink = keyframes`
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.5; }
+  `;
+
+  const blinkAnimation = `${blink} 2s infinite`;
+
+  const handleCloseTooltip = () => {
+    console.log('Tooltip closed.');
+    setIsTooltipVisible(false);
+  };
+
+  useEffect(() => {
+    if (!isTooltipVisible) {
+      console.log('Tooltip closed.');
+    }
+  }, [isTooltipVisible]);
+
   return (
     <Box
       pt={{ base: '140px', md: '90px', xl: '90px', sm: '100px' }}
@@ -457,16 +480,51 @@ const AnalyticsPage = () => {
           isSearchable={true}
           styles={customStyles}
         />
-
-        <Button
-          p={5}
-          leftIcon={<DownloadIcon />}
-          colorScheme="green"
-          onClick={() => setIsModalOpen(true)}
-          w={{ base: '100%', md: 'auto' }}
-        >
-          Download Report
-        </Button>
+        <Box position="relative">
+          <ChakraToolTip
+            label={
+              <Flex alignItems="center" justifyContent="space-between">
+                <span>Download report here!</span>
+                <Button
+                  size="xs"
+                  ml={2}
+                  onClick={(e) => {
+                    e.stopPropagation(); 
+                    // console.log('Close tooltip');
+                    
+                    handleCloseTooltip();
+                  }}
+                  variant="ghost"
+                  p={0}
+                  h="auto"
+                >
+                  <CloseIcon w={2} h={2} />
+                </Button>
+              </Flex>
+            }
+            isOpen={isTooltipVisible}
+            placement={tooltipPlacement}
+            hasArrow
+            bg="blue.500"
+            color="white"
+            fontSize="sm"
+            p={2}
+            borderRadius="md"
+            sx={{
+              animation: blinkAnimation,
+            }}
+          >
+            <Button
+              p={5}
+              leftIcon={<DownloadIcon />}
+              colorScheme="green"
+              onClick={() => setIsModalOpen(true)}
+              w={{ base: '100%', md: 'auto' }}
+            >
+              Download Report
+            </Button>
+          </ChakraToolTip>
+        </Box>
       </Flex>
 
       <DevelopmentTable

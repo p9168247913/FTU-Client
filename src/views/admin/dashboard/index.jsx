@@ -455,29 +455,182 @@ const Dashboard = () => {
       px={{ base: '4', md: '8' }}
     >
       {role === 'companyUser' || role === 'user' ? (
-        <Card p={{ base: 2, md: 4 }} mb={4}>
-          <Text
-            fontSize={{ base: 'lg', md: '2xl' }}
-            fontWeight="bold"
-            mb={{ base: 2, md: 4 }}
-            textAlign={{ base: 'center', md: 'left' }}
+        <motion.div
+          initial={{ opacity: 0, y: -50 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{
+            duration: 0.8,
+            ease: 'easeOut',
+            delay: 0.2,
+          }}
+        >
+          <Card p={{ base: 2, md: 4 }} mb={4}>
+            <Text
+              fontSize={{ base: 'lg', md: '2xl' }}
+              fontWeight="bold"
+              mb={{ base: 2, md: 4 }}
+              textAlign={{ base: 'center', md: 'left' }}
+            >
+              {selectedCompany2?.label}
+            </Text>
+            <Box mb={2}>
+              <Flex
+                gap={{ base: 1, md: 2 }}
+                mb={1}
+                flexDirection={{ base: 'column', md: 'row' }}
+                alignItems={{ base: 'center', md: 'flex-start' }}
+              >
+                <Text fontSize={{ base: 'md', md: 'lg' }} fontWeight="bold">
+                  Total Consumption:
+                </Text>
+                <Text
+                  mt={{ base: 0, md: 0.5 }}
+                  fontSize={{ base: 'sm', md: 'md' }}
+                  color={textColor}
+                >
+                  {convertReading(totalConsumption).toFixed(2) +
+                    ' / ' +
+                    convertReading(
+                      selectedCompanyData?.allowedLimit || 0,
+                    ).toFixed(2)}{' '}
+                  {unit}
+                </Text>
+              </Flex>
+              <Progress
+                value={
+                  (totalConsumption /
+                    (selectedCompanyData?.allowedLimit || 1)) *
+                  100
+                }
+                colorScheme={
+                  totalConsumption <= (selectedCompanyData?.allowedLimit || 0)
+                    ? 'green'
+                    : 'red'
+                }
+                bg={progressBg}
+                hasStripe
+                isAnimated
+                rounded="md"
+                height={{ base: '8px', md: '12px' }}
+                w={{ base: '80%', md: '20%' }}
+                mx={{ base: 'auto', md: 0 }}
+              />
+              <Text fontSize="sm" color={withinLimitColor} mt={2}>
+                {(
+                  (totalConsumption /
+                    (selectedCompanyData?.allowedLimit || 1)) *
+                  100
+                ).toFixed(1)}
+                % of limit
+              </Text>
+            </Box>
+          </Card>
+        </motion.div>
+      ) : (
+        <Box w="100%" maxWidth="600px" mx="auto" mb={4}>
+          <motion.div
+            initial={{ opacity: 0, y: -50 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{
+              duration: 0.8,
+              ease: 'easeOut',
+              delay: 0.2,
+            }}
           >
-            {selectedCompany2?.label}
-          </Text>
-          <Box mb={2}>
+            <Select
+              options={companyOptions}
+              value={companyOptions.find(
+                (option) => option.value === selectedCompany,
+              )}
+              onChange={(selectedOption) => {
+                handleCompanyChange(selectedOption);
+              }}
+              placeholder="Select Company"
+              isSearchable
+              styles={{
+                container: (base) => ({
+                  ...base,
+                  width: '100%',
+                  bgColor: 'gray.100',
+                }),
+                control: (base) => ({
+                  ...base,
+                  backgroundColor: inputBg,
+                  color: inputTextColor,
+                  borderColor: borderColor,
+                  boxShadow: 'none',
+                  '&:hover': {
+                    borderColor: hoverBorderColor,
+                  },
+                }),
+                singleValue: (base) => ({
+                  ...base,
+                  color: inputTextColor,
+                }),
+                input: (base) => ({
+                  ...base,
+                  color: inputTextColor,
+                }),
+                placeholder: (base) => ({
+                  ...base,
+                  color: placeholderColor,
+                }),
+                menu: (base) => ({
+                  ...base,
+                  backgroundColor: inputBg,
+                  maxHeight: '200px',
+                  // overflowY: 'auto',
+                }),
+                menuList: (base) => ({
+                  ...base,
+                  backgroundColor: inputBg,
+                }),
+                option: (base, { isFocused, isSelected }) => ({
+                  ...base,
+                  backgroundColor: isSelected
+                    ? selectedBg
+                    : isFocused
+                    ? focusedBg
+                    : 'transparent',
+                  color: inputTextColor,
+                  '&:hover': {
+                    backgroundColor: selectedBg,
+                  },
+                }),
+              }}
+            />
+          </motion.div>
+        </Box>
+      )}
+
+      {role !== 'companyUser' && role !== 'user' && selectedCompany && (
+        <motion.div
+          initial={{ opacity: 0, y: 0 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{
+            duration: 0.8,
+            ease: 'easeOut',
+            delay: 1,
+          }}
+        >
+          <Box mb={{ base: 4, md: 8 }}>
             <Flex
               gap={{ base: 1, md: 2 }}
               mb={1}
               flexDirection={{ base: 'column', md: 'row' }}
               alignItems={{ base: 'center', md: 'flex-start' }}
             >
-              <Text fontSize={{ base: 'md', md: 'lg' }} fontWeight="bold">
+              <Text
+                fontSize={{ base: 'md', md: 'lg' }}
+                fontWeight="bold"
+                textAlign={{ base: 'center', md: 'left' }}
+              >
                 Total Consumption:
               </Text>
               <Text
-                mt={{ base: 0, md: 0.5 }}
                 fontSize={{ base: 'sm', md: 'md' }}
                 color={textColor}
+                textAlign={{ base: 'center', md: 'left' }}
               >
                 {convertReading(totalConsumption).toFixed(2) +
                   ' / ' +
@@ -505,141 +658,20 @@ const Dashboard = () => {
               w={{ base: '80%', md: '20%' }}
               mx={{ base: 'auto', md: 0 }}
             />
-            <Text fontSize="sm" color={withinLimitColor} mt={2}>
+            <Text
+              fontSize={{ base: 'xs', md: 'sm' }}
+              color={progressColor}
+              mt={{ base: 1, md: 2 }}
+              textAlign={{ base: 'center', md: 'left' }}
+            >
               {(
                 (totalConsumption / (selectedCompanyData?.allowedLimit || 1)) *
                 100
               ).toFixed(1)}
-              % of limit
+              % of allowed limit
             </Text>
           </Box>
-        </Card>
-      ) : (
-        <Box w="100%" maxWidth="600px" mx="auto" mb={4}>
-          <Select
-            options={companyOptions}
-            value={companyOptions.find(
-              (option) => option.value === selectedCompany,
-            )}
-            onChange={(selectedOption) => {
-              handleCompanyChange(selectedOption);
-            }}
-            placeholder="Select Company"
-            isSearchable
-            styles={{
-              container: (base) => ({
-                ...base,
-                width: '100%',
-                bgColor: 'gray.100',
-              }),
-              control: (base) => ({
-                ...base,
-                backgroundColor: inputBg,
-                color: inputTextColor,
-                borderColor: borderColor,
-                boxShadow: 'none',
-                '&:hover': {
-                  borderColor: hoverBorderColor,
-                },
-              }),
-              singleValue: (base) => ({
-                ...base,
-                color: inputTextColor,
-              }),
-              input: (base) => ({
-                ...base,
-                color: inputTextColor,
-              }),
-              placeholder: (base) => ({
-                ...base,
-                color: placeholderColor,
-              }),
-              menu: (base) => ({
-                ...base,
-                backgroundColor: inputBg,
-                maxHeight: '200px',
-                // overflowY: 'auto',
-              }),
-              menuList: (base) => ({
-                ...base,
-                backgroundColor: inputBg,
-              }),
-              option: (base, { isFocused, isSelected }) => ({
-                ...base,
-                backgroundColor: isSelected
-                  ? selectedBg
-                  : isFocused
-                  ? focusedBg
-                  : 'transparent',
-                color: inputTextColor,
-                '&:hover': {
-                  backgroundColor: selectedBg,
-                },
-              }),
-            }}
-          />
-        </Box>
-      )}
-
-      {role !== 'companyUser' && role !== 'user' && selectedCompany && (
-        <Box mb={{ base: 4, md: 8 }}>
-          <Flex
-            gap={{ base: 1, md: 2 }}
-            mb={1}
-            flexDirection={{ base: 'column', md: 'row' }}
-            alignItems={{ base: 'center', md: 'flex-start' }}
-          >
-            <Text
-              fontSize={{ base: 'md', md: 'lg' }}
-              fontWeight="bold"
-              textAlign={{ base: 'center', md: 'left' }}
-            >
-              Total Consumption:
-            </Text>
-            <Text
-              fontSize={{ base: 'sm', md: 'md' }}
-              color={textColor}
-              textAlign={{ base: 'center', md: 'left' }}
-            >
-              {convertReading(totalConsumption).toFixed(2) +
-                ' / ' +
-                convertReading(selectedCompanyData?.allowedLimit || 0).toFixed(
-                  2,
-                )}{' '}
-              {unit}
-            </Text>
-          </Flex>
-          <Progress
-            value={
-              (totalConsumption / (selectedCompanyData?.allowedLimit || 1)) *
-              100
-            }
-            colorScheme={
-              totalConsumption <= (selectedCompanyData?.allowedLimit || 0)
-                ? 'green'
-                : 'red'
-            }
-            bg={progressBg}
-            hasStripe
-            isAnimated
-            rounded="md"
-            height={{ base: '8px', md: '12px' }}
-            w={{ base: '80%', md: '20%' }}
-            mx={{ base: 'auto', md: 0 }}
-          />
-          <Text
-            fontSize={{ base: 'xs', md: 'sm' }}
-            color={progressColor}
-            mt={{ base: 1, md: 2 }}
-            textAlign={{ base: 'center', md: 'left' }}
-          >
-            {(
-              (totalConsumption / (selectedCompanyData?.allowedLimit || 1)) *
-              100
-            ).toFixed(1)}
-            % of allowed limit
-          </Text>
-        </Box>
+        </motion.div>
       )}
 
       <Flex
@@ -650,94 +682,110 @@ const Dashboard = () => {
         gap={{ base: 4, md: 0 }}
         mb={4}
       >
-        <Select
-          options={productIdOptions}
-          value={productIdOptions?.find(
-            (option) => option.value === selectedPID,
-          )}
-          onChange={handleSelectChange}
-          placeholder="Select Product ID"
-          isSearchable={true}
-          styles={{
-            container: (base) => ({
-              ...base,
-              width: '100%',
-              maxWidth: '300px',
-            }),
-            control: (base) => ({
-              ...base,
-              backgroundColor: selectBg, // Use pre-defined dark/light color
-              color: selectTextColor,
-              borderColor: selectBorderColor,
-              ':hover': {
-                borderColor: selectHoverBorderColor,
-              },
-            }),
-            menu: (base) => ({
-              ...base,
-              backgroundColor: selectBg, // Set a solid background color
-              zIndex: 10, // Ensure it appears above other content
-            }),
-            menuList: (base) => ({
-              ...base,
-              backgroundColor: selectBg, // Consistent background
-              maxHeight: '200px', // Limit height for scrolling
-              overflowY: 'auto', // Allow scroll when content overflows
-            }),
-            option: (base, state) => ({
-              ...base,
-              backgroundColor: state.isFocused ? selectOptionHoverBg : selectBg, // Highlight focused option
-              color: selectTextColor,
-              ':active': {
-                backgroundColor: selectOptionHoverBg,
-              },
-            }),
-            singleValue: (base) => ({
-              ...base,
-              color: selectTextColor, // Ensure selected value is readable
-            }),
-          }}
-        />
+        <motion.div
+          style={{ width: '300px' }}
+          initial={{ opacity: 0, x: -50 }} // Start hidden and to the left
+          animate={{ opacity: 1, x: 0 }} // Fade in and slide to position
+          transition={{ duration: 0.8, ease: 'easeOut' }} // Smooth easing
+        >
+          <Select
+            options={productIdOptions}
+            value={productIdOptions?.find(
+              (option) => option.value === selectedPID,
+            )}
+            onChange={handleSelectChange}
+            placeholder="Select Product ID"
+            isSearchable={true}
+            styles={{
+              container: (base) => ({
+                ...base,
+                width: '100%',
+                maxWidth: '300px',
+              }),
+              control: (base) => ({
+                ...base,
+                backgroundColor: selectBg, // Use pre-defined dark/light color
+                color: selectTextColor,
+                borderColor: selectBorderColor,
+                ':hover': {
+                  borderColor: selectHoverBorderColor,
+                },
+              }),
+              menu: (base) => ({
+                ...base,
+                backgroundColor: selectBg, // Set a solid background color
+                zIndex: 10, // Ensure it appears above other content
+              }),
+              menuList: (base) => ({
+                ...base,
+                backgroundColor: selectBg, // Consistent background
+                maxHeight: '200px', // Limit height for scrolling
+                overflowY: 'auto', // Allow scroll when content overflows
+              }),
+              option: (base, state) => ({
+                ...base,
+                backgroundColor: state.isFocused
+                  ? selectOptionHoverBg
+                  : selectBg, // Highlight focused option
+                color: selectTextColor,
+                ':active': {
+                  backgroundColor: selectOptionHoverBg,
+                },
+              }),
+              singleValue: (base) => ({
+                ...base,
+                color: selectTextColor,
+              }),
+            }}
+          />
+        </motion.div>
 
-        <Select
-          options={unitOptions}
-          value={unitOptions.find((option) => option.value === unit)}
-          onChange={(selectedOption) => setUnit(selectedOption.value)}
-          placeholder="Select Unit"
-          isSearchable={false}
-          styles={{
-            container: (base) => ({
-              ...base,
-              width: '100%',
-              maxWidth: '150px',
-            }),
-            control: (base) => ({
-              ...base,
-              backgroundColor: selectBg,
-              color: selectTextColor,
-              borderColor: selectBorderColor,
-              ':hover': {
-                borderColor: selectHoverBorderColor,
-              },
-            }),
-            menu: (base) => ({
-              ...base,
-              backgroundColor: selectMenuBg,
-              color: selectTextColor,
-            }),
-            option: (base, state) => ({
-              ...base,
-              backgroundColor: state.isFocused
-                ? selectOptionHoverBg
-                : selectMenuBg,
-              color: selectTextColor,
-            }),
-            singleValue: (base) => ({
-              ...base,
-              color: selectTextColor,
-            }),
-          }}
-        />
+        <motion.div
+          style={{ width: '150px' }}
+          initial={{ opacity: 0, x: 50 }}
+          animate={{ opacity: 1, x: 0 }} // Fade in and slide to position
+          transition={{ duration: 0.8, ease: 'easeOut' }} // Smooth easing
+        >
+          <Select
+            options={unitOptions}
+            value={unitOptions.find((option) => option.value === unit)}
+            onChange={(selectedOption) => setUnit(selectedOption.value)}
+            placeholder="Select Unit"
+            isSearchable={false}
+            styles={{
+              container: (base) => ({
+                ...base,
+                width: '100%',
+                maxWidth: '150px',
+              }),
+              control: (base) => ({
+                ...base,
+                backgroundColor: selectBg,
+                color: selectTextColor,
+                borderColor: selectBorderColor,
+                ':hover': {
+                  borderColor: selectHoverBorderColor,
+                },
+              }),
+              menu: (base) => ({
+                ...base,
+                backgroundColor: selectMenuBg,
+                color: selectTextColor,
+              }),
+              option: (base, state) => ({
+                ...base,
+                backgroundColor: state.isFocused
+                  ? selectOptionHoverBg
+                  : selectMenuBg,
+                color: selectTextColor,
+              }),
+              singleValue: (base) => ({
+                ...base,
+                color: selectTextColor,
+              }),
+            }}
+          />
+        </motion.div>
       </Flex>
 
       {loading ? (
@@ -959,46 +1007,59 @@ const Dashboard = () => {
                     <Text fontSize="md" fontWeight="bold">
                       TOTALIZER
                     </Text>
-                    <LiquidGauge
-                      value={
-                        (convertReading(pid.totalizer) /
-                          Math.max(convertReading(pid.totalizer) * 1.25, 10)) *
-                        100
-                      }
-                      width={130}
-                      height={150}
-                      textSize={1}
-                      waveFrequency={2}
-                      waveAmplitude={3}
-                      animation={
-                        'infinite ease-in-out 1s running waveAnimation'
-                      }
-                      animationDuration={6000}
-                      animationDirection={'alternate'}
-                      gradient
-                      gradientStops={[
-                        { key: '0%', stopColor: '#3498db', offset: '0%' },
-                        { key: '100%', stopColor: 'teal', offset: '100%' },
-                      ]}
-                      circleStyle={{
-                        fill: 'lightgray',
+
+                    <motion.div
+                      initial={{ opacity: 0, y: 20 }} // Starts slightly below and invisible
+                      animate={{ opacity: 1, y: 0 }} // Moves to the original position and fades in
+                      transition={{
+                        duration: 1, // Duration of the animation (1 second)
+                        ease: 'easeInOut', // Smooth easing
                       }}
-                      waveStyle={{
-                        fill: 'url(#gradient)',
-                        animation: 'waveAnimation 2s ease-in-out infinite',
-                      }}
-                      textRenderer={(value) => {
-                        const actualValue = convertReading(pid.totalizer);
-                        return (
-                          <tspan>
-                            <tspan fontSize="11">
-                              {actualValue?.toFixed(2)}{' '}
+                    >
+                      <LiquidGauge
+                        value={
+                          (convertReading(pid.totalizer) /
+                            Math.max(
+                              convertReading(pid.totalizer) * 1.25,
+                              10,
+                            )) *
+                          100
+                        }
+                        width={130}
+                        height={150}
+                        textSize={1}
+                        waveFrequency={2}
+                        waveAmplitude={3}
+                        animation={
+                          'infinite ease-in-out 1s running waveAnimation'
+                        }
+                        animationDuration={6000}
+                        animationDirection={'alternate'}
+                        gradient
+                        gradientStops={[
+                          { key: '0%', stopColor: '#3498db', offset: '0%' },
+                          { key: '100%', stopColor: 'teal', offset: '100%' },
+                        ]}
+                        circleStyle={{
+                          fill: 'lightgray',
+                        }}
+                        waveStyle={{
+                          fill: 'url(#gradient)',
+                          animation: 'waveAnimation 2s ease-in-out infinite',
+                        }}
+                        textRenderer={(value) => {
+                          const actualValue = convertReading(pid.totalizer);
+                          return (
+                            <tspan>
+                              <tspan fontSize="11">
+                                {actualValue?.toFixed(2)}{' '}
+                              </tspan>
+                              <tspan fontSize="11">{unit}</tspan>
                             </tspan>
-                            <tspan fontSize="11">{unit}</tspan>
-                          </tspan>
-                        );
-                      }}
-                    />
+                          );
+                        }}
+                      />
+                    </motion.div>
                   </Stack>
 
                   <Stack
