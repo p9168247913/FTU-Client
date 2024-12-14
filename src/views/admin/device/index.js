@@ -41,7 +41,7 @@ const Devices = () => {
   const [company, setCompany] = useState([]);
   const [searchTerm, setSearchTerm] = useState({
     productName: '',
-    productType: '',
+    productId: '',
   });
   const [addNewDevice, setAddNewDevice] = useState({
     productName: '',
@@ -116,7 +116,10 @@ const Devices = () => {
     } catch (error) {
       setLoading(false);
       toast({
-        title: error.response.data.message || 'Failed to load devices',
+        title:
+          error.response.data.message ||
+          error.response.data.data ||
+          'Failed to load devices',
         status: 'error',
         isClosable: true,
       });
@@ -351,10 +354,12 @@ const Devices = () => {
       >
         <HStack
           spacing={3}
-          mb={{ base: 3, md: 0 }}
+          mb={{ base: 4, md: 3 }}
+          flexWrap="wrap"
+          justify={{ base: 'center', md: 'flex-start' }}
           width={{ base: '100%', md: 'auto' }}
         >
-          <InputGroup width={{ base: '100%', md: 'auto' }}>
+          <InputGroup width={{ base: '100%', md: 'auto' }}  mb={{ base: 2, md: 0 }}>
             <InputLeftElement pointerEvents="none">
               <SearchIcon color="gray.300" />
             </InputLeftElement>
@@ -365,6 +370,27 @@ const Devices = () => {
                 setSearchTerm((prev) => ({
                   ...prev,
                   productName: e.target.value,
+                }))
+              }
+              leftIcon={<SearchIcon />}
+              bg={useColorModeValue('white', 'gray.700')}
+              color={useColorModeValue('black', 'white')}
+              _placeholder={{
+                color: useColorModeValue('gray.500', 'gray.400'),
+              }}
+            />
+          </InputGroup>
+          <InputGroup width={{ base: '100%', md: 'auto' }}>
+            <InputLeftElement pointerEvents="none">
+              <SearchIcon color="gray.300" />
+            </InputLeftElement>
+            <Input
+              placeholder="Search by product ID"
+              value={searchTerm.productId}
+              onChange={(e) =>
+                setSearchTerm((prev) => ({
+                  ...prev,
+                  productId: e.target.value,
                 }))
               }
               leftIcon={<SearchIcon />}
