@@ -66,6 +66,7 @@ const User = () => {
   const [device, setDevice] = useState([]);
   const [viewUser, setViewUser] = useState(null);
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const modalBg = useColorModeValue('white', 'gray.800');
   const {
     isOpen: isEditOpen,
     onOpen: onEditOpen,
@@ -146,7 +147,15 @@ const User = () => {
       });
       setCompanies(response?.data?.data?.data || []);
     } catch (error) {
-      console.error('Error fetching companies', error);
+      toast({
+        title:
+          error?.response?.data?.message ||
+          error?.response?.data?.data ||
+          'Error fetching companies',
+        status: 'error',
+        duration: 3000,
+        isClosable: true,
+      });
     }
   };
 
@@ -204,7 +213,6 @@ const User = () => {
   const handleSave = async () => {
     setLoading(true);
     try {
-      // Transform assignedDevices to array of device IDs
       const payload = {
         name: editUser.name,
         email: editUser.email,
@@ -221,8 +229,6 @@ const User = () => {
       if (editUser?.companyId?._id) {
         payload.companyId = editUser.companyId._id;
       }
-
-      console.log('payload', payload);
 
       const response = await axiosInstance.put(
         `/auth/updateUser/${editUser._id}`,
@@ -253,7 +259,10 @@ const User = () => {
     } catch (error) {
       setLoading(false);
       toast({
-        title: error?.response?.data?.message || 'Error updating user',
+        title:
+          error?.response?.data?.message ||
+          error?.response?.data?.data ||
+          'Error updating user',
         status: 'error',
         duration: 3000,
         isClosable: true,
@@ -478,9 +487,22 @@ const User = () => {
       {/* Add New User Modal */}
       <Modal isOpen={isOpen} onClose={onClose} motionPreset="slideInRight">
         <ModalOverlay />
-        <ModalContent maxWidth="800px" mx="auto">
-          <ModalHeader>Add New User</ModalHeader>
-          <ModalCloseButton />
+        <ModalContent
+          maxWidth="800px"
+          mx="auto"
+          style={{ height: '77vh', overflow: 'auto' }}
+        >
+          <div
+            style={{
+              position: 'sticky',
+              top: 0,
+              zIndex: '1',
+              backgroundColor: modalBg,
+            }}
+          >
+            <ModalHeader>Add New User</ModalHeader>
+            <ModalCloseButton />
+          </div>
           <ModalBody>
             <SimpleGrid columns={{ base: 1, md: 2 }} spacing="4">
               <FormControl>
@@ -615,7 +637,14 @@ const User = () => {
               )}
             </SimpleGrid>
           </ModalBody>
-          <ModalFooter>
+          <ModalFooter
+            style={{
+              position: 'sticky',
+              bottom: 0,
+              backgroundColor: modalBg,
+              zIndex: '1',
+            }}
+          >
             <Button onClick={handleAddUser} colorScheme="blue" mr={3}>
               Add User
             </Button>
@@ -633,9 +662,22 @@ const User = () => {
         motionPreset="slideInRight"
       >
         <ModalOverlay />
-        <ModalContent maxWidth="800px" mx="auto">
-          <ModalHeader>Edit User</ModalHeader>
-          <ModalCloseButton />
+        <ModalContent
+          maxWidth="800px"
+          mx="auto"
+          style={{ height: '80vh', overflow: 'auto' }}
+        >
+          <div
+            style={{
+              position: 'sticky',
+              top: 0,
+              backgroundColor: modalBg,
+              zIndex: '1',
+            }}
+          >
+            <ModalHeader>Edit User</ModalHeader>
+            <ModalCloseButton />
+          </div>
           <ModalBody>
             <SimpleGrid columns={{ base: 1, md: 2 }} spacing="4">
               <FormControl>
@@ -819,7 +861,14 @@ const User = () => {
               )}
             </SimpleGrid>
           </ModalBody>
-          <ModalFooter>
+          <ModalFooter
+            style={{
+              position: 'sticky',
+              bottom: 0,
+              backgroundColor: modalBg,
+              zIndex: '1',
+            }}
+          >
             <Button
               onClick={handleSave}
               colorScheme="blue"
@@ -838,11 +887,13 @@ const User = () => {
       {/* View User Modal */}
       <Modal isOpen={isViewOpen} onClose={onViewClose} size="lg">
         <ModalOverlay />
-        <ModalContent maxWidth="800px" mx="auto">
-          {/* <ModalHeader>User Details</ModalHeader> */}
+        <ModalContent
+          maxWidth="800px"
+          mx="auto"
+          style={{ maxHeight: '80vh', overflow: 'auto' }}
+        >
           <ModalBody p={5}>
             <ModalCloseButton />
-            {/* <Box borderWidth="1px" borderRadius="lg" p={5} boxShadow="lg"> */}
             <Flex alignItems="center" mb={4}>
               <Avatar size="lg" name={viewUser?.name} mr={4} />
               <Box>
@@ -885,7 +936,6 @@ const User = () => {
               </Box>
             </SimpleGrid>
 
-            {/* Assigned Devices Table */}
             {viewUser?.role === 'user' || viewUser?.role === 'companyUser' ? (
               <>
                 <Text fontSize="lg" fontWeight="bold" mt={6}>
@@ -909,13 +959,7 @@ const User = () => {
                 </Table>
               </>
             ) : null}
-            {/* </Box> */}
           </ModalBody>
-          {/* <ModalFooter>
-            <Button onClick={onViewClose} colorScheme="blue" variant="outline">
-              Close
-            </Button>
-          </ModalFooter> */}
         </ModalContent>
       </Modal>
     </Box>
