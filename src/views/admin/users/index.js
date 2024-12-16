@@ -147,15 +147,7 @@ const User = () => {
       });
       setCompanies(response?.data?.data?.data || []);
     } catch (error) {
-      toast({
-        title:
-          error?.response?.data?.message ||
-          error?.response?.data?.data ||
-          'Error fetching companies',
-        status: 'error',
-        duration: 3000,
-        isClosable: true,
-      });
+      console.error('Error in getting company data', error);
     }
   };
 
@@ -642,7 +634,7 @@ const User = () => {
               position: 'sticky',
               bottom: 0,
               backgroundColor: modalBg,
-              zIndex: '1',
+              // zIndex: '1',
             }}
           >
             <Button onClick={handleAddUser} colorScheme="blue" mr={3}>
@@ -862,10 +854,10 @@ const User = () => {
             </SimpleGrid>
           </ModalBody>
           <ModalFooter
-            style={{
+             style={{
               position: 'sticky',
               bottom: 0,
-              backgroundColor: modalBg,
+              // backgroundColor: modalBg,
               zIndex: '1',
             }}
           >
@@ -918,9 +910,9 @@ const User = () => {
               </Box>
               <Box>
                 <Text fontSize="sm" color="gray.500">
-                  Role
+                  Designation
                 </Text>
-                <Text fontSize="md">{viewUser?.role}</Text>
+                <Text fontSize="md">{viewUser?.designation}</Text>
               </Box>
               <Box>
                 <Text fontSize="sm" color="gray.500">

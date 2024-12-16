@@ -274,14 +274,15 @@ const Dashboard = () => {
         }
       }
     } catch (error) {
-      toast({
-        title: error?.response?.data?.data
-          ? error?.response?.data?.data
-          : error?.response?.data?.message,
-        status: 'error',
-        duration: 3000,
-        isClosable: true,
-      });
+      console.log(error);
+      // toast({
+      //   title: error?.response?.data?.data
+      //     ? error?.response?.data?.data
+      //     : error?.response?.data?.message,
+      //   status: 'error',
+      //   duration: 3000,
+      //   isClosable: true,
+      // });
     }
   };
 

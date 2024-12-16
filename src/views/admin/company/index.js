@@ -1031,6 +1031,10 @@ const Company = () => {
                     <Text fontWeight="bold">Representative:</Text>
                     <Text>{selectedCompany?.companyRepresentativeName}</Text>
                   </Box>
+                  <Box>
+                    <Text fontWeight="bold">Company Admin:</Text>
+                    <Text>{selectedCompany?.companyAdmin?.name}</Text>
+                  </Box>
                 </SimpleGrid>
 
                 {/* Address Section */}

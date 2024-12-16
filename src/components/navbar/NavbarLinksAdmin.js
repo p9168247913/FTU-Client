@@ -134,7 +134,7 @@ export default function HeaderLinks(props) {
           >
             Aquasense Flowmeter Dashboard
           </span> */}
-        
+
         <Text
           style={{
             color: 'teal',
@@ -196,6 +196,10 @@ export default function HeaderLinks(props) {
                 fontSize="sm"
                 fontWeight="700"
                 color={textColor}
+                overflow="hidden"
+                whiteSpace="nowrap"
+                textOverflow="ellipsis"
+                title={`👋 Hey, ${name}`}
               >
                 &nbsp;{`👋 Hey, ${name}`}
               </Text>

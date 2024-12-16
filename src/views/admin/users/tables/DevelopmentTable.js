@@ -35,6 +35,7 @@ const DevelopmentTable = ({
   const textColor = useColorModeValue('secondaryGray.900', 'white');
   const borderColor = useColorModeValue('gray.200', 'whiteAlpha.100');
   const rowHoverBg = useColorModeValue('gray.100', 'gray.700');
+  const role = localStorage.getItem('role');
 
   const renderTableRows = () => {
     if (loading) {
@@ -91,7 +92,20 @@ const DevelopmentTable = ({
                 handleEditUser(user);
               }}
             />
-            <IconButton
+            {
+              role === 'companyUser' && role === 'user' &&
+              <IconButton
+                aria-label="Delete"
+                icon={<DeleteIcon />}
+                size="sm"
+                colorScheme="red"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  handleDeleteUser(user._id);
+                }}
+              />
+            }
+            {/* <IconButton
               aria-label="Delete"
               icon={<DeleteIcon />}
               size="sm"
@@ -100,7 +114,7 @@ const DevelopmentTable = ({
                 e.stopPropagation();
                 handleDeleteUser(user._id);
               }}
-            />
+            /> */}
           </Flex>
         </Td>
       </Tr>

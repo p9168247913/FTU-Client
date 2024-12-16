@@ -179,6 +179,7 @@ const Devices = () => {
   };
 
   const handleSaveNewDevice = async () => {
+    setLoading(true);
     try {
       const response = await axiosInstance.post(
         `${baseUrl}/device/add`,
@@ -216,9 +217,11 @@ const Devices = () => {
         isClosable: true,
       });
       getAllDevices();
+      setLoading(false);
     } catch (error) {
+      setLoading(false);
       toast({
-        title: error.response?.data?.message || 'Failed to add device',
+        title: error.response?.data?.message || error.response?.data?.data || 'Failed to add device',
         status: 'error',
         duration: 3000,
         isClosable: true,
