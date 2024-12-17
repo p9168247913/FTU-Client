@@ -854,7 +854,7 @@ const User = () => {
             </SimpleGrid>
           </ModalBody>
           <ModalFooter
-             style={{
+            style={{
               position: 'sticky',
               bottom: 0,
               // backgroundColor: modalBg,
@@ -887,12 +887,12 @@ const User = () => {
           <ModalBody p={5}>
             <ModalCloseButton />
             <Flex alignItems="center" mb={4}>
-              <Avatar size="lg" name={viewUser?.name} mr={4} />
+              <Avatar size="lg" name={viewUser?.name || 'N/A'} mr={4} />
               <Box>
                 <Text fontSize="2xl" fontWeight="bold">
                   {viewUser?.name}
                 </Text>
-                <Text color="gray.500">{viewUser?.designation}</Text>
+                <Text color="gray.500">{viewUser?.designation || 'N/A'}</Text>
               </Box>
             </Flex>
             <SimpleGrid columns={2} spacing={4}>
@@ -900,25 +900,25 @@ const User = () => {
                 <Text fontSize="sm" color="gray.500">
                   Email
                 </Text>
-                <Text fontSize="md">{viewUser?.email}</Text>
+                <Text fontSize="md">{viewUser?.email || 'N/A'}</Text>
               </Box>
               <Box>
                 <Text fontSize="sm" color="gray.500">
                   Username
                 </Text>
-                <Text fontSize="md">{viewUser?.username}</Text>
+                <Text fontSize="md">{viewUser?.username || 'N/A'}</Text>
               </Box>
               <Box>
                 <Text fontSize="sm" color="gray.500">
                   Designation
                 </Text>
-                <Text fontSize="md">{viewUser?.designation}</Text>
+                <Text fontSize="md">{viewUser?.designation || 'N/A'}</Text>
               </Box>
               <Box>
                 <Text fontSize="sm" color="gray.500">
                   Phone No.
                 </Text>
-                <Text fontSize="md">{viewUser?.phoneNo}</Text>
+                <Text fontSize="md">{viewUser?.phoneNo || 'N/A'}</Text>
               </Box>
               <Box>
                 <Text fontSize="sm" color="gray.500">
@@ -928,7 +928,8 @@ const User = () => {
               </Box>
             </SimpleGrid>
 
-            {viewUser?.role === 'user' || viewUser?.role === 'companyUser' ? (
+            {(viewUser?.role === 'user' || viewUser?.role === 'companyUser') &&
+            viewUser?.assignedDevices?.length > 0 ? (
               <>
                 <Text fontSize="lg" fontWeight="bold" mt={6}>
                   Assigned Devices
@@ -941,7 +942,7 @@ const User = () => {
                     </Tr>
                   </Thead>
                   <Tbody>
-                    {viewUser?.assignedDevices?.map((device) => (
+                    {viewUser.assignedDevices.map((device) => (
                       <Tr key={device._id}>
                         <Td>{device.productName}</Td>
                         <Td>{device.productId}</Td>

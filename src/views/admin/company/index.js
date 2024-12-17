@@ -503,7 +503,7 @@ const Company = () => {
                   }}
                 />
               </FormControl>
-              <FormControl mb="4" isRequired>
+              <FormControl mb="4" >
                 <FormLabel>Secondary Email</FormLabel>
                 <Input
                   name="email2"
@@ -532,7 +532,7 @@ const Company = () => {
                   }}
                 />
               </FormControl>
-              <FormControl mb="4" isRequired>
+              <FormControl mb="4" >
                 <FormLabel>Secondary Contact</FormLabel>
                 <Input
                   name="contact2"
@@ -546,7 +546,7 @@ const Company = () => {
                   }}
                 />
               </FormControl>
-              <FormControl mb="4">
+              <FormControl mb="4" isRequired>
                 <FormLabel>Allowed Limit</FormLabel>
                 <InputGroup>
                   <Input
@@ -570,7 +570,7 @@ const Company = () => {
                   </InputRightElement>
                 </InputGroup>
               </FormControl>
-              <FormControl mb="4" isRequired>
+              <FormControl mb="4" >
                 <FormLabel>Address Line</FormLabel>
                 <Input
                   name="addressLine"
@@ -584,7 +584,7 @@ const Company = () => {
                   }}
                 />
               </FormControl>
-              <FormControl mb="4" isRequired>
+              <FormControl mb="4" >
                 <FormLabel>City</FormLabel>
                 <Input
                   name="city"
@@ -598,7 +598,7 @@ const Company = () => {
                   }}
                 />
               </FormControl>
-              <FormControl mb="4" isRequired>
+              <FormControl mb="4" >
                 <FormLabel>State</FormLabel>
                 <Input
                   name="state"
@@ -612,7 +612,7 @@ const Company = () => {
                   }}
                 />
               </FormControl>
-              <FormControl mb="4" isRequired>
+              <FormControl mb="4" >
                 <FormLabel>Country</FormLabel>
                 <Input
                   name="country"
@@ -626,7 +626,7 @@ const Company = () => {
                   }}
                 />
               </FormControl>
-              <FormControl mb="4" isRequired>
+              <FormControl mb="4" >
                 <FormLabel>Zipcode</FormLabel>
                 <Input
                   name="zipcode"
@@ -640,7 +640,7 @@ const Company = () => {
                   }}
                 />
               </FormControl>
-              <FormControl mb="4" isRequired>
+              <FormControl mb="4" >
                 <FormLabel>Company Contact Person</FormLabel>
                 <Input
                   name="companyRepresentativeName"
@@ -654,7 +654,7 @@ const Company = () => {
                   }}
                 />
               </FormControl>
-              <FormControl mb="4" isRequired>
+              <FormControl mb="4" >
                 <FormLabel>Aquasense Sales Executive</FormLabel>
                 <Select
                   name="aquasenseSalesRepresentative"
@@ -671,7 +671,7 @@ const Company = () => {
                     ))}
                 </Select>
               </FormControl>
-              <FormControl mb="4" isRequired>
+              <FormControl mb="4" >
                 <FormLabel>Aquasense IRM Executive</FormLabel>
                 <Select
                   name="aquasenseIRMUser"
@@ -1005,7 +1005,7 @@ const Company = () => {
                 <SimpleGrid columns={2} spacing={4} mb="4">
                   <Box>
                     <Text fontWeight="bold">Company Name:</Text>
-                    <Text>{selectedCompany?.name}</Text>
+                    <Text>{selectedCompany?.name || 'N/A'}</Text>
                   </Box>
                   {/* <Box>
                     <Text fontWeight="bold">Company ID:</Text>
@@ -1013,27 +1013,27 @@ const Company = () => {
                   </Box> */}
                   <Box>
                     <Text fontWeight="bold">Primary Email:</Text>
-                    <Text>{selectedCompany?.email1}</Text>
+                    <Text>{selectedCompany?.email1 || 'N/A'}</Text>
                   </Box>
                   <Box>
                     <Text fontWeight="bold">Secondary Email:</Text>
-                    <Text>{selectedCompany?.email2}</Text>
+                    <Text>{selectedCompany?.email2 || 'N/A'}</Text>
                   </Box>
                   <Box>
                     <Text fontWeight="bold">Primary Contact:</Text>
-                    <Text>{selectedCompany?.contact1}</Text>
+                    <Text>{selectedCompany?.contact1 || 'N/A' }</Text>
                   </Box>
                   <Box>
                     <Text fontWeight="bold">Secondary Contact:</Text>
-                    <Text>{selectedCompany?.contact2}</Text>
+                    <Text>{selectedCompany?.contact2 || 'N/A'}</Text>
                   </Box>
                   <Box>
                     <Text fontWeight="bold">Representative:</Text>
-                    <Text>{selectedCompany?.companyRepresentativeName}</Text>
+                    <Text>{selectedCompany?.companyRepresentativeName || 'N/A'}</Text>
                   </Box>
                   <Box>
                     <Text fontWeight="bold">Company Admin:</Text>
-                    <Text>{selectedCompany?.companyAdmin?.name}</Text>
+                    <Text>{selectedCompany?.companyAdmin?.name || 'N/A'}</Text>
                   </Box>
                 </SimpleGrid>
 
@@ -1044,50 +1044,54 @@ const Company = () => {
                 <SimpleGrid columns={2} spacing={4} mb="4">
                   <Box>
                     <Text fontWeight="bold">Address Line:</Text>
-                    <Text>{selectedCompany.address?.addressLine}</Text>
+                    <Text>{selectedCompany.address?.addressLine || 'N/A'}</Text>
                   </Box>
                   <Box>
                     <Text fontWeight="bold">City:</Text>
-                    <Text>{selectedCompany.address?.city}</Text>
+                    <Text>{selectedCompany.address?.city || 'N/A'}</Text>
                   </Box>
                   <Box>
                     <Text fontWeight="bold">State:</Text>
-                    <Text>{selectedCompany.address?.state}</Text>
+                    <Text>{selectedCompany.address?.state || 'N/A'}</Text>
                   </Box>
                   <Box>
                     <Text fontWeight="bold">Country:</Text>
-                    <Text>{selectedCompany?.address?.country}</Text>
+                    <Text>{selectedCompany?.address?.country || 'N/A'}</Text>
                   </Box>
                   <Box>
                     <Text fontWeight="bold">Zipcode:</Text>
-                    <Text>{selectedCompany?.address?.zipcode}</Text>
+                    <Text>{selectedCompany?.address?.zipcode || 'N/A'}</Text>
                   </Box>
                 </SimpleGrid>
 
                 {/* Assigned Devices Section */}
-                <Text fontSize="lg" fontWeight="bold" mt="4" mb="2">
-                  Assigned Devices
-                </Text>
-                <Table variant="simple" size="sm" mb="4">
-                  <Thead>
-                    <Tr>
-                      <Th fontSize="sm" fontWeight="bold">
-                        Device Name
-                      </Th>
-                      <Th fontSize="sm" fontWeight="bold">
-                        Product ID
-                      </Th>
-                    </Tr>
-                  </Thead>
-                  <Tbody>
-                    {selectedCompany?.devices.map((device) => (
-                      <Tr key={device._id}>
-                        <Td>{device?.productName}</Td>
-                        <Td>{device?.productId}</Td>
-                      </Tr>
-                    ))}
-                  </Tbody>
-                </Table>
+                {selectedCompany?.devices?.length > 0 && (
+                  <>
+                    <Text fontSize="lg" fontWeight="bold" mt="4" mb="2">
+                      Assigned Devices
+                    </Text>
+                    <Table variant="simple" size="sm" mb="4">
+                      <Thead>
+                        <Tr>
+                          <Th fontSize="sm" fontWeight="bold">
+                            Device Name
+                          </Th>
+                          <Th fontSize="sm" fontWeight="bold">
+                            Product ID
+                          </Th>
+                        </Tr>
+                      </Thead>
+                      <Tbody>
+                        {selectedCompany?.devices.map((device) => (
+                          <Tr key={device._id}>
+                            <Td>{device?.productName}</Td>
+                            <Td>{device?.productId}</Td>
+                          </Tr>
+                        ))}
+                      </Tbody>
+                    </Table>
+                  </>
+                )}
               </Box>
             )}
           </ModalBody>

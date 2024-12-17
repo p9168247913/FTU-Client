@@ -92,8 +92,7 @@ const DevelopmentTable = ({
                 handleEditUser(user);
               }}
             />
-            {
-              role === 'companyUser' && role === 'user' &&
+            {role !== 'companyUser' && role !== 'user' && (
               <IconButton
                 aria-label="Delete"
                 icon={<DeleteIcon />}
@@ -104,7 +103,7 @@ const DevelopmentTable = ({
                   handleDeleteUser(user._id);
                 }}
               />
-            }
+            )}
             {/* <IconButton
               aria-label="Delete"
               icon={<DeleteIcon />}
