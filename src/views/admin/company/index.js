@@ -29,6 +29,9 @@ import {
   Th,
   Td,
   InputRightElement,
+  Card,
+  Tooltip,
+  Icon,
 } from '@chakra-ui/react';
 import {
   AddIcon,
@@ -36,12 +39,29 @@ import {
   EditIcon,
   DeleteIcon,
   SearchIcon,
+  InfoIcon,
 } from '@chakra-ui/icons';
 import axiosInstance from 'axiosInstance';
 import baseUrl from 'Base_Url/baseUrl';
 import DevelopmentTable from './tables/DevelopmentTable';
 import Swal from 'sweetalert2';
 import { useColorModeValue } from '@chakra-ui/react';
+import { FiMapPin } from 'react-icons/fi';
+import {
+  InfoOutlineIcon,
+  EmailIcon,
+  PhoneIcon,
+  AtSignIcon,
+  CloseIcon,
+  CheckCircleIcon,
+  ArrowUpIcon,
+} from '@chakra-ui/icons';
+import { FaMapMarkerAlt } from 'react-icons/fa';
+import { MdDevices, MdStreetview } from 'react-icons/md';
+import { FaFlag, FaGlobe, FaHome } from 'react-icons/fa';
+import { useBreakpointValue } from '@chakra-ui/react';
+
+import { MdLocationCity, MdConfirmationNumber } from 'react-icons/md';
 
 const Company = () => {
   const Token = localStorage.getItem('token');
@@ -105,7 +125,8 @@ const Company = () => {
 
   const modalBg = useColorModeValue('white', 'gray.800');
   const labelColor = useColorModeValue('gray.800', 'gray.300');
-  // Open view modal with company data
+  const columnsCount = useBreakpointValue({ base: 1, sm: 2, md: 2, lg: 3})
+
   const handleRowClick = (company) => {
     setSelectedCompany(company);
     onViewOpen();
@@ -429,6 +450,7 @@ const Company = () => {
               _placeholder={{
                 color: useColorModeValue('gray.500', 'gray.400'),
               }}
+              borderRadius={20}
             />
           </InputGroup>
         </HStack>
@@ -503,7 +525,7 @@ const Company = () => {
                   }}
                 />
               </FormControl>
-              <FormControl mb="4" >
+              <FormControl mb="4">
                 <FormLabel>Secondary Email</FormLabel>
                 <Input
                   name="email2"
@@ -532,7 +554,7 @@ const Company = () => {
                   }}
                 />
               </FormControl>
-              <FormControl mb="4" >
+              <FormControl mb="4">
                 <FormLabel>Secondary Contact</FormLabel>
                 <Input
                   name="contact2"
@@ -570,7 +592,7 @@ const Company = () => {
                   </InputRightElement>
                 </InputGroup>
               </FormControl>
-              <FormControl mb="4" >
+              <FormControl mb="4">
                 <FormLabel>Address Line</FormLabel>
                 <Input
                   name="addressLine"
@@ -584,7 +606,7 @@ const Company = () => {
                   }}
                 />
               </FormControl>
-              <FormControl mb="4" >
+              <FormControl mb="4">
                 <FormLabel>City</FormLabel>
                 <Input
                   name="city"
@@ -598,7 +620,7 @@ const Company = () => {
                   }}
                 />
               </FormControl>
-              <FormControl mb="4" >
+              <FormControl mb="4">
                 <FormLabel>State</FormLabel>
                 <Input
                   name="state"
@@ -612,7 +634,7 @@ const Company = () => {
                   }}
                 />
               </FormControl>
-              <FormControl mb="4" >
+              <FormControl mb="4">
                 <FormLabel>Country</FormLabel>
                 <Input
                   name="country"
@@ -626,7 +648,7 @@ const Company = () => {
                   }}
                 />
               </FormControl>
-              <FormControl mb="4" >
+              <FormControl mb="4">
                 <FormLabel>Zipcode</FormLabel>
                 <Input
                   name="zipcode"
@@ -640,7 +662,7 @@ const Company = () => {
                   }}
                 />
               </FormControl>
-              <FormControl mb="4" >
+              <FormControl mb="4">
                 <FormLabel>Company Contact Person</FormLabel>
                 <Input
                   name="companyRepresentativeName"
@@ -654,7 +676,7 @@ const Company = () => {
                   }}
                 />
               </FormControl>
-              <FormControl mb="4" >
+              <FormControl mb="4">
                 <FormLabel>Aquasense Sales Executive</FormLabel>
                 <Select
                   name="aquasenseSalesRepresentative"
@@ -671,7 +693,7 @@ const Company = () => {
                     ))}
                 </Select>
               </FormControl>
-              <FormControl mb="4" >
+              <FormControl mb="4">
                 <FormLabel>Aquasense IRM Executive</FormLabel>
                 <Select
                   name="aquasenseIRMUser"
@@ -988,90 +1010,187 @@ const Company = () => {
               top: 0,
               backgroundColor: modalBg,
               zIndex: '1',
+              boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
             }}
           >
             <ModalHeader fontSize="2xl" fontWeight="bold" textAlign="center">
-              Company Details
+              <Icon as={InfoOutlineIcon} mr={2} mb={1} />
+              <span>{'Company Details'.toUpperCase()}</span>
             </ModalHeader>
+            <ModalCloseButton />
           </div>
-          <ModalCloseButton />
+
           <ModalBody>
             {selectedCompany && (
               <Box p="4">
-                {/* Basic Information Section */}
-                <Text fontSize="lg" fontWeight="bold" mt="4" mb="2">
-                  Basic Information
+                <Text
+                  fontSize="lg"
+                  fontWeight="bold"
+                  mt="2"
+                  mb="2"
+                  color="purple"
+                >
+                  <Icon as={InfoIcon} mr={2} />
+                  <u>Basic Info.</u>
                 </Text>
-                <SimpleGrid columns={2} spacing={4} mb="4">
-                  <Box>
-                    <Text fontWeight="bold">Company Name:</Text>
-                    <Text>{selectedCompany?.name || 'N/A'}</Text>
-                  </Box>
-                  {/* <Box>
-                    <Text fontWeight="bold">Company ID:</Text>
-                    <Text>{selectedCompany.companyId}</Text>
-                  </Box> */}
-                  <Box>
-                    <Text fontWeight="bold">Primary Email:</Text>
-                    <Text>{selectedCompany?.email1 || 'N/A'}</Text>
-                  </Box>
-                  <Box>
-                    <Text fontWeight="bold">Secondary Email:</Text>
-                    <Text>{selectedCompany?.email2 || 'N/A'}</Text>
-                  </Box>
-                  <Box>
-                    <Text fontWeight="bold">Primary Contact:</Text>
-                    <Text>{selectedCompany?.contact1 || 'N/A' }</Text>
-                  </Box>
-                  <Box>
-                    <Text fontWeight="bold">Secondary Contact:</Text>
-                    <Text>{selectedCompany?.contact2 || 'N/A'}</Text>
-                  </Box>
-                  <Box>
-                    <Text fontWeight="bold">Representative:</Text>
-                    <Text>{selectedCompany?.companyRepresentativeName || 'N/A'}</Text>
-                  </Box>
-                  <Box>
-                    <Text fontWeight="bold">Company Admin:</Text>
-                    <Text>{selectedCompany?.companyAdmin?.name || 'N/A'}</Text>
-                  </Box>
-                </SimpleGrid>
+                <Card bg="gray.200" p="4" boxShadow="md">
+                  <SimpleGrid  columns={{ base: 1, sm: 1, md: 2 }} spacing={4} mb="4">
+                    <Box>
+                      <Text fontWeight="bold" fontSize="sm" color="gray.600">
+                        <Icon color={'gray'} as={AtSignIcon} mr={1} mb={1} />{' '}
+                        Company Name:
+                      </Text>
+                      <Text>{selectedCompany?.name || 'N/A'}</Text>
+                    </Box>
+                    <Box>
+                      <Text fontWeight="bold" fontSize="sm" color="gray.600">
+                        <Icon
+                          color={'orange.600'}
+                          as={EmailIcon}
+                          mr={1}
+                          mb={1}
+                        />{' '}
+                        Primary Email:
+                      </Text>
+                      <Text>{selectedCompany?.email1 || 'N/A'}</Text>
+                    </Box>
+                    <Box>
+                      <Text fontWeight="bold" fontSize="sm" color="gray.600">
+                        <Icon
+                          color={'orange.600'}
+                          as={EmailIcon}
+                          mr={1}
+                          mb={1}
+                        />{' '}
+                        Secondary Email:
+                      </Text>
+                      <Text>{selectedCompany?.email2 || 'N/A'}</Text>
+                    </Box>
+                    <Box>
+                      <Text fontWeight="bold" fontSize="sm" color="gray.600">
+                        <Icon
+                          color={'green.600'}
+                          as={PhoneIcon}
+                          mr={1}
+                          mb={1}
+                        />{' '}
+                        Primary Contact:
+                      </Text>
+                      <Text>{selectedCompany?.contact1 || 'N/A'}</Text>
+                    </Box>
+                    <Box>
+                      <Text fontWeight="bold" fontSize="sm" color="gray.600">
+                        <Icon
+                          color={'green.600'}
+                          as={PhoneIcon}
+                          mr={1}
+                          mb={1}
+                        />{' '}
+                        Secondary Contact:
+                      </Text>
+                      <Text>{selectedCompany?.contact2 || 'N/A'}</Text>
+                    </Box>
+                    <Box>
+                      <Text fontWeight="bold" fontSize="sm" color="gray.600" >
+                        <Icon
+                          color={'blue.600'}
+                          as={CheckCircleIcon}
+                          mr={1}
+                          mb={1}
+                        />{' '}
+                        Representative Name:
+                      </Text>
+                      <Text>
+                        {selectedCompany?.companyRepresentativeName || 'N/A'}
+                      </Text>
+                    </Box>
+                    <Box>
+                      <Text fontWeight="bold" fontSize="sm" color="gray.600">
+                        <Icon
+                          color={'blue.600'}
+                          as={CheckCircleIcon}
+                          mr={1}
+                          mb={1}
+                        />{' '}
+                        Company Admin:
+                      </Text>
+                      <Text>
+                        {selectedCompany?.companyAdmin?.name || 'N/A'}
+                      </Text>
+                    </Box>
+                  </SimpleGrid>
+                </Card>
 
                 {/* Address Section */}
-                <Text fontSize="lg" fontWeight="bold" mt="4" mb="2">
-                  Address
+                <Text
+                  color={'green'}
+                  fontSize="lg"
+                  fontWeight="bold"
+                  mt="4"
+                  mb="2"
+                >
+                  <Icon as={FaMapMarkerAlt} mr={2} />
+                  <u>Address Info.</u>
                 </Text>
-                <SimpleGrid columns={2} spacing={4} mb="4">
-                  <Box>
-                    <Text fontWeight="bold">Address Line:</Text>
-                    <Text>{selectedCompany.address?.addressLine || 'N/A'}</Text>
-                  </Box>
-                  <Box>
-                    <Text fontWeight="bold">City:</Text>
-                    <Text>{selectedCompany.address?.city || 'N/A'}</Text>
-                  </Box>
-                  <Box>
-                    <Text fontWeight="bold">State:</Text>
-                    <Text>{selectedCompany.address?.state || 'N/A'}</Text>
-                  </Box>
-                  <Box>
-                    <Text fontWeight="bold">Country:</Text>
-                    <Text>{selectedCompany?.address?.country || 'N/A'}</Text>
-                  </Box>
-                  <Box>
-                    <Text fontWeight="bold">Zipcode:</Text>
-                    <Text>{selectedCompany?.address?.zipcode || 'N/A'}</Text>
-                  </Box>
-                </SimpleGrid>
+                <Card bg="gray.200" p="4" boxShadow="md">
+                  <SimpleGrid columns={{ base: 1, sm: 1, md: 2 }} spacing={4} mb="4">
+                    <Box>
+                      <Text fontWeight="bold" fontSize="sm" color="gray.600">
+                        <Icon color={'purple'} as={FaHome} mr={1} />{' '}
+                        Address Line:
+                      </Text>
+                      <Text>
+                        {selectedCompany?.address?.addressLine || 'N/A'}
+                      </Text>
+                    </Box>
+                    <Box>
+                      <Text fontWeight="bold" fontSize="sm" color="gray.600">
+                        <Icon color={'pink.400'} as={MdStreetview} mr={1} /> City:
+                      </Text>
+                      <Text>{selectedCompany?.address?.city || 'N/A'}</Text>
+                    </Box>
+                    <Box>
+                      <Text fontWeight="bold" fontSize="sm" color="gray.600">
+                        <Icon color={"orange.500"} as={FaFlag} mr={1} /> State:
+                      </Text>
+                      <Text>{selectedCompany?.address?.state || 'N/A'}</Text>
+                    </Box>
+                    <Box>
+                      <Text fontWeight="bold" fontSize="sm" color="gray.600">
+                        <Icon color={"blue.300"} as={FaGlobe} mr={1} /> Country:
+                      </Text>
+                      <Text>{selectedCompany?.address?.country || 'N/A'}</Text>
+                    </Box>
+                    <Box>
+                      <Text fontWeight="bold" fontSize="sm" color="gray.600">
+                        <Icon as={MdConfirmationNumber} mr={1} /> Zipcode:
+                      </Text>
+                      <Text>{selectedCompany?.address?.zipcode || 'N/A'}</Text>
+                    </Box>
+                  </SimpleGrid>
+                </Card>
 
                 {/* Assigned Devices Section */}
                 {selectedCompany?.devices?.length > 0 && (
                   <>
-                    <Text fontSize="lg" fontWeight="bold" mt="4" mb="2">
-                      Assigned Devices
+                    <Text
+                      color={'orange.800'}
+                      fontSize="lg"
+                      fontWeight="bold"
+                      mt="4"
+                      mb="2"
+                    >
+                      <Icon as={MdDevices} mr={2} /> <u>Assigned Devices</u>
                     </Text>
-                    <Table variant="simple" size="sm" mb="4">
-                      <Thead>
+                    <Table
+                      variant="striped"
+                      colorScheme="blue"
+                      bg="gray.50"
+                      size="sm"
+                      mb="4"
+                      overflow={"auto"}
+                    >
+                      <Thead bg="gray.200" whiteSpace={"nowrap"} >
                         <Tr>
                           <Th fontSize="sm" fontWeight="bold">
                             Device Name
@@ -1081,8 +1200,8 @@ const Company = () => {
                           </Th>
                         </Tr>
                       </Thead>
-                      <Tbody>
-                        {selectedCompany?.devices.map((device) => (
+                      <Tbody >
+                        {selectedCompany.devices.map((device) => (
                           <Tr key={device._id}>
                             <Td>{device?.productName}</Td>
                             <Td>{device?.productId}</Td>
@@ -1094,19 +1213,31 @@ const Company = () => {
                 )}
               </Box>
             )}
+            {/* <Tooltip label="Scroll to Top" placement="top">
+              <Button
+                variant="ghost"
+                ml={2}
+                onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+              >
+                <Icon as={ArrowUpIcon} />
+              </Button>
+            </Tooltip> */}
           </ModalBody>
-          <ModalFooter
+
+          {/* Sticky Footer */}
+          {/* <ModalFooter
             style={{
               position: 'sticky',
               bottom: 0,
               backgroundColor: modalBg,
               zIndex: '1',
+              boxShadow: '0 -2px 8px rgba(0,0,0,0.1)',
             }}
           >
             <Button onClick={onViewClose} variant="ghost">
-              Close
+              <Icon as={CloseIcon} mr={2} /> Close
             </Button>
-          </ModalFooter>
+          </ModalFooter> */}
         </ModalContent>
       </Modal>
     </Box>

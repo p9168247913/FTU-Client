@@ -30,6 +30,7 @@ import {
   InputGroup,
   InputLeftElement,
   SimpleGrid,
+  Icon,
 } from '@chakra-ui/react';
 import { EditIcon, DeleteIcon } from '@chakra-ui/icons';
 import axiosInstance from 'axiosInstance';
@@ -43,6 +44,9 @@ import { SearchBar } from 'components/navbar/searchBar/SearchBar';
 import { useColorModeValue } from '@chakra-ui/react';
 import Select from 'react-select';
 import { set } from 'date-fns';
+import { EmailIcon, PhoneIcon } from '@chakra-ui/icons';
+import { FaUserAlt, FaBuilding, FaIdBadge } from 'react-icons/fa';
+import { MdDevices } from 'react-icons/md';
 
 const User = () => {
   const [users, setUsers] = useState([]);
@@ -406,6 +410,7 @@ const User = () => {
               <SearchIcon color="gray.300" />
             </InputLeftElement>
             <Input
+              borderRadius={20}
               placeholder="Search by name"
               value={searchTerm.name}
               onChange={(e) =>
@@ -424,6 +429,7 @@ const User = () => {
               <SearchIcon color="gray.300" />
             </InputLeftElement>
             <Input
+              borderRadius={20}
               placeholder="Search by email"
               value={searchTerm.email}
               onChange={(e) =>
@@ -442,6 +448,7 @@ const User = () => {
               <SearchIcon color="gray.300" />
             </InputLeftElement>
             <Input
+              borderRadius={20}
               placeholder="Search by username"
               value={searchTerm.username}
               onChange={(e) =>
@@ -898,31 +905,32 @@ const User = () => {
             <SimpleGrid columns={2} spacing={4}>
               <Box>
                 <Text fontSize="sm" color="gray.500">
+                  <Icon color={'orange.600'} as={EmailIcon} mr={1} mb={1} />{' '}
                   Email
                 </Text>
                 <Text fontSize="md">{viewUser?.email || 'N/A'}</Text>
               </Box>
               <Box>
                 <Text fontSize="sm" color="gray.500">
-                  Username
+                  <Icon color={'gray'} as={FaUserAlt} mr={1} /> Username
                 </Text>
                 <Text fontSize="md">{viewUser?.username || 'N/A'}</Text>
               </Box>
               <Box>
                 <Text fontSize="sm" color="gray.500">
-                  Designation
+                  <Icon color={'purple'} as={FaIdBadge} mr={1} /> Designation
                 </Text>
                 <Text fontSize="md">{viewUser?.designation || 'N/A'}</Text>
               </Box>
               <Box>
                 <Text fontSize="sm" color="gray.500">
-                  Phone No.
+                  <Icon color={'green'} as={PhoneIcon} mr={1} /> Phone No.
                 </Text>
                 <Text fontSize="md">{viewUser?.phoneNo || 'N/A'}</Text>
               </Box>
               <Box>
                 <Text fontSize="sm" color="gray.500">
-                  Company
+                  <Icon color={'blue'} as={FaBuilding} mr={1} /> Company
                 </Text>
                 <Text fontSize="md">{viewUser?.companyId?.name || 'N/A'}</Text>
               </Box>
@@ -931,11 +939,25 @@ const User = () => {
             {(viewUser?.role === 'user' || viewUser?.role === 'companyUser') &&
             viewUser?.assignedDevices?.length > 0 ? (
               <>
-                <Text fontSize="lg" fontWeight="bold" mt={6}>
-                  Assigned Devices
+                <Text
+                  color={'orange.800'}
+                  fontSize="lg"
+                  fontWeight="bold"
+                  mt={6}
+                >
+                  <Icon as={MdDevices} mr={2} /> <u>Assigned Devices</u>
                 </Text>
-                <Table variant="simple" color="gray.500" mt={2}>
-                  <Thead>
+                <Table
+                  variant="striped"
+                  colorScheme="blue"
+                  color="gray.500"
+                  mt={2}
+                  bg="gray.50"
+                  size="sm"
+                  mb="4"
+                  overflow={'auto'}
+                >
+                  <Thead bg="gray.200" whiteSpace={'nowrap'}>
                     <Tr>
                       <Th>Device Name</Th>
                       <Th>Product ID</Th>

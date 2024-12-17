@@ -90,6 +90,7 @@ const AnalyticsPage = () => {
     control: (base, state) => ({
       ...base,
       backgroundColor: colorMode === 'dark' ? '#2D3748' : '#ffffff',
+      borderRadius:'20px',
       color: colorMode === 'dark' ? '#E2E8F0' : '#2D3748',
       borderColor: state.isFocused
         ? colorMode === 'dark'
@@ -509,6 +510,8 @@ const AnalyticsPage = () => {
               color: useColorModeValue('gray.500', 'gray.400'),
             }}
             w={{ base: '200px', md: 'auto' }}
+        borderRadius='20px'
+
           >
             <option value="daily">Daily</option>
             <option value="monthly">Monthly</option>

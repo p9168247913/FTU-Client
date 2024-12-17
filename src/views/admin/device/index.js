@@ -221,7 +221,10 @@ const Devices = () => {
     } catch (error) {
       setLoading(false);
       toast({
-        title: error.response?.data?.message || error.response?.data?.data || 'Failed to add device',
+        title:
+          error.response?.data?.message ||
+          error.response?.data?.data ||
+          'Failed to add device',
         status: 'error',
         duration: 3000,
         isClosable: true,
@@ -362,11 +365,15 @@ const Devices = () => {
           justify={{ base: 'center', md: 'flex-start' }}
           width={{ base: '100%', md: 'auto' }}
         >
-          <InputGroup width={{ base: '100%', md: 'auto' }}  mb={{ base: 2, md: 0 }}>
+          <InputGroup
+            width={{ base: '100%', md: 'auto' }}
+            mb={{ base: 2, md: 0 }}
+          >
             <InputLeftElement pointerEvents="none">
               <SearchIcon color="gray.300" />
             </InputLeftElement>
             <Input
+              borderRadius={20}
               placeholder="Search by name"
               value={searchTerm.productName}
               onChange={(e) =>
@@ -388,6 +395,7 @@ const Devices = () => {
               <SearchIcon color="gray.300" />
             </InputLeftElement>
             <Input
+              borderRadius={20}
               placeholder="Search by product ID"
               value={searchTerm.productId}
               onChange={(e) =>

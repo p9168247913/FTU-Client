@@ -559,6 +559,7 @@ const Dashboard = () => {
                   backgroundColor: inputBg,
                   color: inputTextColor,
                   borderColor: borderColor,
+                  borderRadius:'20px',
                   boxShadow: 'none',
                   '&:hover': {
                     borderColor: hoverBorderColor,
@@ -705,9 +706,10 @@ const Dashboard = () => {
               }),
               control: (base) => ({
                 ...base,
-                backgroundColor: selectBg, // Use pre-defined dark/light color
+                backgroundColor: selectBg, 
                 color: selectTextColor,
                 borderColor: selectBorderColor,
+                borderRadius:'20px',
                 ':hover': {
                   borderColor: selectHoverBorderColor,
                 },
@@ -744,8 +746,8 @@ const Dashboard = () => {
         <motion.div
           style={{ width: '150px' }}
           initial={{ opacity: 0, x: 50 }}
-          animate={{ opacity: 1, x: 0 }} // Fade in and slide to position
-          transition={{ duration: 0.8, ease: 'easeOut' }} // Smooth easing
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.8, ease: 'easeOut' }}
         >
           <Select
             options={unitOptions}
@@ -764,6 +766,7 @@ const Dashboard = () => {
                 backgroundColor: selectBg,
                 color: selectTextColor,
                 borderColor: selectBorderColor,
+                borderRadius:'20px',
                 ':hover': {
                   borderColor: selectHoverBorderColor,
                 },
