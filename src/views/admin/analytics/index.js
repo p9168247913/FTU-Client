@@ -331,6 +331,7 @@ const AnalyticsPage = () => {
         duration: 3000,
         isClosable: true,
       });
+      setLoading(false);
       return;
     }
     if (startDate === '') {
@@ -340,6 +341,7 @@ const AnalyticsPage = () => {
         duration: 3000,
         isClosable: true,
       });
+      setLoading(false);
       return;
     }
     if (endDate === '') {
@@ -349,6 +351,7 @@ const AnalyticsPage = () => {
         duration: 3000,
         isClosable: true,
       });
+      setLoading(false);
       return;
     }
 
@@ -417,14 +420,14 @@ const AnalyticsPage = () => {
       }
     } catch (error) {
       setLoading(false);
-      if(error?.status === 403){
+      if (error?.status === 403) {
         toast({
-          title: "License expired for this device",
+          title: 'License expired for this device',
           status: 'error',
           duration: 3000,
           isClosable: true,
         });
-        return
+        return;
       }
       toast({
         title:
