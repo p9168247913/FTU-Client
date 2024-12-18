@@ -37,7 +37,6 @@ import { Table, Thead, Tbody, Tr, Th, Td } from '@chakra-ui/react';
 import ReactSpeedometer from 'react-d3-speedometer';
 import 'react-circular-progressbar/dist/styles.css';
 import { motion } from 'framer-motion';
-import { use } from 'react';
 
 const Dashboard = () => {
   const toast = useToast();
@@ -102,8 +101,6 @@ const Dashboard = () => {
   const selectedBg = useColorModeValue('#EDF2F7', '#2D3748');
   const focusedBg = useColorModeValue('#E2E8F0', '#4A5568');
 
-  // const selectBg = useColorModeValue('white', 'gray.700');
-  // const selectTextColor = useColorModeValue('black', 'white');
   const selectBorderColor = useColorModeValue('gray.300', 'gray.600');
   const selectHoverBorderColor = useColorModeValue('gray.400', 'gray.500');
   const selectMenuBg = useColorModeValue('white', 'gray.800');
@@ -378,12 +375,6 @@ const Dashboard = () => {
     );
   };
 
-  const handleRowsPerPageChange = (event) => {
-    const newRowsPerPage = parseInt(event.target.value, 10);
-    setRowsPerPage(newRowsPerPage);
-    setPage(1);
-  };
-
   const getTotalConsumption = async (companyId) => {
     try {
       const queryParams = {};
@@ -431,10 +422,6 @@ const Dashboard = () => {
       transition: { duration: 0.8, ease: 'easeOut' },
     },
   };
-
-  const gaugeStartColor = '#6a1b9a';
-  const gaugeEndColor = '#6ec6ff';
-  const radius = 100;
 
   const handleCompanyChange = (selectedOption) => {
     setPage(1);
@@ -686,9 +673,9 @@ const Dashboard = () => {
       >
         <motion.div
           style={{ width: '300px' }}
-          initial={{ opacity: 0, x: -50 }} // Start hidden and to the left
-          animate={{ opacity: 1, x: 0 }} // Fade in and slide to position
-          transition={{ duration: 0.8, ease: 'easeOut' }} // Smooth easing
+          initial={{ opacity: 0, x: -50 }} 
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.8, ease: 'easeOut' }}
         >
           <Select
             options={productIdOptions}
@@ -716,14 +703,14 @@ const Dashboard = () => {
               }),
               menu: (base) => ({
                 ...base,
-                backgroundColor: selectBg, // Set a solid background color
-                zIndex: 10, // Ensure it appears above other content
+                backgroundColor: selectBg,
+                zIndex: 10,
               }),
               menuList: (base) => ({
                 ...base,
-                backgroundColor: selectBg, // Consistent background
-                maxHeight: '200px', // Limit height for scrolling
-                overflowY: 'auto', // Allow scroll when content overflows
+                backgroundColor: selectBg,
+                maxHeight: '200px',
+                overflowY: 'auto',
               }),
               option: (base, state) => ({
                 ...base,
@@ -874,7 +861,7 @@ const Dashboard = () => {
                 w="full"
               >
                 <div>
-                  <Flex justify="space-between" align="center">
+                  <Flex justify="space-between" align="left" flexDirection={"column"}>
                     <Box
                       w="calc(100% - 40px)"
                       overflow="hidden"
@@ -894,7 +881,7 @@ const Dashboard = () => {
                         overflow="hidden"
                       >
                         {pid.productName !== 'Unknown'
-                          ? pid.productName
+                          ? pid.productName.toUpperCase()
                           : pid.productId}
                       </Text>
                     </Box>

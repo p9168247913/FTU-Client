@@ -192,9 +192,9 @@ const DevelopmentTable = ({
           Companies
         </Text>
       </Flex>
-      <Box>
+      <Box overflowX="auto" maxHeight={'calc(100vh - 100px)'}>
         <Table variant="simple" color="gray.500" mb="24px" mt="12px">
-          <Thead>
+          <Thead zIndex={1} bg={"white"} position={'sticky'} top={0}>
             <Tr>
               <Th borderColor={borderColor}>No.</Th>
               <Th borderColor={borderColor} whiteSpace="nowrap">

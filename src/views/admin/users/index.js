@@ -71,6 +71,12 @@ const User = () => {
   const [viewUser, setViewUser] = useState(null);
   const { isOpen, onOpen, onClose } = useDisclosure();
   const modalBg = useColorModeValue('white', 'gray.800');
+  const [companyData, setCompanyData] = useState([]);
+  const [selectedCompany, setSelectedCompany] = useState(null);
+  const [selectedCompany2, setSelectedCompany2] = useState({
+    label: '',
+    value: '',
+  });
   const {
     isOpen: isEditOpen,
     onOpen: onEditOpen,
@@ -99,6 +105,29 @@ const User = () => {
       .join('&');
   };
 
+  const getCompanyList = async () => {
+    try {
+      const response = await axiosInstance.get(`${baseUrl}/company/list`, {
+        headers: {
+          Authorization: `Bearer ${Token}`,
+        },
+      });
+      if (response) {
+        const data = response?.data?.data?.data;
+
+        setCompanyData(response?.data?.data?.data);
+        if (role === 'companyUser' || (role === 'user' && data?.length === 1)) {
+          setSelectedCompany(data[0]?._id);
+          setSelectedCompany2({
+            label: data[0]?.name,
+            value: data[0]?._id,
+          });
+        }
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
   const getUsers = async () => {
     try {
       setLoading(true);
@@ -384,6 +413,11 @@ const User = () => {
       { value: '', label: 'Select Role' },
       { value: 'user', label: 'User' },
     ],
+  };
+
+  const handleCompanyChange = (selectedOption) => {
+    setPage(1);
+    setSelectedCompany(selectedOption.value);
   };
 
   return (

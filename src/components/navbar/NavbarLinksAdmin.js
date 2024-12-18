@@ -187,7 +187,7 @@ export default function HeaderLinks(props) {
           >
             <Flex w="100%" mb="0px">
               <Text
-                ps="20px"
+                ps="10px"
                 pt="16px"
                 pb="10px"
                 w="100%"
@@ -199,14 +199,14 @@ export default function HeaderLinks(props) {
                 overflow="hidden"
                 whiteSpace="nowrap"
                 textOverflow="ellipsis"
-                title={`👋 Hey, ${name}`}
+                title={`👋 Hey, ${name.toUpperCase()}`}
               >
-                &nbsp;{`👋 Hey, ${name}`}
+                &nbsp;{`👋 Hey, ${name.toUpperCase()}`}
               </Text>
             </Flex>
             <Flex flexDirection="column" p="10px">
               <MenuItem
-                _hover={{ bg: 'none' }}
+                _hover={{ bg: 'pink.50', color: 'green' }}
                 _focus={{ bg: 'none' }}
                 color="red.400"
                 borderRadius="8px"

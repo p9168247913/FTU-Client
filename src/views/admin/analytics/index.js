@@ -38,6 +38,7 @@ import DevelopmentTable from './tables/DevelopmentTable';
 import { SearchIcon, DownloadIcon } from '@chakra-ui/icons';
 import axiosInstance from 'axiosInstance';
 import baseUrl from 'Base_Url/baseUrl';
+import axios from 'axios';
 
 // Register Chart.js components
 ChartJS.register(
@@ -90,7 +91,7 @@ const AnalyticsPage = () => {
     control: (base, state) => ({
       ...base,
       backgroundColor: colorMode === 'dark' ? '#2D3748' : '#ffffff',
-      borderRadius:'20px',
+      borderRadius: '20px',
       color: colorMode === 'dark' ? '#E2E8F0' : '#2D3748',
       borderColor: state.isFocused
         ? colorMode === 'dark'
@@ -322,6 +323,7 @@ const AnalyticsPage = () => {
   };
 
   const downloadExcel = async (productId, startDate, endDate) => {
+    setLoading(true);
     if (productId === '') {
       toast({
         title: 'Product ID is required',
@@ -369,7 +371,7 @@ const AnalyticsPage = () => {
         queryParams.filter = JSON.stringify(filter);
       }
 
-      const response = await axiosInstance.get(
+      const response = await axios.get(
         `${baseUrl}/device-readings/download?${getQueryString(queryParams)}`,
         {
           headers: {
@@ -383,17 +385,25 @@ const AnalyticsPage = () => {
       if (contentType && contentType.includes('application/json')) {
         const reader = new FileReader();
         reader.onload = () => {
-          const result = JSON.parse(reader.result);
-          toast({
-            title:
-              result?.data?.message ||
-              'No data found for the specified criteria',
-            status: 'info',
-            duration: 3000,
-            isClosable: true,
-          });
+          try {
+            const result = JSON.parse(reader.result);
+            toast({
+              title: result?.data || 'Error occurred while downloading data',
+              status: 'error',
+              duration: 3000,
+              isClosable: true,
+            });
+          } catch (e) {
+            toast({
+              title: 'Invalid response received from server',
+              status: 'error',
+              duration: 3000,
+              isClosable: true,
+            });
+          }
         };
         reader.readAsText(response.data);
+        setLoading(false);
       } else {
         const url = window.URL.createObjectURL(new Blob([response.data]));
         const link = document.createElement('a');
@@ -402,8 +412,20 @@ const AnalyticsPage = () => {
         document.body.appendChild(link);
         link.click();
         link.remove();
+        setIsModalOpen(false);
+        setLoading(false);
       }
     } catch (error) {
+      setLoading(false);
+      if(error?.status === 403){
+        toast({
+          title: "License expired for this device",
+          status: 'error',
+          duration: 3000,
+          isClosable: true,
+        });
+        return
+      }
       toast({
         title:
           error?.response?.data?.data ||
@@ -510,8 +532,7 @@ const AnalyticsPage = () => {
               color: useColorModeValue('gray.500', 'gray.400'),
             }}
             w={{ base: '200px', md: 'auto' }}
-        borderRadius='20px'
-
+            borderRadius="20px"
           >
             <option value="daily">Daily</option>
             <option value="monthly">Monthly</option>
@@ -645,7 +666,6 @@ const AnalyticsPage = () => {
             <Button
               onClick={() => {
                 downloadExcel(selectedProductId, startDate, endDate);
-                setIsModalOpen(false);
               }}
               colorScheme="teal"
               ml={3}

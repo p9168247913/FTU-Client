@@ -166,15 +166,15 @@ const DevelopmentTable = ({
   };
 
   return (
-    <Card flexDirection="column" w="100%" px="0px" overflowX="auto">
+    <Card flexDirection="column" w="100%" px="0px">
       <Flex px="25px" mb="8px" justifyContent="space-between" align="center">
         <Text color={textColor} fontSize="22px" fontWeight="700">
           Devices
         </Text>
       </Flex>
-      <Box>
+      <Box overflowX="auto" maxHeight={'calc(100vh - 100px)'}>
         <Table variant="simple" color="gray.500" mb="24px" mt="12px">
-          <Thead>
+          <Thead zIndex={1} bg={"white"} position={'sticky'} top={0}>
             <Tr>
               <Th borderColor={borderColor}>No.</Th>
               <Th borderColor={borderColor} whiteSpace="nowrap">
