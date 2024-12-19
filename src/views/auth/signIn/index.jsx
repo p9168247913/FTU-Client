@@ -178,7 +178,7 @@ function SignIn() {
             fontWeight="400"
             fontSize="md"
           >
-            Enter your email and password to sign in!
+            Enter your email or username and password to sign in!
           </Text>
         </Box>
         <Flex
@@ -235,7 +235,7 @@ function SignIn() {
               ms={{ base: '0px', md: '0px' }}
               type="text"
               value={formData.emailOrUsername}
-              placeholder="mail@simmmple.com"
+              placeholder="Email or Username"
               mb="24px"
               fontWeight="500"
               size="lg"
