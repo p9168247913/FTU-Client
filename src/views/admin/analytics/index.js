@@ -40,7 +40,6 @@ import axiosInstance from 'axiosInstance';
 import baseUrl from 'Base_Url/baseUrl';
 import axios from 'axios';
 
-// Register Chart.js components
 ChartJS.register(
   CategoryScale,
   LinearScale,

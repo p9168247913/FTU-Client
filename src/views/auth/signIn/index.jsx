@@ -225,7 +225,7 @@ function SignIn() {
               color={textColor}
               mb="8px"
             >
-              Email<Text color={brandStars}>*</Text>
+              Email or Username<Text color={brandStars}>*</Text>
             </FormLabel>
             <Input
               name="emailOrUsername"
