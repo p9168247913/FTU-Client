@@ -39,7 +39,7 @@ import { SearchIcon, DownloadIcon } from '@chakra-ui/icons';
 import axiosInstance from 'axiosInstance';
 import baseUrl from 'Base_Url/baseUrl';
 import axios from 'axios';
-
+import moment from 'moment-timezone';
 ChartJS.register(
   CategoryScale,
   LinearScale,
@@ -358,13 +358,19 @@ const AnalyticsPage = () => {
       const queryParams = {};
       let filter = {};
 
+
+
       if (startDate && endDate) {
+        const formattedStartDate = moment.tz(startDate, 'Asia/Kolkata').format('YYYY-MM-DD');
+        const formattedEndDate = moment.tz(endDate, 'Asia/Kolkata').format('YYYY-MM-DD');
+  
         filter = {
           ...filter,
-          startDate: startDate,
-          endDate: endDate,
+          startDate: formattedStartDate,
+          endDate: formattedEndDate,
         };
       }
+  
 
       if (productId) {
         queryParams.productId = productId;
@@ -637,6 +643,7 @@ const AnalyticsPage = () => {
                     // Reset endDate if it is less than startDate
                     setEndDate('');
                   }
+                  
                 }}
                 bg={useColorModeValue('white', 'gray.700')}
                 color={useColorModeValue('black', 'white')}

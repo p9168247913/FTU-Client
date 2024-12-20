@@ -200,7 +200,7 @@ const DevelopmentTable = ({
       </Flex>
       <Box overflowX="auto" maxHeight={'calc(100vh - 100px)'}>
         <Table variant="simple" color="gray.500" mb="24px" mt="12px">
-          <Thead zIndex={1} bg={"white"} position={'sticky'} top={0}>
+          <Thead bg={"white"} position={'sticky'} top={0}>
             <Tr>
               <Th borderColor={borderColor}>No.</Th>
               <Th borderColor={borderColor}>Name</Th>

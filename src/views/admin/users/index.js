@@ -47,6 +47,7 @@ import { set } from 'date-fns';
 import { EmailIcon, PhoneIcon } from '@chakra-ui/icons';
 import { FaUserAlt, FaBuilding, FaIdBadge } from 'react-icons/fa';
 import { MdDevices } from 'react-icons/md';
+import { use } from 'react';
 
 const User = () => {
   const [users, setUsers] = useState([]);
@@ -94,10 +95,24 @@ const User = () => {
     name: '',
     email: '',
     username: '',
+    companyId: '',
   });
   const inputBg = useColorModeValue('white', 'gray.700');
   const inputTextColor = useColorModeValue('black', 'white');
   const inputPlaceholderColor = useColorModeValue('gray.500', 'gray.400');
+  const borderColor = useColorModeValue('gray.200', 'gray.600');
+  const placeholderColor = useColorModeValue('gray.500', 'gray.400');
+  const hoverBorderColor = useColorModeValue('gray.400', 'gray.500');
+  const selectedBg = useColorModeValue('#EDF2F7', '#2D3748');
+  const focusedBg = useColorModeValue('#E2E8F0', '#4A5568');
+
+  const companyOptions = [
+    { value: '', label: 'Select Company' },
+    ...companyData.map((company) => ({
+      value: company._id,
+      label: company.name,
+    })),
+  ];
   const getQueryString = (params) => {
     return Object.keys(params)
       .filter((key) => params[key] !== undefined && params[key] !== '')
@@ -128,6 +143,15 @@ const User = () => {
       console.log(error);
     }
   };
+
+  useEffect(() => {
+    getCompanyList();
+  }, []);
+
+  useEffect(() => {
+    console.log(searchTerm, 'selectedCompany');
+  }, [searchTerm]);
+
   const getUsers = async () => {
     try {
       setLoading(true);
@@ -139,7 +163,7 @@ const User = () => {
 
       if (
         searchTerm &&
-        (searchTerm.name || searchTerm.email || searchTerm.username)
+        (searchTerm.name || searchTerm.email || searchTerm.username || searchTerm.companyId)
       ) {
         filter = {
           ...filter,
@@ -417,7 +441,7 @@ const User = () => {
 
   const handleCompanyChange = (selectedOption) => {
     setPage(1);
-    setSelectedCompany(selectedOption.value);
+    setSearchTerm({ ...searchTerm, companyId: selectedOption.value });
   };
 
   return (
@@ -477,7 +501,7 @@ const User = () => {
             />
           </InputGroup>
 
-          <InputGroup width={{ base: '100%', sm: '100%', md: 'auto' }}>
+          {/* <InputGroup width={{ base: '100%', sm: '100%', md: 'auto' }}>
             <InputLeftElement pointerEvents="none">
               <SearchIcon color="gray.300" />
             </InputLeftElement>
@@ -494,7 +518,72 @@ const User = () => {
                 color: useColorModeValue('gray.500', 'gray.400'),
               }}
             />
-          </InputGroup>
+          </InputGroup> */}
+
+          <Select
+            options={companyOptions}
+            value={companyOptions.find(
+              (option) => option.value === selectedCompany,
+            )}
+            onChange={(selectedOption) => {
+              handleCompanyChange(selectedOption);
+            }}
+            placeholder="Select Company"
+            isSearchable
+            styles={{
+              container: (base) => ({
+                ...base,
+                width: ['100%', '100%', '40%'],
+                bgColor: 'gray.100',
+              }),
+              control: (base) => ({
+                ...base,
+                backgroundColor: inputBg,
+                color: inputTextColor,
+                borderColor: borderColor,
+                borderRadius: '20px',
+                boxShadow: 'none',
+                '&:hover': {
+                  borderColor: hoverBorderColor,
+                },
+                zIndex: 5,
+              }),
+              singleValue: (base) => ({
+                ...base,
+                color: inputTextColor,
+              }),
+              input: (base) => ({
+                ...base,
+                color: inputTextColor,
+              }),
+              placeholder: (base) => ({
+                ...base,
+                color: placeholderColor,
+              }),
+              menu: (base) => ({
+                ...base,
+                backgroundColor: inputBg,
+                maxHeight: '200px',
+                // overflowY: 'auto',
+              }),
+              menuList: (base) => ({
+                ...base,
+                backgroundColor: inputBg,
+              }),
+              option: (base, { isFocused, isSelected }) => ({
+                ...base,
+                backgroundColor: isSelected
+                  ? selectedBg
+                  : isFocused
+                  ? focusedBg
+                  : 'transparent',
+                color: inputTextColor,
+                '&:hover': {
+                  backgroundColor: selectedBg,
+                },
+              }),
+            }}
+          />
         </HStack>
         <Button
           colorScheme="blue"

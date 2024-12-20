@@ -943,14 +943,14 @@ const Dashboard = () => {
                         </Tr>
                       </Thead> */}
                       <Tbody>
-                        <Tr>
+                        {/* <Tr>
                           <Td fontWeight="bold" color={fieldColor}>
                             Location
                           </Td>
                           <Td color={valueColor}>
                             {pid.location ? pid.location : 'N/A'}
                           </Td>
-                        </Tr>
+                        </Tr> */}
                         <Tr>
                           <Td fontWeight="bold" color={fieldColor}>
                             Product ID
