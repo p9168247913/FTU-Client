@@ -224,7 +224,7 @@ const Dashboard = () => {
         queryParams.filter = JSON.stringify(filter);
       }
       const response = await axiosInstance.get(
-        `${baseUrl}/device-readings/latest?${getQueryString(queryParams)}`,
+        `${baseUrl}/device-readings/latest-readings?${getQueryString(queryParams)}`,
         {
           headers: {
             Authorization: `Bearer ${Token}`,
