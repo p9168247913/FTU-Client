@@ -224,7 +224,9 @@ const Dashboard = () => {
         queryParams.filter = JSON.stringify(filter);
       }
       const response = await axiosInstance.get(
-        `${baseUrl}/device-readings/latest-readings?${getQueryString(queryParams)}`,
+        `${baseUrl}/device-readings/latest-readings?${getQueryString(
+          queryParams,
+        )}`,
         {
           headers: {
             Authorization: `Bearer ${Token}`,
@@ -459,59 +461,65 @@ const Dashboard = () => {
               mb={{ base: 2, md: 4 }}
               textAlign={{ base: 'center', md: 'left' }}
             >
-              {selectedCompany2?.label}
+              {loading ? <Spinner size="sm" /> : selectedCompany2?.label}
             </Text>
-            <Box mb={2}>
-              <Flex
-                gap={{ base: 1, md: 2 }}
-                mb={1}
-                flexDirection={{ base: 'column', md: 'row' }}
-                alignItems={{ base: 'center', md: 'flex-start' }}
-              >
-                <Text fontSize={{ base: 'md', md: 'lg' }} fontWeight="bold">
-                  Total Consumption:
-                </Text>
-                <Text
-                  mt={{ base: 0, md: 0.5 }}
-                  fontSize={{ base: 'sm', md: 'md' }}
-                  color={textColor}
-                >
-                  {convertReading(totalConsumption).toFixed(2) +
-                    ' / ' +
-                    convertReading(
-                      selectedCompanyData?.allowedLimit || 0,
-                    ).toFixed(2)}{' '}
-                  {unit}
-                </Text>
+            {loading ? (
+              <Flex justify="center" align="center" h="100px">
+                <Spinner />
               </Flex>
-              <Progress
-                value={
-                  (totalConsumption /
-                    (selectedCompanyData?.allowedLimit || 1)) *
-                  100
-                }
-                colorScheme={
-                  totalConsumption <= (selectedCompanyData?.allowedLimit || 0)
-                    ? 'green'
-                    : 'red'
-                }
-                bg={progressBg}
-                hasStripe
-                isAnimated
-                rounded="md"
-                height={{ base: '8px', md: '12px' }}
-                w={{ base: '80%', md: '20%' }}
-                mx={{ base: 'auto', md: 0 }}
-              />
-              <Text fontSize="sm" color={withinLimitColor} mt={2}>
-                {(
-                  (totalConsumption /
-                    (selectedCompanyData?.allowedLimit || 1)) *
-                  100
-                ).toFixed(1)}
-                % of limit
-              </Text>
-            </Box>
+            ) : (
+              <Box mb={2}>
+                <Flex
+                  gap={{ base: 1, md: 2 }}
+                  mb={1}
+                  flexDirection={{ base: 'column', md: 'row' }}
+                  alignItems={{ base: 'center', md: 'flex-start' }}
+                >
+                  <Text fontSize={{ base: 'md', md: 'lg' }} fontWeight="bold">
+                    Total Consumption:
+                  </Text>
+                  <Text
+                    mt={{ base: 0, md: 0.5 }}
+                    fontSize={{ base: 'sm', md: 'md' }}
+                    color={textColor}
+                  >
+                    {convertReading(totalConsumption).toFixed(2) +
+                      ' / ' +
+                      convertReading(
+                        selectedCompanyData?.allowedLimit || 0,
+                      ).toFixed(2)}{' '}
+                    {unit}
+                  </Text>
+                </Flex>
+                <Progress
+                  value={
+                    (totalConsumption /
+                      (selectedCompanyData?.allowedLimit || 1)) *
+                    100
+                  }
+                  colorScheme={
+                    totalConsumption <= (selectedCompanyData?.allowedLimit || 0)
+                      ? 'green'
+                      : 'red'
+                  }
+                  bg={progressBg}
+                  hasStripe
+                  isAnimated
+                  rounded="md"
+                  height={{ base: '8px', md: '12px' }}
+                  w={{ base: '80%', md: '20%' }}
+                  mx={{ base: 'auto', md: 0 }}
+                />
+                <Text fontSize="sm" color={withinLimitColor} mt={2}>
+                  {(
+                    (totalConsumption /
+                      (selectedCompanyData?.allowedLimit || 1)) *
+                    100
+                  ).toFixed(1)}
+                  % of limit
+                </Text>
+              </Box>
+            )}
           </Card>
         </motion.div>
       ) : (
@@ -546,7 +554,7 @@ const Dashboard = () => {
                   backgroundColor: inputBg,
                   color: inputTextColor,
                   borderColor: borderColor,
-                  borderRadius:'20px',
+                  borderRadius: '20px',
                   boxShadow: 'none',
                   '&:hover': {
                     borderColor: hoverBorderColor,
@@ -673,7 +681,7 @@ const Dashboard = () => {
       >
         <motion.div
           style={{ width: '300px' }}
-          initial={{ opacity: 0, x: -50 }} 
+          initial={{ opacity: 0, x: -50 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.8, ease: 'easeOut' }}
         >
@@ -693,10 +701,10 @@ const Dashboard = () => {
               }),
               control: (base) => ({
                 ...base,
-                backgroundColor: selectBg, 
+                backgroundColor: selectBg,
                 color: selectTextColor,
                 borderColor: selectBorderColor,
-                borderRadius:'20px',
+                borderRadius: '20px',
                 ':hover': {
                   borderColor: selectHoverBorderColor,
                 },
@@ -753,7 +761,7 @@ const Dashboard = () => {
                 backgroundColor: selectBg,
                 color: selectTextColor,
                 borderColor: selectBorderColor,
-                borderRadius:'20px',
+                borderRadius: '20px',
                 ':hover': {
                   borderColor: selectHoverBorderColor,
                 },
@@ -848,6 +856,11 @@ const Dashboard = () => {
 
             const totalizerValue = convertReading(pid.totalizer);
             const flowrateData = convertFlowrate(pid.flowrate);
+
+            const formatDate1 = (timestamp) => {
+              const date = timestamp ? new Date(timestamp) : new Date(new Date().getFullYear(), 0, 1);
+              return format(date, 'do MMM, yyyy hh:mm a');
+            };
             return (
               <Box
                 key={pid.id}
@@ -861,7 +874,11 @@ const Dashboard = () => {
                 w="full"
               >
                 <div>
-                  <Flex justify="space-between" align="left" flexDirection={"column"}>
+                  <Flex
+                    justify="space-between"
+                    align="left"
+                    flexDirection={'column'}
+                  >
                     <Box
                       w="calc(100% - 40px)"
                       overflow="hidden"
@@ -962,7 +979,7 @@ const Dashboard = () => {
                             Reading Date
                           </Td>
                           <Td color={valueColor}>
-                            {formatDate(pid.timestamp)}
+                            {formatDate1(pid.timestamp)}
                           </Td>
                         </Tr>
                       </Tbody>
@@ -1000,11 +1017,11 @@ const Dashboard = () => {
                     </Text>
 
                     <motion.div
-                      initial={{ opacity: 0, y: 20 }} // Starts slightly below and invisible
-                      animate={{ opacity: 1, y: 0 }} // Moves to the original position and fades in
+                      initial={{ opacity: 0, y: 20 }} 
+                      animate={{ opacity: 1, y: 0 }} 
                       transition={{
-                        duration: 1, // Duration of the animation (1 second)
-                        ease: 'easeInOut', // Smooth easing
+                        duration: 1,
+                        ease: 'easeInOut',
                       }}
                     >
                       <LiquidGauge
