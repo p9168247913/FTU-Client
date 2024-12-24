@@ -979,7 +979,7 @@ const Dashboard = () => {
                             Reading Date
                           </Td>
                           <Td color={valueColor}>
-                            {formatDate1(pid.timestamp)}
+                            {pid.timestamp? formatDate(pid.timestamp): 'N/A'}
                           </Td>
                         </Tr>
                       </Tbody>
