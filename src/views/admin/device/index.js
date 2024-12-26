@@ -1450,8 +1450,8 @@ const Devices = () => {
                   name="simcardValidity.endDate"
                   type="date"
                   value={
-                    editDevice?.simcardValidity?.startDate
-                      ? new Date(editDevice?.simcardValidity?.startDate)
+                    editDevice?.simcardValidity?.endDate
+                      ? new Date(editDevice?.simcardValidity?.endDate)
                           .toISOString()
                           .split('T')[0]
                       : ''

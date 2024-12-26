@@ -441,7 +441,7 @@ const Dashboard = () => {
 
   return (
     <Box
-      pt={{ base: '140px', md: '90px', xl: '90px', sm: '100px' }}
+      pt={{ base: '140px', md: '140px', xl: '140px', sm: '100px' }}
       px={{ base: '4', md: '8' }}
     >
       {role === 'companyUser' || role === 'user' ? (
@@ -858,7 +858,9 @@ const Dashboard = () => {
             const flowrateData = convertFlowrate(pid.flowrate);
 
             const formatDate1 = (timestamp) => {
-              const date = timestamp ? new Date(timestamp) : new Date(new Date().getFullYear(), 0, 1);
+              const date = timestamp
+                ? new Date(timestamp)
+                : new Date(new Date().getFullYear(), 0, 1);
               return format(date, 'do MMM, yyyy hh:mm a');
             };
             return (
@@ -979,7 +981,7 @@ const Dashboard = () => {
                             Reading Date
                           </Td>
                           <Td color={valueColor}>
-                            {pid.timestamp? formatDate(pid.timestamp): 'N/A'}
+                            {pid.timestamp ? formatDate(pid.timestamp) : 'N/A'}
                           </Td>
                         </Tr>
                       </Tbody>
@@ -1017,8 +1019,8 @@ const Dashboard = () => {
                     </Text>
 
                     <motion.div
-                      initial={{ opacity: 0, y: 20 }} 
-                      animate={{ opacity: 1, y: 0 }} 
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
                       transition={{
                         duration: 1,
                         ease: 'easeInOut',
