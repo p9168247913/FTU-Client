@@ -43,7 +43,7 @@ const DevelopmentTable = ({
   const renderTableRows = () => {
     if (loading) {
       return (
-        <Tr style={{zIndex: 0}}>
+        <Tr style={{ zIndex: 0 }}>
           <Td colSpan="7" textAlign="center">
             <CircularProgress
               isIndeterminate
@@ -80,14 +80,14 @@ const DevelopmentTable = ({
           _hover={{ backgroundColor: rowHoverBg }}
         >
           <Td>{item.productId}</Td>
-          <Td
+          {/* <Td
             style={{
               filter: isLicenseExpired ? 'blur(4px)' : 'none',
               pointerEvents: isLicenseExpired ? 'none' : 'auto',
             }}
           >
             {item.location ? item.location.name : 'N/A'}
-          </Td>
+          </Td> */}
           <Td
             style={{
               filter: isLicenseExpired ? 'blur(4px)' : 'none',
@@ -203,18 +203,18 @@ const DevelopmentTable = ({
         <Table variant="simple" color="gray.500" mb={2}>
           <Thead
             style={{
-              backgroundColor: "white",
+              backgroundColor: 'white',
               color: theadTextColor,
               position: 'sticky',
               top: '0',
-              // zIndex: 1, 
+              // zIndex: 1,
             }}
           >
             <Tr>
               <Th borderColor={borderColor}>PID</Th>
-              <Th borderColor={borderColor} whiteSpace="nowrap">
+              {/* <Th borderColor={borderColor} whiteSpace="nowrap">
                 Location Name
-              </Th>
+              </Th> */}
               <Th borderColor={borderColor} whiteSpace="nowrap">
                 Today Total{' '}
                 <span
