@@ -1358,7 +1358,7 @@ const Devices = () => {
                   type="date"
                   value={
                     editDevice?.dashboardValidity?.startDate
-                      ? new Date(editDevice?.dashboardValidity?.startDatee)
+                      ? new Date(editDevice?.dashboardValidity?.startDate)
                           .toISOString()
                           .split('T')[0]
                       : ''
