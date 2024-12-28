@@ -28,7 +28,7 @@ import axiosInstance from 'axiosInstance';
 import baseUrl from 'Base_Url/baseUrl';
 import Swal from 'sweetalert2';
 import DevelopmentTable from './tables/DevelopmentTable';
-
+import ReactSelect from 'react-select';
 const Devices = () => {
   const Token = localStorage.getItem('token');
   const toast = useToast();
@@ -346,6 +346,21 @@ const Devices = () => {
     }
   };
 
+  const inputBackground = useColorModeValue('white', 'gray.700');
+  const textColor = useColorModeValue('black', 'white');
+
+  const selectStyles = {
+    control: (base) => ({
+      ...base,
+      background: inputBackground,
+      color: textColor,
+    }),
+    option: (styles) => ({
+      ...styles,
+      color: 'black', // Assuming you want black text for options in both light and dark mode
+    }),
+  };
+
   return (
     <Box
       pt={{ base: '140px', md: '90px', xl: '90px', sm: '100px' }}
@@ -524,23 +539,35 @@ const Devices = () => {
 
               <FormControl>
                 <FormLabel color={labelColor}>Company</FormLabel>
-                <Select
+
+                <ReactSelect
                   name="company"
                   placeholder="Select company"
-                  value={addNewDevice.company}
-                  onChange={handleAddChange}
-                  bg={useColorModeValue('white', 'gray.700')}
-                  color={useColorModeValue('black', 'white')}
-                  _placeholder={{
-                    color: useColorModeValue('gray.500', 'gray.400'),
-                  }}
-                >
-                  {company.map((comp) => (
-                    <option key={comp._id} value={comp._id}>
-                      {comp.name}
-                    </option>
-                  ))}
-                </Select>
+                  value={
+                    company.find((comp) => comp._id === addNewDevice.company)
+                      ? {
+                          label: company.find(
+                            (comp) => comp._id === addNewDevice.company,
+                          ).name,
+                          value: addNewDevice.company,
+                        }
+                      : null
+                  }
+                  onChange={(selectedOption) =>
+                    setAddNewDevice((prev) => ({
+                      ...prev,
+                      company: selectedOption ? selectedOption.value : '',
+                    }))
+                  }
+                  options={[
+                    { label: 'None', value: '' },
+                    ...company.map((comp) => ({
+                      label: comp.name,
+                      value: comp._id,
+                    })),
+                  ]}
+                  styles={selectStyles}
+                />
               </FormControl>
 
               <FormControl>
@@ -954,25 +981,34 @@ const Devices = () => {
 
               <FormControl>
                 <FormLabel color={labelColor}>Company</FormLabel>
-                <Select
+                <ReactSelect
                   name="company"
                   placeholder="Select company"
-                  value={editDevice.company}
-                  onChange={(e) =>
-                    setEditDevice({ ...editDevice, company: e.target.value })
+                  value={
+                    company.find((comp) => comp._id === editDevice.company)
+                      ? {
+                          label: company.find(
+                            (comp) => comp._id === editDevice.company,
+                          ).name,
+                          value: editDevice.company,
+                        }
+                      : null
                   }
-                  bg={useColorModeValue('white', 'gray.700')}
-                  color={useColorModeValue('black', 'white')}
-                  _placeholder={{
-                    color: useColorModeValue('gray.500', 'gray.400'),
-                  }}
-                >
-                  {company.map((comp) => (
-                    <option key={comp._id} value={comp._id}>
-                      {comp.name}
-                    </option>
-                  ))}
-                </Select>
+                  onChange={(selectedOption) =>
+                    setEditDevice((prev) => ({
+                      ...prev,
+                      company: selectedOption ? selectedOption.value : '',
+                    }))
+                  }
+                  options={[
+                    { label: 'None', value: '' },
+                    ...company.map((comp) => ({
+                      label: comp.name,
+                      value: comp._id,
+                    })),
+                  ]}
+                  styles={selectStyles}
+                />
               </FormControl>
 
               <FormControl>

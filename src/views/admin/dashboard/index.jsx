@@ -19,6 +19,8 @@ import {
   Card,
   useColorMode,
   useToast,
+  Center,
+  Icon,
 } from '@chakra-ui/react';
 import { ChevronLeftIcon, ChevronRightIcon } from '@chakra-ui/icons';
 import { Spinner } from '@chakra-ui/react';
@@ -37,6 +39,8 @@ import { Table, Thead, Tbody, Tr, Th, Td } from '@chakra-ui/react';
 import ReactSpeedometer from 'react-d3-speedometer';
 import 'react-circular-progressbar/dist/styles.css';
 import { motion } from 'framer-motion';
+import { FaBoxOpen } from 'react-icons/fa';
+import { Empty } from 'antd';
 
 const Dashboard = () => {
   const toast = useToast();
@@ -439,9 +443,24 @@ const Dashboard = () => {
     }
   }, [selectedCompany]);
 
+  const NoData = ({ message }) => (
+    <div
+      style={{
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        height: '20vh',
+        textAlign: 'center',
+        padding: '20px',
+      }}
+    >
+      <Empty description={message} />
+    </div>
+  );
+
   return (
     <Box
-      pt={{ base: '140px', md: '140px', xl: '140px', sm: '100px' }}
+      pt={{ base: '100px', md: '90px', xl: '80px', sm: '100px' }}
       px={{ base: '4', md: '8' }}
     >
       {role === 'companyUser' || role === 'user' ? (
@@ -476,7 +495,7 @@ const Dashboard = () => {
                   alignItems={{ base: 'center', md: 'flex-start' }}
                 >
                   <Text fontSize={{ base: 'md', md: 'lg' }} fontWeight="bold">
-                    Total Consumption:
+                    Today's Total Consumption:
                   </Text>
                   <Text
                     mt={{ base: 0, md: 0.5 }}
@@ -610,64 +629,68 @@ const Dashboard = () => {
             delay: 1,
           }}
         >
-          <Box mb={{ base: 4, md: 8 }}>
-            <Flex
-              gap={{ base: 1, md: 2 }}
-              mb={1}
-              flexDirection={{ base: 'column', md: 'row' }}
-              alignItems={{ base: 'center', md: 'flex-start' }}
-            >
+          <Card p="20px" mb={4}>
+            <Box mb={{ base: 4, md: 8 }}>
+              <Flex
+                gap={{ base: 1, md: 2 }}
+                mb={1}
+                flexDirection={{ base: 'column', md: 'row' }}
+                alignItems={{ base: 'center', md: 'flex-start' }}
+              >
+                <Text
+                  fontSize={{ base: 'md', md: 'lg' }}
+                  fontWeight="bold"
+                  textAlign={{ base: 'center', md: 'left' }}
+                >
+                  Today's Total Consumption:
+                </Text>
+                <Text
+                  fontSize={{ base: 'sm', md: 'md' }}
+                  color={textColor}
+                  textAlign={{ base: 'center', md: 'left' }}
+                >
+                  {convertReading(totalConsumption).toFixed(2) +
+                    ' / ' +
+                    convertReading(
+                      selectedCompanyData?.allowedLimit || 0,
+                    ).toFixed(2)}{' '}
+                  {unit}
+                </Text>
+              </Flex>
+              <Progress
+                value={
+                  (totalConsumption /
+                    (selectedCompanyData?.allowedLimit || 1)) *
+                  100
+                }
+                colorScheme={
+                  totalConsumption <= (selectedCompanyData?.allowedLimit || 0)
+                    ? 'green'
+                    : 'red'
+                }
+                bg={progressBg}
+                hasStripe
+                isAnimated
+                rounded="md"
+                height={{ base: '8px', md: '12px' }}
+                w={{ base: '80%', md: '20%' }}
+                mx={{ base: 'auto', md: 0 }}
+              />
               <Text
-                fontSize={{ base: 'md', md: 'lg' }}
-                fontWeight="bold"
+                fontSize={{ base: 'xs', md: 'sm' }}
+                color={progressColor}
+                mt={{ base: 1, md: 2 }}
                 textAlign={{ base: 'center', md: 'left' }}
               >
-                Total Consumption:
+                {(
+                  (totalConsumption /
+                    (selectedCompanyData?.allowedLimit || 1)) *
+                  100
+                ).toFixed(1)}
+                % of allowed limit
               </Text>
-              <Text
-                fontSize={{ base: 'sm', md: 'md' }}
-                color={textColor}
-                textAlign={{ base: 'center', md: 'left' }}
-              >
-                {convertReading(totalConsumption).toFixed(2) +
-                  ' / ' +
-                  convertReading(
-                    selectedCompanyData?.allowedLimit || 0,
-                  ).toFixed(2)}{' '}
-                {unit}
-              </Text>
-            </Flex>
-            <Progress
-              value={
-                (totalConsumption / (selectedCompanyData?.allowedLimit || 1)) *
-                100
-              }
-              colorScheme={
-                totalConsumption <= (selectedCompanyData?.allowedLimit || 0)
-                  ? 'green'
-                  : 'red'
-              }
-              bg={progressBg}
-              hasStripe
-              isAnimated
-              rounded="md"
-              height={{ base: '8px', md: '12px' }}
-              w={{ base: '80%', md: '20%' }}
-              mx={{ base: 'auto', md: 0 }}
-            />
-            <Text
-              fontSize={{ base: 'xs', md: 'sm' }}
-              color={progressColor}
-              mt={{ base: 1, md: 2 }}
-              textAlign={{ base: 'center', md: 'left' }}
-            >
-              {(
-                (totalConsumption / (selectedCompanyData?.allowedLimit || 1)) *
-                100
-              ).toFixed(1)}
-              % of allowed limit
-            </Text>
-          </Box>
+            </Box>
+          </Card>
         </motion.div>
       )}
 
@@ -804,154 +827,156 @@ const Dashboard = () => {
         </Flex>
       ) : (
         <SimpleGrid columns={{ base: 1, md: 2 }} spacing={6}>
-          {filteredPidData.map((pid) => {
-            const isOlderThan24Hours =
-              new Date() - new Date(pid.timestamp) > 24 * 60 * 60 * 1000;
+          {filteredPidData.length > 0 ? (
+            filteredPidData.map((pid) => {
+              const isOlderThan24Hours =
+                new Date() - new Date(pid.timestamp) > 24 * 60 * 60 * 1000;
 
-            const isLicenseValidDate =
-              pid?.dashboardLicense &&
-              pid?.dashboardLicense !== '' &&
-              new Date(pid.dashboardLicense).toString() !== 'Invalid Date';
+              const isLicenseValidDate =
+                pid?.dashboardLicense &&
+                pid?.dashboardLicense !== '' &&
+                new Date(pid.dashboardLicense).toString() !== 'Invalid Date';
 
-            const licenseExpiryDate = isLicenseValidDate
-              ? new Date(pid.dashboardLicense)
-              : null;
+              const licenseExpiryDate = isLicenseValidDate
+                ? new Date(pid.dashboardLicense)
+                : null;
 
-            const daysToExpiry = licenseExpiryDate
-              ? Math.ceil(
-                  (licenseExpiryDate - new Date()) / (1000 * 60 * 60 * 24),
-                )
-              : null;
+              const daysToExpiry = licenseExpiryDate
+                ? Math.ceil(
+                    (licenseExpiryDate - new Date()) / (1000 * 60 * 60 * 24),
+                  )
+                : null;
 
-            const isLicenseExpired = daysToExpiry !== null && daysToExpiry <= 0;
-            const showDaysToExpiry =
-              daysToExpiry !== null && daysToExpiry > 0 && daysToExpiry <= 30;
+              const isLicenseExpired =
+                daysToExpiry !== null && daysToExpiry <= 0;
+              const showDaysToExpiry =
+                daysToExpiry !== null && daysToExpiry > 0 && daysToExpiry <= 30;
 
-            const convertReading = (reading) => {
-              if (unit === 'Liters') {
-                return reading * 1000;
-              } else if (unit === 'Gallons') {
-                return reading * 264.172;
-              }
-              return reading;
-            };
-
-            const convertFlowrate = (flowrate) => {
-              if (unit === 'Liters') {
-                return {
-                  value: flowrate * 1000,
-                  unit: 'L/hr',
-                };
-              } else if (unit === 'Gallons') {
-                return {
-                  value: flowrate * 264.172,
-                  unit: 'gal/hr',
-                };
-              }
-              return {
-                value: flowrate,
-                unit: 'm³/hr',
+              const convertReading = (reading) => {
+                if (unit === 'Liters') {
+                  return reading * 1000;
+                } else if (unit === 'Gallons') {
+                  return reading * 264.172;
+                }
+                return reading;
               };
-            };
 
-            const totalizerValue = convertReading(pid.totalizer);
-            const flowrateData = convertFlowrate(pid.flowrate);
+              const convertFlowrate = (flowrate) => {
+                if (unit === 'Liters') {
+                  return {
+                    value: flowrate * 1000,
+                    unit: 'L/hr',
+                  };
+                } else if (unit === 'Gallons') {
+                  return {
+                    value: flowrate * 264.172,
+                    unit: 'gal/hr',
+                  };
+                }
+                return {
+                  value: flowrate,
+                  unit: 'm³/hr',
+                };
+              };
 
-            const formatDate1 = (timestamp) => {
-              const date = timestamp
-                ? new Date(timestamp)
-                : new Date(new Date().getFullYear(), 0, 1);
-              return format(date, 'do MMM, yyyy hh:mm a');
-            };
-            return (
-              <Box
-                key={pid.id}
-                bg={cardBg}
-                border="1px"
-                borderColor={cardBorder}
-                rounded="lg"
-                p={4}
-                shadow="md"
-                position="relative"
-                w="full"
-              >
-                <div>
-                  <Flex
-                    justify="space-between"
-                    align="left"
-                    flexDirection={'column'}
-                  >
-                    <Box
-                      w="calc(100% - 40px)"
-                      overflow="hidden"
-                      position="relative"
+              const totalizerValue = convertReading(pid.totalizer);
+              const flowrateData = convertFlowrate(pid.flowrate);
+
+              const formatDate1 = (timestamp) => {
+                const date = timestamp
+                  ? new Date(timestamp)
+                  : new Date(new Date().getFullYear(), 0, 1);
+                return format(date, 'do MMM, yyyy hh:mm a');
+              };
+              return (
+                <Box
+                  key={pid.id}
+                  bg={cardBg}
+                  border="1px"
+                  borderColor={cardBorder}
+                  rounded="lg"
+                  p={4}
+                  shadow="md"
+                  position="relative"
+                  w="full"
+                >
+                  <div>
+                    <Flex
+                      justify="space-between"
+                      align="left"
+                      flexDirection={'column'}
                     >
-                      <Text
-                        fontSize="lg"
-                        fontWeight="bold"
-                        whiteSpace="nowrap"
-                        display="inline-block"
-                        animation={
-                          pid.productName?.length >= 45 ||
-                          pid.productId?.length >= 45
-                            ? 'marquee 10s linear infinite'
-                            : 'none'
-                        }
+                      <Box
+                        w="calc(100% - 40px)"
                         overflow="hidden"
+                        position="relative"
                       >
-                        {pid.productName !== 'Unknown'
-                          ? pid.productName.toUpperCase()
-                          : pid.productId}
-                      </Text>
-                    </Box>
-                    {isLicenseExpired ? (
-                      <Flex align="center" animation="blink 1.5s infinite">
-                        <Box
-                          w="8px"
-                          h="8px"
-                          bg="red.500"
-                          borderRadius="full"
-                          mr="4px"
-                        />
-                        <Text fontSize="sm" color="red.500" fontWeight="bold">
-                          License Expired
-                        </Text>
-                      </Flex>
-                    ) : showDaysToExpiry ? (
-                      <Flex align="center" animation="blink 1.5s infinite">
-                        <Box
-                          w="8px"
-                          h="8px"
-                          bg="orange.500"
-                          borderRadius="full"
-                          mr="4px"
-                        />
                         <Text
-                          fontSize="sm"
-                          color="orange.500"
+                          fontSize="lg"
                           fontWeight="bold"
+                          whiteSpace="nowrap"
+                          display="inline-block"
+                          animation={
+                            pid.productName?.length >= 45 ||
+                            pid.productId?.length >= 45
+                              ? 'marquee 10s linear infinite'
+                              : 'none'
+                          }
+                          overflow="hidden"
                         >
-                          {daysToExpiry} {daysToExpiry === 1 ? 'day' : 'days'}{' '}
-                          to license expiry
+                          {pid.productName !== 'Unknown'
+                            ? pid.productName.toUpperCase()
+                            : pid.productId}
                         </Text>
-                      </Flex>
-                    ) : null}
-                  </Flex>
+                      </Box>
+                      {isLicenseExpired ? (
+                        <Flex align="center" animation="blink 1.5s infinite">
+                          <Box
+                            w="8px"
+                            h="8px"
+                            bg="red.500"
+                            borderRadius="full"
+                            mr="4px"
+                          />
+                          <Text fontSize="sm" color="red.500" fontWeight="bold">
+                            License Expired
+                          </Text>
+                        </Flex>
+                      ) : showDaysToExpiry ? (
+                        <Flex align="center" animation="blink 1.5s infinite">
+                          <Box
+                            w="8px"
+                            h="8px"
+                            bg="orange.500"
+                            borderRadius="full"
+                            mr="4px"
+                          />
+                          <Text
+                            fontSize="sm"
+                            color="orange.500"
+                            fontWeight="bold"
+                          >
+                            {daysToExpiry} {daysToExpiry === 1 ? 'day' : 'days'}{' '}
+                            to license expiry
+                          </Text>
+                        </Flex>
+                      ) : null}
+                    </Flex>
 
-                  <Box mt={4} w="full">
-                    <Table
-                      variant="simple"
-                      size="sm"
-                      style={{
-                        filter: isLicenseExpired ? 'blur(4px)' : 'none',
-                        pointerEvents: isLicenseExpired ? 'none' : 'auto',
-                      }}
-                      border="1px"
-                      borderColor={borderColor}
-                      bg={bgColor}
-                      rounded="md"
-                    >
-                      {/* <Thead>
+                    <Box mt={4} w="full">
+                      <Table
+                        variant="simple"
+                        size="sm"
+                        style={{
+                          filter: isLicenseExpired ? 'blur(4px)' : 'none',
+                          pointerEvents: isLicenseExpired ? 'none' : 'auto',
+                        }}
+                        border="1px"
+                        borderColor={borderColor}
+                        bg={bgColor}
+                        rounded="md"
+                      >
+                        {/* <Thead>
                         <Tr>
                           <Th fontSize="sm" color={fieldColor}>
                             Field
@@ -961,8 +986,8 @@ const Dashboard = () => {
                           </Th>
                         </Tr>
                       </Thead> */}
-                      <Tbody>
-                        {/* <Tr>
+                        <Tbody>
+                          {/* <Tr>
                           <Td fontWeight="bold" color={fieldColor}>
                             Location
                           </Td>
@@ -970,189 +995,196 @@ const Dashboard = () => {
                             {pid.location ? pid.location : 'N/A'}
                           </Td>
                         </Tr> */}
-                        <Tr>
-                          <Td fontWeight="bold" color={fieldColor}>
-                            Product ID
-                          </Td>
-                          <Td color={valueColor}>{pid.productId}</Td>
-                        </Tr>
-                        <Tr>
-                          <Td fontWeight="bold" color={fieldColor}>
-                            Reading Date
-                          </Td>
-                          <Td color={valueColor}>
-                            {pid.timestamp ? formatDate(pid.timestamp) : 'N/A'}
-                          </Td>
-                        </Tr>
-                      </Tbody>
-                    </Table>
-                  </Box>
-                </div>
+                          <Tr>
+                            <Td fontWeight="bold" color={fieldColor}>
+                              Product ID
+                            </Td>
+                            <Td color={valueColor}>{pid.productId}</Td>
+                          </Tr>
+                          <Tr>
+                            <Td fontWeight="bold" color={fieldColor}>
+                              Reading Date
+                            </Td>
+                            <Td color={valueColor}>
+                              {pid.timestamp
+                                ? formatDate(pid.timestamp)
+                                : 'N/A'}
+                            </Td>
+                          </Tr>
+                        </Tbody>
+                      </Table>
+                    </Box>
+                  </div>
 
-                <SimpleGrid
-                  columns={{ base: 1, md: 2, lg: 2 }}
-                  spacing={4}
-                  mt={4}
-                  w={'full'}
-                >
-                  <Stack
-                    spacing={2}
-                    align="center"
-                    p={4}
-                    bgGradient={
-                      pid.isRepairing
-                        ? 'linear(to-r, yellow.100, yellow.200)'
-                        : isOlderThan24Hours
-                        ? 'linear(to-r, red.100, red.200)'
-                        : 'linear(to-r, green.100, green.200)'
-                    }
-                    rounded="md"
-                    border="1px"
-                    borderColor={cardBorder}
-                    style={{
-                      filter: isLicenseExpired ? 'blur(4px)' : 'none',
-                      pointerEvents: isLicenseExpired ? 'none' : 'auto',
-                    }}
+                  <SimpleGrid
+                    columns={{ base: 1, md: 2, lg: 2 }}
+                    spacing={4}
+                    mt={4}
+                    w={'full'}
                   >
-                    <Text fontSize="md" fontWeight="bold">
-                      TOTALIZER
-                    </Text>
-
-                    <motion.div
-                      initial={{ opacity: 0, y: 20 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{
-                        duration: 1,
-                        ease: 'easeInOut',
+                    <Stack
+                      spacing={2}
+                      align="center"
+                      p={4}
+                      bgGradient={
+                        pid.isRepairing
+                          ? 'linear(to-r, yellow.100, yellow.200)'
+                          : isOlderThan24Hours
+                          ? 'linear(to-r, red.100, red.200)'
+                          : 'linear(to-r, green.100, green.200)'
+                      }
+                      rounded="md"
+                      border="1px"
+                      borderColor={cardBorder}
+                      style={{
+                        filter: isLicenseExpired ? 'blur(4px)' : 'none',
+                        pointerEvents: isLicenseExpired ? 'none' : 'auto',
                       }}
                     >
-                      <LiquidGauge
-                        value={
-                          (convertReading(pid.totalizer) /
-                            Math.max(
-                              convertReading(pid.totalizer) * 1.25,
-                              10,
-                            )) *
-                          100
-                        }
-                        width={130}
-                        height={150}
-                        textSize={1}
-                        waveFrequency={2}
-                        waveAmplitude={3}
-                        animation={
-                          'infinite ease-in-out 1s running waveAnimation'
-                        }
-                        animationDuration={6000}
-                        animationDirection={'alternate'}
-                        gradient
-                        gradientStops={[
-                          { key: '0%', stopColor: '#3498db', offset: '0%' },
-                          { key: '100%', stopColor: 'teal', offset: '100%' },
-                        ]}
-                        circleStyle={{
-                          fill: 'lightgray',
-                        }}
-                        waveStyle={{
-                          fill: 'url(#gradient)',
-                          animation: 'waveAnimation 2s ease-in-out infinite',
-                        }}
-                        textRenderer={(value) => {
-                          const actualValue = convertReading(pid.totalizer);
-                          return (
-                            <tspan>
-                              <tspan fontSize="11">
-                                {actualValue?.toFixed(2)}{' '}
-                              </tspan>
-                              <tspan fontSize="11">{unit}</tspan>
-                            </tspan>
-                          );
-                        }}
-                      />
-                    </motion.div>
-                  </Stack>
+                      <Text fontSize="md" fontWeight="bold">
+                        TOTALIZER
+                      </Text>
 
-                  <Stack
-                    spacing={3}
-                    align="center"
-                    pt={4}
-                    bgGradient={
-                      pid.isRepairing
-                        ? 'linear(to-r, yellow.100, yellow.200)'
-                        : isOlderThan24Hours
-                        ? 'linear(to-r, red.100, red.200)'
-                        : 'linear(to-r, green.100, green.200)'
-                    }
-                    rounded="md"
-                    borderColor={cardBorder}
-                    style={{
-                      filter: isLicenseExpired ? 'blur(4px)' : 'none',
-                      pointerEvents: isLicenseExpired ? 'none' : 'auto',
-                    }}
-                  >
-                    <Text fontSize="md" fontWeight="bold">
-                      FLOWRATE
-                    </Text>
-                    <Box
-                      display="flex"
-                      justifyContent="center"
-                      alignItems="center"
-                      w="auto"
-                      h="auto"
-                      maxWidth="150px"
-                      pt={8}
-                      mr={2}
-                    >
                       <motion.div
-                        initial="hidden"
-                        animate="visible"
-                        exit="hidden"
-                        variants={speedometerAnimation}
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{
+                          duration: 1,
+                          ease: 'easeInOut',
+                        }}
                       >
-                        <ReactSpeedometer
-                          value={flowrateData.value}
-                          needleColor="rgb(247, 132, 56)"
-                          startColor="rgb(183, 223, 244)"
-                          endColor="rgb(17, 113, 165)"
-                          segments={4}
-                          height={170}
-                          width={170}
-                          minValue={0}
-                          maxValue={Math.max(
-                            Math.ceil(flowrateData.value * 1.2),
-                            10,
-                          )}
-                          customSegmentStops={[
-                            0,
-                            Math.max(flowrateData.value * 0.25, 2.5),
-                            Math.max(flowrateData.value * 0.5, 5),
-                            Math.max(flowrateData.value * 0.75, 7.5),
-                            Math.max(flowrateData.value, 10),
-                            Math.max(Math.ceil(flowrateData.value * 1.2), 10),
-                          ].map((value) => Number(value.toFixed(1)))}
-                          forceRender={true}
-                          animate={true}
-                          animationDuration={9000}
-                          animationEasing="easeOutExpo"
-                          currentValueText={`${flowrateData.value.toFixed(2)} ${
-                            flowrateData.unit
-                          }`}
-                          textStyle={{
-                            fontSize: 'clamp(8px, 1vw, 12px)',
-                            fontWeight: '100',
+                        <LiquidGauge
+                          value={
+                            (convertReading(pid.totalizer) /
+                              Math.max(
+                                convertReading(pid.totalizer) * 1.25,
+                                10,
+                              )) *
+                            100
+                          }
+                          width={130}
+                          height={150}
+                          textSize={1}
+                          waveFrequency={2}
+                          waveAmplitude={3}
+                          animation={
+                            'infinite ease-in-out 1s running waveAnimation'
+                          }
+                          animationDuration={6000}
+                          animationDirection={'alternate'}
+                          gradient
+                          gradientStops={[
+                            { key: '0%', stopColor: '#3498db', offset: '0%' },
+                            { key: '100%', stopColor: 'teal', offset: '100%' },
+                          ]}
+                          circleStyle={{
+                            fill: 'lightgray',
                           }}
-                          labelFontSize="clamp(8px, 1vw, 5px)"
-                          valueTextFontSize="clamp(15px, 1.2vw, 15px)"
-                          arcPadding={0.02}
-                          arcWidth={0.3}
+                          waveStyle={{
+                            fill: 'url(#gradient)',
+                            animation: 'waveAnimation 2s ease-in-out infinite',
+                          }}
+                          textRenderer={(value) => {
+                            const actualValue = convertReading(pid.totalizer);
+                            return (
+                              <tspan>
+                                <tspan fontSize="11">
+                                  {actualValue?.toFixed(2)}{' '}
+                                </tspan>
+                                <tspan fontSize="11">{unit}</tspan>
+                              </tspan>
+                            );
+                          }}
                         />
                       </motion.div>
-                    </Box>
-                  </Stack>
-                </SimpleGrid>
-              </Box>
-            );
-          })}
+                    </Stack>
+
+                    <Stack
+                      spacing={3}
+                      align="center"
+                      pt={4}
+                      bgGradient={
+                        pid.isRepairing
+                          ? 'linear(to-r, yellow.100, yellow.200)'
+                          : isOlderThan24Hours
+                          ? 'linear(to-r, red.100, red.200)'
+                          : 'linear(to-r, green.100, green.200)'
+                      }
+                      rounded="md"
+                      borderColor={cardBorder}
+                      style={{
+                        filter: isLicenseExpired ? 'blur(4px)' : 'none',
+                        pointerEvents: isLicenseExpired ? 'none' : 'auto',
+                      }}
+                    >
+                      <Text fontSize="md" fontWeight="bold">
+                        FLOWRATE
+                      </Text>
+                      <Box
+                        display="flex"
+                        justifyContent="center"
+                        alignItems="center"
+                        w="auto"
+                        h="auto"
+                        maxWidth="150px"
+                        pt={8}
+                        mr={2}
+                      >
+                        <motion.div
+                          initial="hidden"
+                          animate="visible"
+                          exit="hidden"
+                          variants={speedometerAnimation}
+                        >
+                          <ReactSpeedometer
+                            value={flowrateData.value}
+                            needleColor="rgb(247, 132, 56)"
+                            startColor="rgb(183, 223, 244)"
+                            endColor="rgb(17, 113, 165)"
+                            segments={4}
+                            height={170}
+                            width={170}
+                            minValue={0}
+                            maxValue={Math.max(
+                              Math.ceil(flowrateData.value * 1.2),
+                              10,
+                            )}
+                            customSegmentStops={[
+                              0,
+                              Math.max(flowrateData.value * 0.25, 2.5),
+                              Math.max(flowrateData.value * 0.5, 5),
+                              Math.max(flowrateData.value * 0.75, 7.5),
+                              Math.max(flowrateData.value, 10),
+                              Math.max(Math.ceil(flowrateData.value * 1.2), 10),
+                            ].map((value) => Number(value.toFixed(1)))}
+                            forceRender={true}
+                            animate={true}
+                            animationDuration={9000}
+                            animationEasing="easeOutExpo"
+                            currentValueText={`${flowrateData.value.toFixed(
+                              2,
+                            )} ${flowrateData.unit}`}
+                            textStyle={{
+                              fontSize: 'clamp(8px, 1vw, 12px)',
+                              fontWeight: '100',
+                            }}
+                            labelFontSize="clamp(8px, 1vw, 5px)"
+                            valueTextFontSize="clamp(15px, 1.2vw, 15px)"
+                            arcPadding={0.02}
+                            arcWidth={0.3}
+                          />
+                        </motion.div>
+                      </Box>
+                    </Stack>
+                  </SimpleGrid>
+                </Box>
+              );
+            })
+          ) : (
+            <Box display="flex" justifyContent="center" w="full" h="20vh">
+              <NoData message="No readings found!" />
+            </Box>
+          )}
         </SimpleGrid>
       )}
 

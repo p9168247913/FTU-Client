@@ -423,7 +423,7 @@ const User = () => {
       { value: 'IRM', label: 'IRM' },
       { value: 'FSE', label: 'FSE' },
       { value: 'user', label: 'User' },
-      { value: 'companyUser', label: 'Company User' },
+      { value: 'companyUser', label: 'Company Admin' },
     ],
     IRM: [
       { value: '', label: 'Select Role' },
@@ -431,7 +431,7 @@ const User = () => {
       { value: 'IRM', label: 'IRM' },
       { value: 'FSE', label: 'FSE' },
       { value: 'user', label: 'User' },
-      { value: 'companyUser', label: 'Company User' },
+      { value: 'companyUser', label: 'Company Admin' },
     ],
     companyUser: [
       { value: '', label: 'Select Role' },

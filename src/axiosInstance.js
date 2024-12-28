@@ -27,7 +27,7 @@ axiosInstance.interceptors.response.use(
         isUnauthorizedToastShown = true
         showToast('Unauthorized user. Please login.')
         // localStorage.clear()
-        // window.location.href = '/auth/sign-in'
+        window.location.href = '/auth/sign-in'
         setTimeout(resetUnauthorizedToast, 5000) // e.g., 5 seconds
       }
 
