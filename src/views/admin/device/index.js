@@ -272,6 +272,7 @@ const Devices = () => {
       }
     });
   };
+
   const handleEdit = (device, event) => {
     event.stopPropagation();
     setEditId(device?._id);
@@ -311,6 +312,7 @@ const Devices = () => {
     });
     onEditOpen();
   };
+
   const handleSave = async () => {
     try {
       setLoading(true);
@@ -357,7 +359,7 @@ const Devices = () => {
     }),
     option: (styles) => ({
       ...styles,
-      color: 'black', // Assuming you want black text for options in both light and dark mode
+      color: 'black',
     }),
   };
 
@@ -487,7 +489,9 @@ const Devices = () => {
           <ModalBody>
             <SimpleGrid columns={{ base: 1, md: 2 }} spacing="4">
               <FormControl isRequired>
-                <FormLabel color={labelColor}>Product Name</FormLabel>
+                <FormLabel fontSize={'sm'} color={labelColor}>
+                  Product Name
+                </FormLabel>
                 <Input
                   name="productName"
                   placeholder="Enter product name"
@@ -502,7 +506,9 @@ const Devices = () => {
               </FormControl>
 
               <FormControl isRequired>
-                <FormLabel color={labelColor}>Product ID</FormLabel>
+                <FormLabel fontSize={'sm'} color={labelColor}>
+                  Product ID
+                </FormLabel>
                 <Input
                   name="productId"
                   placeholder="Enter product ID"
@@ -517,7 +523,9 @@ const Devices = () => {
               </FormControl>
 
               <FormControl isRequired>
-                <FormLabel color={labelColor}>Product Type</FormLabel>
+                <FormLabel fontSize={'sm'} color={labelColor}>
+                  Product Type
+                </FormLabel>
                 <Select
                   name="productType"
                   placeholder="Select product type"
@@ -538,8 +546,9 @@ const Devices = () => {
               </FormControl>
 
               <FormControl>
-                <FormLabel color={labelColor}>Company</FormLabel>
-
+                <FormLabel fontSize={'sm'} color={labelColor}>
+                  Company
+                </FormLabel>
                 <ReactSelect
                   name="company"
                   placeholder="Select company"
@@ -571,7 +580,7 @@ const Devices = () => {
               </FormControl>
 
               <FormControl>
-                <FormLabel color={labelColor}>
+                <FormLabel fontSize={'sm'} color={labelColor}>
                   Flowmeter Serial Number
                 </FormLabel>
                 <Input
@@ -588,7 +597,7 @@ const Devices = () => {
               </FormControl>
 
               <FormControl>
-                <FormLabel color={labelColor}>
+                <FormLabel fontSize={'sm'} color={labelColor}>
                   Dashboard Licensing Expiry
                 </FormLabel>
                 <Input
@@ -605,7 +614,9 @@ const Devices = () => {
               </FormControl>
 
               <FormControl>
-                <FormLabel color={labelColor}>Make</FormLabel>
+                <FormLabel fontSize={'sm'} color={labelColor}>
+                  Make
+                </FormLabel>
                 <Input
                   name="make"
                   placeholder="Enter make"
@@ -620,7 +631,9 @@ const Devices = () => {
               </FormControl>
 
               <FormControl>
-                <FormLabel color={labelColor}>Model</FormLabel>
+                <FormLabel fontSize={'sm'} color={labelColor}>
+                  Model
+                </FormLabel>
                 <Input
                   name="model"
                   placeholder="Enter model"
@@ -635,7 +648,9 @@ const Devices = () => {
               </FormControl>
 
               <FormControl>
-                <FormLabel color={labelColor}>Protocol</FormLabel>
+                <FormLabel fontSize={'sm'} color={labelColor}>
+                  Protocol
+                </FormLabel>
                 <Input
                   name="protocol"
                   placeholder="Enter protocol"
@@ -650,7 +665,9 @@ const Devices = () => {
               </FormControl>
 
               <FormControl>
-                <FormLabel color={labelColor}>Diameter</FormLabel>
+                <FormLabel fontSize={'sm'} color={labelColor}>
+                  Diameter
+                </FormLabel>
                 <Input
                   name="diameter"
                   placeholder="Enter diameter"
@@ -665,7 +682,9 @@ const Devices = () => {
               </FormControl>
 
               <FormControl>
-                <FormLabel color={labelColor}>Installed By</FormLabel>
+                <FormLabel fontSize={'sm'} color={labelColor}>
+                  Installed By
+                </FormLabel>
                 <Input
                   name="installedBy"
                   placeholder="Enter installer"
@@ -680,7 +699,9 @@ const Devices = () => {
               </FormControl>
 
               <FormControl>
-                <FormLabel color={labelColor}>Commissioning Date</FormLabel>
+                <FormLabel fontSize={'sm'} color={labelColor}>
+                  Commissioning Date
+                </FormLabel>
                 <Input
                   name="commissioningDate"
                   type="date"
@@ -695,7 +716,9 @@ const Devices = () => {
               </FormControl>
 
               <FormControl>
-                <FormLabel color={labelColor}>Value</FormLabel>
+                <FormLabel fontSize={'sm'} color={labelColor}>
+                  Value
+                </FormLabel>
                 <Input
                   name="value"
                   type="number"
@@ -717,7 +740,9 @@ const Devices = () => {
                 }}
               >
                 <div>
-                  <FormLabel color={labelColor}>New Flowmeter</FormLabel>
+                  <FormLabel fontSize={'sm'} color={labelColor}>
+                    New Flowmeter
+                  </FormLabel>
                   <Switch
                     name="newFlowmeter"
                     isChecked={addNewDevice.newFlowmeter}
@@ -725,7 +750,9 @@ const Devices = () => {
                   />
                 </div>
                 <div>
-                  <FormLabel color={labelColor}>Reset Counter</FormLabel>
+                  <FormLabel fontSize={'sm'} color={labelColor}>
+                    Reset Counter
+                  </FormLabel>
                   <Switch
                     name="resetCounter"
                     isChecked={addNewDevice.resetCounter}
@@ -735,7 +762,7 @@ const Devices = () => {
               </FormControl>
 
               <FormControl>
-                <FormLabel color={labelColor}>
+                <FormLabel fontSize={'sm'} color={labelColor}>
                   Flowmeter Warranty Start Date
                 </FormLabel>
                 <Input
@@ -752,7 +779,7 @@ const Devices = () => {
               </FormControl>
 
               <FormControl>
-                <FormLabel color={labelColor}>
+                <FormLabel fontSize={'sm'} color={labelColor}>
                   Flowmeter Warranty End Date
                 </FormLabel>
                 <Input
@@ -769,7 +796,7 @@ const Devices = () => {
               </FormControl>
 
               <FormControl>
-                <FormLabel color={labelColor}>
+                <FormLabel fontSize={'sm'} color={labelColor}>
                   Telemetry Warranty Start Date
                 </FormLabel>
                 <Input
@@ -788,7 +815,7 @@ const Devices = () => {
               </FormControl>
 
               <FormControl>
-                <FormLabel color={labelColor}>
+                <FormLabel fontSize={'sm'} color={labelColor}>
                   Telemetry Warranty End Date
                 </FormLabel>
                 <Input
@@ -807,7 +834,7 @@ const Devices = () => {
               </FormControl>
 
               <FormControl>
-                <FormLabel color={labelColor}>
+                <FormLabel fontSize={'sm'} color={labelColor}>
                   Dashboard Validity Start Date
                 </FormLabel>
                 <Input
@@ -824,7 +851,7 @@ const Devices = () => {
               </FormControl>
 
               <FormControl>
-                <FormLabel color={labelColor}>
+                <FormLabel fontSize={'sm'} color={labelColor}>
                   Dashboard Validity End Date
                 </FormLabel>
                 <Input
@@ -841,7 +868,7 @@ const Devices = () => {
               </FormControl>
 
               <FormControl>
-                <FormLabel color={labelColor}>
+                <FormLabel fontSize={'sm'} color={labelColor}>
                   SIM Card Validity Start Date
                 </FormLabel>
                 <Input
@@ -858,7 +885,7 @@ const Devices = () => {
               </FormControl>
 
               <FormControl>
-                <FormLabel color={labelColor}>
+                <FormLabel fontSize={'sm'} color={labelColor}>
                   SIM Card Validity End Date
                 </FormLabel>
                 <Input
@@ -883,7 +910,7 @@ const Devices = () => {
               zIndex: '1',
             }}
           >
-            <Button variant="ghost" onClick={onClose}>
+            <Button mr={3} variant="ghost" onClick={onClose}>
               Cancel
             </Button>
             <Button
@@ -919,7 +946,9 @@ const Devices = () => {
           <ModalBody>
             <SimpleGrid columns={{ base: 1, md: 2 }} spacing="4">
               <FormControl isRequired>
-                <FormLabel color={labelColor}>Product Name</FormLabel>
+                <FormLabel fontSize={'sm'} color={labelColor}>
+                  Product Name
+                </FormLabel>
                 <Input
                   name="productName"
                   value={editDevice.productName}
@@ -938,7 +967,9 @@ const Devices = () => {
               </FormControl>
 
               <FormControl isRequired>
-                <FormLabel color={labelColor}>Product ID</FormLabel>
+                <FormLabel fontSize={'sm'} color={labelColor}>
+                  Product ID
+                </FormLabel>
                 <Input
                   name="productId"
                   value={editDevice.productId}
@@ -954,7 +985,9 @@ const Devices = () => {
               </FormControl>
 
               <FormControl isRequired>
-                <FormLabel color={labelColor}>Product Type</FormLabel>
+                <FormLabel fontSize={'sm'} color={labelColor}>
+                  Product Type
+                </FormLabel>
                 <Select
                   name="productType"
                   placeholder="Select product type"
@@ -980,7 +1013,9 @@ const Devices = () => {
               </FormControl>
 
               <FormControl>
-                <FormLabel color={labelColor}>Company</FormLabel>
+                <FormLabel fontSize={'sm'} color={labelColor}>
+                  Company
+                </FormLabel>
                 <ReactSelect
                   name="company"
                   placeholder="Select company"
@@ -1012,7 +1047,7 @@ const Devices = () => {
               </FormControl>
 
               <FormControl>
-                <FormLabel color={labelColor}>
+                <FormLabel fontSize={'sm'} color={labelColor}>
                   Flowmeter Serial Number
                 </FormLabel>
                 <Input
@@ -1033,7 +1068,7 @@ const Devices = () => {
               </FormControl>
 
               <FormControl>
-                <FormLabel color={labelColor}>
+                <FormLabel fontSize={'sm'} color={labelColor}>
                   Dashboard Licensing Expiry
                 </FormLabel>
                 <Input
@@ -1061,7 +1096,9 @@ const Devices = () => {
               </FormControl>
 
               <FormControl>
-                <FormLabel color={labelColor}>Make</FormLabel>
+                <FormLabel fontSize={'sm'} color={labelColor}>
+                  Make
+                </FormLabel>
                 <Input
                   name="make"
                   value={editDevice.make}
@@ -1077,7 +1114,9 @@ const Devices = () => {
               </FormControl>
 
               <FormControl>
-                <FormLabel color={labelColor}>Model</FormLabel>
+                <FormLabel fontSize={'sm'} color={labelColor}>
+                  Model
+                </FormLabel>
                 <Input
                   name="model"
                   value={editDevice.model}
@@ -1093,7 +1132,9 @@ const Devices = () => {
               </FormControl>
 
               <FormControl>
-                <FormLabel color={labelColor}>Protocol</FormLabel>
+                <FormLabel fontSize={'sm'} color={labelColor}>
+                  Protocol
+                </FormLabel>
                 <Input
                   name="protocol"
                   value={editDevice.protocol}
@@ -1109,7 +1150,9 @@ const Devices = () => {
               </FormControl>
 
               <FormControl>
-                <FormLabel color={labelColor}>Diameter</FormLabel>
+                <FormLabel fontSize={'sm'} color={labelColor}>
+                  Diameter
+                </FormLabel>
                 <Input
                   name="diameter"
                   value={editDevice.diameter}
@@ -1125,7 +1168,9 @@ const Devices = () => {
               </FormControl>
 
               <FormControl>
-                <FormLabel color={labelColor}>Installed By</FormLabel>
+                <FormLabel fontSize={'sm'} color={labelColor}>
+                  Installed By
+                </FormLabel>
                 <Input
                   name="installedBy"
                   value={editDevice.installedBy}
@@ -1144,7 +1189,9 @@ const Devices = () => {
               </FormControl>
 
               <FormControl>
-                <FormLabel color={labelColor}>Commissioning Date</FormLabel>
+                <FormLabel fontSize={'sm'} color={labelColor}>
+                  Commissioning Date
+                </FormLabel>
                 <Input
                   name="commissioningDate"
                   type="date"
@@ -1170,7 +1217,9 @@ const Devices = () => {
               </FormControl>
 
               <FormControl>
-                <FormLabel color={labelColor}>Value</FormLabel>
+                <FormLabel fontSize={'sm'} color={labelColor}>
+                  Value
+                </FormLabel>
                 <Input
                   name="value"
                   type="number"
@@ -1201,7 +1250,9 @@ const Devices = () => {
                     minWidth: '124px',
                   }}
                 >
-                  <FormLabel color={labelColor}>New Flowmeter</FormLabel>
+                  <FormLabel fontSize={'sm'} color={labelColor}>
+                    New Flowmeter
+                  </FormLabel>
                   <Switch
                     name="newFlowmeter"
                     isChecked={editDevice.newFlowmeter}
@@ -1220,7 +1271,9 @@ const Devices = () => {
                     minWidth: '114px',
                   }}
                 >
-                  <FormLabel color={labelColor}>Reset Counter</FormLabel>
+                  <FormLabel fontSize={'sm'} color={labelColor}>
+                    Reset Counter
+                  </FormLabel>
                   <Switch
                     name="resetCounter"
                     isChecked={editDevice.resetCounter}
@@ -1258,7 +1311,7 @@ const Devices = () => {
               </FormControl>
 
               <FormControl>
-                <FormLabel color={labelColor}>
+                <FormLabel fontSize={'sm'} color={labelColor}>
                   Flowmeter Warranty Start Date
                 </FormLabel>
                 <Input
@@ -1289,7 +1342,7 @@ const Devices = () => {
               </FormControl>
 
               <FormControl>
-                <FormLabel color={labelColor}>
+                <FormLabel fontSize={'sm'} color={labelColor}>
                   Flowmeter Warranty End Date
                 </FormLabel>
                 <Input
@@ -1320,7 +1373,7 @@ const Devices = () => {
               </FormControl>
 
               <FormControl>
-                <FormLabel color={labelColor}>
+                <FormLabel fontSize={'sm'} color={labelColor}>
                   Telemetry Warranty Start Date
                 </FormLabel>
                 <Input
@@ -1353,7 +1406,7 @@ const Devices = () => {
               </FormControl>
 
               <FormControl>
-                <FormLabel color={labelColor}>
+                <FormLabel fontSize={'sm'} color={labelColor}>
                   Telemetry Warranty End Date
                 </FormLabel>
                 <Input
@@ -1386,7 +1439,7 @@ const Devices = () => {
               </FormControl>
 
               <FormControl>
-                <FormLabel color={labelColor}>
+                <FormLabel fontSize={'sm'} color={labelColor}>
                   Dashboard Validity Start Date
                 </FormLabel>
                 <Input
@@ -1417,7 +1470,7 @@ const Devices = () => {
               </FormControl>
 
               <FormControl>
-                <FormLabel color={labelColor}>
+                <FormLabel fontSize={'sm'} color={labelColor}>
                   Dashboard Validity End Date
                 </FormLabel>
                 <Input
@@ -1448,7 +1501,7 @@ const Devices = () => {
               </FormControl>
 
               <FormControl>
-                <FormLabel color={labelColor}>
+                <FormLabel fontSize={'sm'} color={labelColor}>
                   SIM Card Validity Start Date
                 </FormLabel>
                 <Input
@@ -1479,7 +1532,7 @@ const Devices = () => {
               </FormControl>
 
               <FormControl>
-                <FormLabel color={labelColor}>
+                <FormLabel fontSize={'sm'} color={labelColor}>
                   SIM Card Validity End Date
                 </FormLabel>
                 <Input
@@ -1518,7 +1571,7 @@ const Devices = () => {
               zIndex: '1',
             }}
           >
-            <Button variant="ghost" onClick={onEditClose}>
+            <Button mr={3} variant="ghost" onClick={onEditClose}>
               Cancel
             </Button>
             <Button colorScheme="blue" onClick={handleSave} isLoading={loading}>

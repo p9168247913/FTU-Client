@@ -63,7 +63,7 @@ const DevelopmentTable = ({
         </Td>
         <Td>{device?.productName}</Td>
         {/* <Td>{device.productPasscode}</Td> */}
-        <Td whiteSpace="nowrap" textOverflow="ellipsis" overflow="hidden">
+        <Td  textOverflow="ellipsis" overflow="hidden">
           {device?.company?.name || 'N/A'}
         </Td>
         <Td>{device?.productType?.type || 'N/A'}</Td>

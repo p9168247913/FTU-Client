@@ -67,7 +67,6 @@ const DevelopmentTable = ({
         <Td>{index + 1 + (page - 1) * 10}</Td>
         <Td
           style={{
-            whiteSpace: 'nowrap',
             overflow: 'hidden',
             textOverflow: 'ellipsis',
           }}
@@ -75,7 +74,11 @@ const DevelopmentTable = ({
           {company?.name}
         </Td>
         {/* <Td>{company.companyId}</Td> */}
-        <Td w={"20%"} whiteSpace="nowrap" textOverflow="ellipsis" overflow="hidden">
+        <Td
+          w={'20%'}
+          textOverflow="ellipsis"
+          overflow="hidden"
+        >
           {company?.address
             ? `${company?.address?.addressLine}, ${company?.address?.city}, ${company?.address?.state}, ${company?.address?.country}-${company?.address?.zipcode}`
             : ''}
@@ -194,7 +197,7 @@ const DevelopmentTable = ({
       </Flex>
       <Box overflowX="auto" maxHeight={'calc(100vh - 100px)'}>
         <Table variant="simple" color="gray.500" mb="24px" mt="12px">
-          <Thead zIndex={1} bg={"white"} position={'sticky'} top={0}>
+          <Thead zIndex={1} bg={'white'} position={'sticky'} top={0}>
             <Tr>
               <Th borderColor={borderColor}>No.</Th>
               <Th borderColor={borderColor} whiteSpace="nowrap">
@@ -203,7 +206,9 @@ const DevelopmentTable = ({
               {/* <Th borderColor={borderColor} whiteSpace="nowrap">
                 Company ID
               </Th> */}
-              <Th w={"20%"} borderColor={borderColor}>Address</Th>
+              <Th w={'20%'} borderColor={borderColor}>
+                Address
+              </Th>
               <Th borderColor={borderColor} whiteSpace="nowrap">
                 Contact Emails
               </Th>
@@ -226,7 +231,7 @@ DevelopmentTable.propTypes = {
   handleEditUser: PropTypes.func.isRequired,
   handleDeleteUser: PropTypes.func.isRequired,
   handlePageChange: PropTypes.func.isRequired,
-  handleRowClick: PropTypes.func.isRequired, // Added prop type validation
+  handleRowClick: PropTypes.func.isRequired,
   page: PropTypes.number.isRequired,
   totalPages: PropTypes.number.isRequired,
   loading: PropTypes.bool.isRequired,

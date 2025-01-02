@@ -125,7 +125,7 @@ const Company = () => {
 
   const modalBg = useColorModeValue('white', 'gray.800');
   const labelColor = useColorModeValue('gray.800', 'gray.300');
-  const columnsCount = useBreakpointValue({ base: 1, sm: 2, md: 2, lg: 3})
+  const columnsCount = useBreakpointValue({ base: 1, sm: 2, md: 2, lg: 3 });
 
   const handleRowClick = (company) => {
     setSelectedCompany(company);
@@ -497,7 +497,7 @@ const Company = () => {
           <ModalBody>
             <SimpleGrid columns={{ base: 1, md: 2 }} spacing="4">
               <FormControl mb="4" isRequired>
-                <FormLabel>Company Name</FormLabel>
+                <FormLabel fontSize={'sm'}>Company Name</FormLabel>
                 <Input
                   name="name"
                   placeholder="Enter company name"
@@ -511,7 +511,7 @@ const Company = () => {
                 />
               </FormControl>
               <FormControl mb="4" isRequired>
-                <FormLabel>Primary Email</FormLabel>
+                <FormLabel fontSize={'sm'}>Primary Email</FormLabel>
                 <Input
                   name="email1"
                   type="email"
@@ -526,7 +526,7 @@ const Company = () => {
                 />
               </FormControl>
               <FormControl mb="4">
-                <FormLabel>Secondary Email</FormLabel>
+                <FormLabel fontSize={'sm'}>Secondary Email</FormLabel>
                 <Input
                   name="email2"
                   type="email"
@@ -541,7 +541,7 @@ const Company = () => {
                 />
               </FormControl>
               <FormControl mb="4" isRequired>
-                <FormLabel>Primary Contact</FormLabel>
+                <FormLabel fontSize={'sm'}>Primary Contact</FormLabel>
                 <Input
                   name="contact1"
                   placeholder="Enter primary contact"
@@ -555,7 +555,7 @@ const Company = () => {
                 />
               </FormControl>
               <FormControl mb="4">
-                <FormLabel>Secondary Contact</FormLabel>
+                <FormLabel fontSize={'sm'}>Secondary Contact</FormLabel>
                 <Input
                   name="contact2"
                   placeholder="Enter secondary contact"
@@ -569,7 +569,7 @@ const Company = () => {
                 />
               </FormControl>
               <FormControl mb="4" isRequired>
-                <FormLabel>Allowed Limit</FormLabel>
+                <FormLabel fontSize={'sm'}>Allowed Limit</FormLabel>
                 <InputGroup>
                   <Input
                     name="allowedLimit"
@@ -593,7 +593,7 @@ const Company = () => {
                 </InputGroup>
               </FormControl>
               <FormControl mb="4">
-                <FormLabel>Address Line</FormLabel>
+                <FormLabel fontSize={'sm'}>Address Line</FormLabel>
                 <Input
                   name="addressLine"
                   placeholder="Enter address"
@@ -607,7 +607,7 @@ const Company = () => {
                 />
               </FormControl>
               <FormControl mb="4">
-                <FormLabel>City</FormLabel>
+                <FormLabel fontSize={'sm'}>City</FormLabel>
                 <Input
                   name="city"
                   placeholder="Enter city"
@@ -621,7 +621,7 @@ const Company = () => {
                 />
               </FormControl>
               <FormControl mb="4">
-                <FormLabel>State</FormLabel>
+                <FormLabel fontSize={'sm'}>State</FormLabel>
                 <Input
                   name="state"
                   placeholder="Enter state"
@@ -635,7 +635,7 @@ const Company = () => {
                 />
               </FormControl>
               <FormControl mb="4">
-                <FormLabel>Country</FormLabel>
+                <FormLabel fontSize={'sm'}>Country</FormLabel>
                 <Input
                   name="country"
                   placeholder="Enter country"
@@ -649,7 +649,7 @@ const Company = () => {
                 />
               </FormControl>
               <FormControl mb="4">
-                <FormLabel>Zipcode</FormLabel>
+                <FormLabel fontSize={'sm'}>Zipcode</FormLabel>
                 <Input
                   name="zipcode"
                   placeholder="Enter zipcode"
@@ -663,7 +663,7 @@ const Company = () => {
                 />
               </FormControl>
               <FormControl mb="4">
-                <FormLabel>Company Contact Person</FormLabel>
+                <FormLabel fontSize={'sm'}>Company Contact Person</FormLabel>
                 <Input
                   name="companyRepresentativeName"
                   placeholder="Enter contact person name"
@@ -677,7 +677,7 @@ const Company = () => {
                 />
               </FormControl>
               <FormControl mb="4">
-                <FormLabel>Aquasense Sales Executive</FormLabel>
+                <FormLabel fontSize={'sm'}>Aquasense Sales Executive</FormLabel>
                 <Select
                   name="aquasenseSalesRepresentative"
                   placeholder="Select Sales Executive"
@@ -694,7 +694,7 @@ const Company = () => {
                 </Select>
               </FormControl>
               <FormControl mb="4">
-                <FormLabel>Aquasense IRM Executive</FormLabel>
+                <FormLabel fontSize={'sm'}>Aquasense IRM Executive</FormLabel>
                 <Select
                   name="aquasenseIRMUser"
                   placeholder="Select IRM Executive"
@@ -757,7 +757,7 @@ const Company = () => {
           <ModalBody>
             <SimpleGrid columns={{ base: 1, md: 2 }} spacing="4">
               <FormControl>
-                <FormLabel>Company Name</FormLabel>
+                <FormLabel fontSize={'sm'}>Company Name</FormLabel>
                 <Input
                   name="name"
                   placeholder="Enter company name"
@@ -771,7 +771,7 @@ const Company = () => {
                 />
               </FormControl>
               <FormControl>
-                <FormLabel>Primary Email</FormLabel>
+                <FormLabel fontSize={'sm'}>Primary Email</FormLabel>
                 <Input
                   name="email1"
                   type="email"
@@ -786,7 +786,7 @@ const Company = () => {
                 />
               </FormControl>
               <FormControl>
-                <FormLabel>Secondary Email</FormLabel>
+                <FormLabel fontSize={'sm'}>Secondary Email</FormLabel>
                 <Input
                   name="email2"
                   type="email"
@@ -801,7 +801,7 @@ const Company = () => {
                 />
               </FormControl>
               <FormControl>
-                <FormLabel>Primary Contact</FormLabel>
+                <FormLabel fontSize={'sm'}>Primary Contact</FormLabel>
                 <Input
                   name="contact1"
                   placeholder="Enter primary contact"
@@ -815,7 +815,7 @@ const Company = () => {
                 />
               </FormControl>
               <FormControl>
-                <FormLabel>Secondary Contact</FormLabel>
+                <FormLabel fontSize={'sm'}>Secondary Contact</FormLabel>
                 <Input
                   name="contact2"
                   placeholder="Enter secondary contact"
@@ -829,7 +829,7 @@ const Company = () => {
                 />
               </FormControl>
               <FormControl>
-                <FormLabel>Allowed Limit</FormLabel>
+                <FormLabel fontSize={'sm'}>Allowed Limit</FormLabel>
                 <InputGroup>
                   <Input
                     name="allowedLimit"
@@ -852,9 +852,8 @@ const Company = () => {
                   </InputRightElement>
                 </InputGroup>
               </FormControl>
-
               <FormControl>
-                <FormLabel>Address Line</FormLabel>
+                <FormLabel fontSize={'sm'}>Address Line</FormLabel>
                 <Input
                   name="addressLine"
                   placeholder="Enter address"
@@ -868,7 +867,7 @@ const Company = () => {
                 />
               </FormControl>
               <FormControl>
-                <FormLabel>City</FormLabel>
+                <FormLabel fontSize={'sm'}>City</FormLabel>
                 <Input
                   name="city"
                   placeholder="Enter city"
@@ -882,7 +881,7 @@ const Company = () => {
                 />
               </FormControl>
               <FormControl>
-                <FormLabel>State</FormLabel>
+                <FormLabel fontSize={'sm'}>State</FormLabel>
                 <Input
                   name="state"
                   placeholder="Enter state"
@@ -896,7 +895,7 @@ const Company = () => {
                 />
               </FormControl>
               <FormControl>
-                <FormLabel>Country</FormLabel>
+                <FormLabel fontSize={'sm'}>Country</FormLabel>
                 <Input
                   name="country"
                   placeholder="Enter country"
@@ -910,7 +909,7 @@ const Company = () => {
                 />
               </FormControl>
               <FormControl>
-                <FormLabel>Zipcode</FormLabel>
+                <FormLabel fontSize={'sm'}>Zipcode</FormLabel>
                 <Input
                   name="zipcode"
                   placeholder="Enter zipcode"
@@ -924,7 +923,7 @@ const Company = () => {
                 />
               </FormControl>
               <FormControl>
-                <FormLabel>Company Contact Person</FormLabel>
+                <FormLabel fontSize={'sm'}>Company Contact Person</FormLabel>
                 <Input
                   name="companyRepresentativeName"
                   placeholder="Enter contact person name"
@@ -938,7 +937,7 @@ const Company = () => {
                 />
               </FormControl>
               <FormControl>
-                <FormLabel>Aquasense Sales Executive</FormLabel>
+                <FormLabel fontSize={'sm'}>Aquasense Sales Executive</FormLabel>
                 <Select
                   name="aquasenseSalesRepresentative"
                   placeholder="Select Sales Executive"
@@ -955,7 +954,7 @@ const Company = () => {
                 </Select>
               </FormControl>
               <FormControl>
-                <FormLabel>Aquasense IRM Executive</FormLabel>
+                <FormLabel fontSize={'sm'}>Aquasense IRM Executive</FormLabel>
                 <Select
                   name="aquasenseIRMUser"
                   placeholder="Select IRM Executive"
@@ -1034,7 +1033,11 @@ const Company = () => {
                   <u>Basic Info.</u>
                 </Text>
                 <Card bg="gray.200" p="4" boxShadow="md">
-                  <SimpleGrid  columns={{ base: 1, sm: 1, md: 2 }} spacing={4} mb="4">
+                  <SimpleGrid
+                    columns={{ base: 1, sm: 1, md: 2 }}
+                    spacing={4}
+                    mb="4"
+                  >
                     <Box>
                       <Text fontWeight="bold" fontSize="sm" color="gray.600">
                         <Icon color={'gray'} as={AtSignIcon} mr={1} mb={1} />{' '}
@@ -1091,7 +1094,7 @@ const Company = () => {
                       <Text>{selectedCompany?.contact2 || 'N/A'}</Text>
                     </Box>
                     <Box>
-                      <Text fontWeight="bold" fontSize="sm" color="gray.600" >
+                      <Text fontWeight="bold" fontSize="sm" color="gray.600">
                         <Icon
                           color={'blue.600'}
                           as={CheckCircleIcon}
@@ -1133,11 +1136,15 @@ const Company = () => {
                   <u>Address Info.</u>
                 </Text>
                 <Card bg="gray.200" p="4" boxShadow="md">
-                  <SimpleGrid columns={{ base: 1, sm: 1, md: 2 }} spacing={4} mb="4">
+                  <SimpleGrid
+                    columns={{ base: 1, sm: 1, md: 2 }}
+                    spacing={4}
+                    mb="4"
+                  >
                     <Box>
                       <Text fontWeight="bold" fontSize="sm" color="gray.600">
-                        <Icon color={'purple'} as={FaHome} mr={1} />{' '}
-                        Address Line:
+                        <Icon color={'purple'} as={FaHome} mr={1} /> Address
+                        Line:
                       </Text>
                       <Text>
                         {selectedCompany?.address?.addressLine || 'N/A'}
@@ -1145,19 +1152,20 @@ const Company = () => {
                     </Box>
                     <Box>
                       <Text fontWeight="bold" fontSize="sm" color="gray.600">
-                        <Icon color={'pink.400'} as={MdStreetview} mr={1} /> City:
+                        <Icon color={'pink.400'} as={MdStreetview} mr={1} />{' '}
+                        City:
                       </Text>
                       <Text>{selectedCompany?.address?.city || 'N/A'}</Text>
                     </Box>
                     <Box>
                       <Text fontWeight="bold" fontSize="sm" color="gray.600">
-                        <Icon color={"orange.500"} as={FaFlag} mr={1} /> State:
+                        <Icon color={'orange.500'} as={FaFlag} mr={1} /> State:
                       </Text>
                       <Text>{selectedCompany?.address?.state || 'N/A'}</Text>
                     </Box>
                     <Box>
                       <Text fontWeight="bold" fontSize="sm" color="gray.600">
-                        <Icon color={"blue.300"} as={FaGlobe} mr={1} /> Country:
+                        <Icon color={'blue.300'} as={FaGlobe} mr={1} /> Country:
                       </Text>
                       <Text>{selectedCompany?.address?.country || 'N/A'}</Text>
                     </Box>
@@ -1188,9 +1196,9 @@ const Company = () => {
                       bg="gray.50"
                       size="sm"
                       mb="4"
-                      overflow={"auto"}
+                      overflow={'auto'}
                     >
-                      <Thead bg="gray.200" whiteSpace={"nowrap"} >
+                      <Thead bg="gray.200" whiteSpace={'nowrap'}>
                         <Tr>
                           <Th fontSize="sm" fontWeight="bold">
                             Device Name
@@ -1200,7 +1208,7 @@ const Company = () => {
                           </Th>
                         </Tr>
                       </Thead>
-                      <Tbody >
+                      <Tbody>
                         {selectedCompany.devices.map((device) => (
                           <Tr key={device._id}>
                             <Td>{device?.productName}</Td>
