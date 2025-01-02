@@ -106,7 +106,11 @@ const User = () => {
   const hoverBorderColor = useColorModeValue('gray.400', 'gray.500');
   const selectedBg = useColorModeValue('#EDF2F7', '#2D3748');
   const focusedBg = useColorModeValue('#E2E8F0', '#4A5568');
-  const headerBg = useColorModeValue('blue.500', 'blue.700');
+  const headerBg = useColorModeValue(
+    'linear-gradient(90deg, #4299E1 0%, #3182CE 50%, #2B6CB0 100%)',
+    'linear-gradient(90deg, #2C5282 0%, #2A4365 50%, #1A365D 100%)'
+  );
+  
   const textColor = useColorModeValue('gray.700', 'gray.300');
   const labelColor = useColorModeValue('gray.600', 'gray.400');
 

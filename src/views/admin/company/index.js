@@ -126,7 +126,10 @@ const Company = () => {
   const modalBg = useColorModeValue('white', 'gray.800');
   const labelColor = useColorModeValue('gray.800', 'gray.300');
   const columnsCount = useBreakpointValue({ base: 1, sm: 2, md: 2, lg: 3 });
-  const headerBg = useColorModeValue('green.300', 'green.300');
+  const headerBg = useColorModeValue(
+    'linear-gradient(90deg, #38A169 0%, #48BB78 50%, #68D391 100%)',
+    'linear-gradient(90deg, #38A169 0%, #48BB78 50%, #68D391 100%)',
+  );
   const sectionBg = useColorModeValue('gray.50', 'gray.700');
   const textColor = useColorModeValue('gray.700', 'gray.300');
   const handleRowClick = (company) => {
@@ -1000,11 +1003,10 @@ const Company = () => {
       <Modal isOpen={isViewOpen} onClose={onViewClose} size="lg">
         <ModalOverlay />
         <ModalContent maxWidth="800px" mx="auto" rounded="lg" shadow="lg">
-          {/* Header */}
           <Box
             bg={headerBg}
             color="white"
-            py={4}
+            py={1}
             textAlign="center"
             roundedTop="lg"
           >
@@ -1015,11 +1017,9 @@ const Company = () => {
             <ModalCloseButton />
           </Box>
 
-          {/* Body */}
           <ModalBody>
             {selectedCompany && (
               <Box p={4}>
-                {/* Basic Info Section */}
                 <Box mb={6}>
                   <Text
                     fontSize="lg"
@@ -1114,7 +1114,6 @@ const Company = () => {
                   </Box>
                 </Box>
 
-                {/* Address Info Section */}
                 <Box mb={6}>
                   <Text
                     fontSize="lg"
