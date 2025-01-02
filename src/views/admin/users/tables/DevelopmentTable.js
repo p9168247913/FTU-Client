@@ -12,6 +12,7 @@ import {
   IconButton,
   Button,
   useColorModeValue,
+  Skeleton,
 } from '@chakra-ui/react';
 import {
   EditIcon,
@@ -36,23 +37,28 @@ const DevelopmentTable = ({
   const borderColor = useColorModeValue('gray.200', 'whiteAlpha.100');
   const rowHoverBg = useColorModeValue('gray.100', 'gray.700');
   const role = localStorage.getItem('role');
-
+  const headerBg = useColorModeValue('gray.50', 'gray.800');
+  
   const renderTableRows = () => {
     if (loading) {
-      return (
-        <Tr>
-          <Td colSpan="8" textAlign="center">
-            <Text>Loading...</Text>
-          </Td>
+      return Array.from({ length: 5 }, (_, index) => (
+        <Tr key={index}>
+          {Array.from({ length: 7 }, (_, colIndex) => (
+            <Td key={colIndex}>
+              <Skeleton height="20px" />
+            </Td>
+          ))}
         </Tr>
-      );
+      ));
     }
 
     if (!tableData || tableData.length === 0) {
       return (
         <Tr>
-          <Td colSpan="8" textAlign="center">
-            <Text>No users found</Text>
+          <Td colSpan="7" textAlign="center">
+            <Text fontSize="lg" fontWeight="medium" color="gray.500">
+              No users found
+            </Text>
           </Td>
         </Tr>
       );
@@ -63,22 +69,14 @@ const DevelopmentTable = ({
         key={user.id}
         onClick={() => handleRowClick(user)}
         cursor="pointer"
-        _hover={{ bg: rowHoverBg }}
+        _hover={{ bg: rowHoverBg, transform: 'scale(1.01)' }}
+        transition="transform 0.2s"
       >
         <Td>{index + 1 + (page - 1) * 10}</Td>
-        <Td
-          style={{
-            whiteSpace: 'nowrap',
-            overflow: 'hidden',
-            textOverflow: 'ellipsis',
-          }}
-        >
-          {user.name}
-        </Td>
+        <Td isTruncated>{user.name}</Td>
         <Td>{user.email}</Td>
         <Td>{user.username}</Td>
-        {/* <Td>{user.role}</Td> */}
-        <Td whiteSpace="nowrap">{user.designation}</Td>
+        <Td>{user.designation}</Td>
         <Td>{user.phoneNo}</Td>
         <Td>
           <Flex gap="2">
@@ -104,16 +102,6 @@ const DevelopmentTable = ({
                 }}
               />
             )}
-            {/* <IconButton
-              aria-label="Delete"
-              icon={<DeleteIcon />}
-              size="sm"
-              colorScheme="red"
-              onClick={(e) => {
-                e.stopPropagation();
-                handleDeleteUser(user._id);
-              }}
-            /> */}
           </Flex>
         </Td>
       </Tr>
@@ -192,21 +180,20 @@ const DevelopmentTable = ({
   };
 
   return (
-    <Card flexDirection="column" w="100%" px="0px">
+    <Card flexDirection="column" w="100%" px="0px" overflowX="auto">
       <Flex px="25px" mb="8px" justifyContent="space-between" align="center">
-        <Text color={textColor} fontSize="22px" fontWeight="700">
+        <Text color={textColor} fontSize="22px" fontWeight="bold">
           Users
         </Text>
       </Flex>
-      <Box overflowX="auto" maxHeight={'calc(100vh - 100px)'}>
-        <Table variant="simple" color="gray.500" mb="24px" mt="12px">
-          <Thead bg={"white"} position={'sticky'} top={0}>
+      <Box overflowX="auto" maxHeight="calc(100vh - 100px)">
+        <Table variant="striped" colorScheme="gray" mb="24px">
+          <Thead bg={headerBg} position="sticky" top={0} zIndex={1}>
             <Tr>
               <Th borderColor={borderColor}>No.</Th>
               <Th borderColor={borderColor}>Name</Th>
               <Th borderColor={borderColor}>Email</Th>
               <Th borderColor={borderColor}>Username</Th>
-              {/* <Th borderColor={borderColor}>Role</Th> */}
               <Th borderColor={borderColor}>Designation</Th>
               <Th borderColor={borderColor}>Phone No.</Th>
               <Th borderColor={borderColor}>Actions</Th>

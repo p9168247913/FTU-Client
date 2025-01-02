@@ -30,7 +30,7 @@ const DevelopmentTable = ({
   const textColor = useColorModeValue('secondaryGray.900', 'white');
   const borderColor = useColorModeValue('gray.200', 'whiteAlpha.100');
   const rowHoverBg = useColorModeValue('gray.100', 'gray.700');
-  const theadBgColor = useColorModeValue('gray.100', 'gray.800'); // Dynamically adapt to color mode
+  const theadBgColor = useColorModeValue('gray.100', 'gray.800');
   const theadTextColor = useColorModeValue('gray.900', 'whiteAlpha.900');
   const roundToTwoDecimalPlaces = (value) => {
     const numericValue = parseFloat(value);

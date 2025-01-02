@@ -12,6 +12,7 @@ import {
   IconButton,
   Button,
   useColorModeValue,
+  Skeleton,
 } from '@chakra-ui/react';
 import {
   EditIcon,
@@ -33,37 +34,46 @@ const DevelopmentTable = ({
 }) => {
   const textColor = useColorModeValue('secondaryGray.900', 'white');
   const borderColor = useColorModeValue('gray.200', 'whiteAlpha.100');
+  const headerBg = useColorModeValue('gray.50', 'gray.800');
+  const rowHoverBg = useColorModeValue('gray.100', 'gray.700');
 
   const renderTableRows = () => {
     if (loading) {
-      return (
-        <Tr>
-          <Td colSpan="7" textAlign="center">
-            <Text>Loading...</Text>
-          </Td>
+      return Array.from({ length: 5 }, (_, index) => (
+        <Tr key={index}>
+          {Array.from({ length: 6 }, (_, colIndex) => (
+            <Td key={colIndex}>
+              <Skeleton height="20px" />
+            </Td>
+          ))}
         </Tr>
-      );
+      ));
     }
 
     if (!tableData || tableData.length === 0) {
       return (
         <Tr>
-          <Td colSpan="7" textAlign="center">
-            <Text>No devices found</Text>
+          <Td colSpan="6" textAlign="center">
+            <Text fontSize="lg" fontWeight="medium" color="gray.500">
+              No devices found
+            </Text>
           </Td>
         </Tr>
       );
     }
 
     return tableData.map((device, index) => (
-      <Tr key={device?._id}>
+      <Tr
+        key={device?._id}
+        _hover={{ bg: rowHoverBg, transform: 'scale(1.01)' }}
+        transition="transform 0.2s"
+      >
         <Td>{index + 1 + (page - 1) * 10}</Td>
         <Td whiteSpace="nowrap" overflow="hidden" textOverflow="ellipsis">
           {device?.productId}
         </Td>
         <Td>{device?.productName}</Td>
-        {/* <Td>{device.productPasscode}</Td> */}
-        <Td  textOverflow="ellipsis" overflow="hidden">
+        <Td textOverflow="ellipsis" overflow="hidden">
           {device?.company?.name || 'N/A'}
         </Td>
         <Td>{device?.productType?.type || 'N/A'}</Td>
@@ -166,15 +176,15 @@ const DevelopmentTable = ({
   };
 
   return (
-    <Card flexDirection="column" w="100%" px="0px">
+    <Card flexDirection="column" w="100%" px="0px" overflowX="auto">
       <Flex px="25px" mb="8px" justifyContent="space-between" align="center">
-        <Text color={textColor} fontSize="22px" fontWeight="700">
+        <Text color={textColor} fontSize="22px" fontWeight="bold">
           Devices
         </Text>
       </Flex>
-      <Box overflowX="auto" maxHeight={'calc(100vh - 100px)'}>
-        <Table variant="simple" color="gray.500" mb="24px" mt="12px">
-          <Thead zIndex={1} bg={"white"} position={'sticky'} top={0}>
+      <Box overflowX="auto" maxHeight="calc(100vh - 100px)">
+        <Table colorScheme="gray" mb="24px">
+          <Thead bg={headerBg} position="sticky" top={0} zIndex={1}>
             <Tr>
               <Th borderColor={borderColor}>No.</Th>
               <Th borderColor={borderColor} whiteSpace="nowrap">
@@ -183,7 +193,6 @@ const DevelopmentTable = ({
               <Th borderColor={borderColor} whiteSpace="nowrap">
                 Product Name
               </Th>
-              {/* <Th borderColor={borderColor}>Product Passcode</Th> */}
               <Th borderColor={borderColor} whiteSpace="nowrap">
                 Company Name
               </Th>

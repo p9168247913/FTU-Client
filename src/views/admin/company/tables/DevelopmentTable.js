@@ -12,6 +12,8 @@ import {
   IconButton,
   Button,
   useColorModeValue,
+  Skeleton,
+  Stack,
 } from '@chakra-ui/react';
 import {
   EditIcon,
@@ -34,14 +36,20 @@ const DevelopmentTable = ({
 }) => {
   const textColor = useColorModeValue('secondaryGray.900', 'white');
   const borderColor = useColorModeValue('gray.200', 'whiteAlpha.100');
-  const rowHoverBg = useColorModeValue('gray.100', 'gray.700');
+  const rowHoverBg = useColorModeValue('gray.50', 'gray.600');
+  const headerBg = useColorModeValue('white', 'gray.800');
+  const shadow = useColorModeValue('md', 'lg');
 
   const renderTableRows = () => {
     if (loading) {
       return (
         <Tr>
-          <Td colSpan="7" textAlign="center">
-            <Text>Loading...</Text>
+          <Td colSpan="6">
+            <Stack spacing="4">
+              {[...Array(3)].map((_, i) => (
+                <Skeleton height="20px" key={i} />
+              ))}
+            </Stack>
           </Td>
         </Tr>
       );
@@ -50,8 +58,10 @@ const DevelopmentTable = ({
     if (!tableData || tableData.length === 0) {
       return (
         <Tr>
-          <Td colSpan="7" textAlign="center">
-            <Text>No companies found</Text>
+          <Td colSpan="6" textAlign="center">
+            <Text fontSize="lg" fontWeight="bold" color="gray.500">
+              No companies found
+            </Text>
           </Td>
         </Tr>
       );
@@ -62,32 +72,36 @@ const DevelopmentTable = ({
         key={company?._id}
         onClick={() => handleRowClick(company)}
         cursor="pointer"
-        _hover={{ backgroundColor: rowHoverBg }}
+        _hover={{ backgroundColor: rowHoverBg, boxShadow: shadow }}
       >
         <Td>{index + 1 + (page - 1) * 10}</Td>
         <Td
-          style={{
-            overflow: 'hidden',
-            textOverflow: 'ellipsis',
-          }}
+          isTruncated
+          maxWidth="200px"
+          title={company?.name}
         >
           {company?.name}
         </Td>
-        {/* <Td>{company.companyId}</Td> */}
-        <Td
-          w={'20%'}
-          textOverflow="ellipsis"
-          overflow="hidden"
-        >
+        <Td isTruncated maxWidth="300px">
           {company?.address
-            ? `${company?.address?.addressLine}, ${company?.address?.city}, ${company?.address?.state}, ${company?.address?.country}-${company?.address?.zipcode}`
+            ? [
+                company?.address?.addressLine,
+                company?.address?.city,
+                company?.address?.state,
+                company?.address?.country,
+                company?.address?.zipcode,
+              ]
+                .filter((field) => field)
+                .join(', ')
             : ''}
         </Td>
         <Td>
-          {company?.email1} <br /> {company?.email2}
+          {company?.email1 && <Text>{company?.email1}</Text>}
+          {company?.email2 && <Text>{company?.email2}</Text>}
         </Td>
         <Td>
-          {company?.contact1} <br /> {company?.contact2}
+          {company?.contact1 && <Text>{company?.contact1}</Text>}
+          {company?.contact2 && <Text>{company?.contact2}</Text>}
         </Td>
         <Td>
           <Flex gap="2">
@@ -189,32 +203,21 @@ const DevelopmentTable = ({
   };
 
   return (
-    <Card flexDirection="column" w="100%" px="0px" overflowX="auto">
+    <Card flexDirection="column" w="100%" px="0" overflowX="auto">
       <Flex px="25px" mb="8px" justifyContent="space-between" align="center">
-        <Text color={textColor} fontSize="22px" fontWeight="700">
+        <Text color={textColor} fontSize="2xl" fontWeight="bold">
           Companies
         </Text>
       </Flex>
-      <Box overflowX="auto" maxHeight={'calc(100vh - 100px)'}>
-        <Table variant="simple" color="gray.500" mb="24px" mt="12px">
-          <Thead zIndex={1} bg={'white'} position={'sticky'} top={0}>
+      <Box overflowX="auto" maxHeight="calc(100vh - 150px)">
+        <Table colorScheme="gray">
+          <Thead position="sticky" top={0} zIndex={1} bg={headerBg} shadow="sm">
             <Tr>
               <Th borderColor={borderColor}>No.</Th>
-              <Th borderColor={borderColor} whiteSpace="nowrap">
-                Company Name
-              </Th>
-              {/* <Th borderColor={borderColor} whiteSpace="nowrap">
-                Company ID
-              </Th> */}
-              <Th w={'20%'} borderColor={borderColor}>
-                Address
-              </Th>
-              <Th borderColor={borderColor} whiteSpace="nowrap">
-                Contact Emails
-              </Th>
-              <Th borderColor={borderColor} whiteSpace="nowrap">
-                Contact Numbers
-              </Th>
+              <Th borderColor={borderColor}>Company Name</Th>
+              <Th borderColor={borderColor}>Address</Th>
+              <Th borderColor={borderColor}>Contact Emails</Th>
+              <Th borderColor={borderColor}>Contact Numbers</Th>
               <Th borderColor={borderColor}>Actions</Th>
             </Tr>
           </Thead>
