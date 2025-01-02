@@ -32,6 +32,7 @@ import {
   Card,
   Tooltip,
   Icon,
+  Divider,
 } from '@chakra-ui/react';
 import {
   AddIcon,
@@ -1113,7 +1114,7 @@ const Company = () => {
                     </SimpleGrid>
                   </Box>
                 </Box>
-
+                <Divider my={6} />
                 <Box mb={6}>
                   <Text
                     fontSize="lg"
@@ -1196,39 +1197,42 @@ const Company = () => {
                 </Box>
 
                 {selectedCompany?.devices?.length > 0 && (
-                  <Box>
-                    <Text
-                      fontSize="lg"
-                      fontWeight="bold"
-                      mb={4}
-                      color="orange.500"
-                    >
-                      <Icon as={MdDevices} mr={2} />
-                      Assigned Devices
-                    </Text>
-                    <Table
-                      variant="striped"
-                      colorScheme="blue"
-                      size="sm"
-                      bg={sectionBg}
-                      shadow="md"
-                    >
-                      <Thead>
-                        <Tr>
-                          <Th>Device Name</Th>
-                          <Th>Product ID</Th>
-                        </Tr>
-                      </Thead>
-                      <Tbody>
-                        {selectedCompany.devices.map((device) => (
-                          <Tr key={device._id}>
-                            <Td>{device?.productName}</Td>
-                            <Td>{device?.productId}</Td>
+                  <>
+                    <Divider my={6} />
+                    <Box>
+                      <Text
+                        fontSize="lg"
+                        fontWeight="bold"
+                        mb={4}
+                        color="orange.500"
+                      >
+                        <Icon as={MdDevices} mr={2} />
+                        Assigned Devices
+                      </Text>
+                      <Table
+                        variant="striped"
+                        colorScheme="blue"
+                        size="sm"
+                        bg={sectionBg}
+                        shadow="md"
+                      >
+                        <Thead>
+                          <Tr>
+                            <Th>Device Name</Th>
+                            <Th>Product ID</Th>
                           </Tr>
-                        ))}
-                      </Tbody>
-                    </Table>
-                  </Box>
+                        </Thead>
+                        <Tbody>
+                          {selectedCompany.devices.map((device) => (
+                            <Tr key={device._id}>
+                              <Td>{device?.productName}</Td>
+                              <Td>{device?.productId}</Td>
+                            </Tr>
+                          ))}
+                        </Tbody>
+                      </Table>
+                    </Box>
+                  </>
                 )}
               </Box>
             )}
