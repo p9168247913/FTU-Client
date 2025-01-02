@@ -31,6 +31,7 @@ import {
   InputLeftElement,
   SimpleGrid,
   Icon,
+  Divider,
 } from '@chakra-ui/react';
 import { EditIcon, DeleteIcon } from '@chakra-ui/icons';
 import axiosInstance from 'axiosInstance';
@@ -105,6 +106,9 @@ const User = () => {
   const hoverBorderColor = useColorModeValue('gray.400', 'gray.500');
   const selectedBg = useColorModeValue('#EDF2F7', '#2D3748');
   const focusedBg = useColorModeValue('#E2E8F0', '#4A5568');
+  const headerBg = useColorModeValue('blue.500', 'blue.700');
+  const textColor = useColorModeValue('gray.700', 'gray.300');
+  const labelColor = useColorModeValue('gray.600', 'gray.400');
 
   const companyOptions = [
     { value: '', label: 'Select Company' },
@@ -163,7 +167,10 @@ const User = () => {
 
       if (
         searchTerm &&
-        (searchTerm.name || searchTerm.email || searchTerm.username || searchTerm.companyId)
+        (searchTerm.name ||
+          searchTerm.email ||
+          searchTerm.username ||
+          searchTerm.companyId)
       ) {
         filter = {
           ...filter,
@@ -606,7 +613,6 @@ const User = () => {
         loading={loading}
       />
 
-      {/* Add New User Modal */}
       <Modal isOpen={isOpen} onClose={onClose} motionPreset="slideInRight">
         <ModalOverlay />
         <ModalContent
@@ -1012,91 +1018,111 @@ const User = () => {
         <ModalContent
           maxWidth="800px"
           mx="auto"
-          style={{ maxHeight: '80vh', overflow: 'auto' }}
+          rounded="lg"
+          shadow="lg"
+          overflow="hidden"
         >
-          <ModalBody p={5}>
-            <ModalCloseButton />
-            <Flex alignItems="center" mb={4}>
-              <Avatar size="lg" name={viewUser?.name || 'N/A'} mr={4} />
-              <Box>
-                <Text fontSize="2xl" fontWeight="bold">
-                  {viewUser?.name}
-                </Text>
-                <Text color="gray.500">{viewUser?.designation || 'N/A'}</Text>
-              </Box>
+          {/* Header */}
+          <Box bg={headerBg} color="white" py={6} textAlign="center">
+            <Flex justify="center" mb={4}>
+              <Avatar size="2xl" name={viewUser?.name || 'N/A'} />
             </Flex>
-            <SimpleGrid columns={2} spacing={4}>
-              <Box>
-                <Text fontSize="sm" color="gray.500">
-                  <Icon color={'orange.600'} as={EmailIcon} mr={1} mb={1} />{' '}
-                  Email
-                </Text>
-                <Text fontSize="md">{viewUser?.email || 'N/A'}</Text>
-              </Box>
-              <Box>
-                <Text fontSize="sm" color="gray.500">
-                  <Icon color={'gray'} as={FaUserAlt} mr={1} /> Username
-                </Text>
-                <Text fontSize="md">{viewUser?.username || 'N/A'}</Text>
-              </Box>
-              <Box>
-                <Text fontSize="sm" color="gray.500">
-                  <Icon color={'purple'} as={FaIdBadge} mr={1} /> Designation
-                </Text>
-                <Text fontSize="md">{viewUser?.designation || 'N/A'}</Text>
-              </Box>
-              <Box>
-                <Text fontSize="sm" color="gray.500">
-                  <Icon color={'green'} as={PhoneIcon} mr={1} /> Phone No.
-                </Text>
-                <Text fontSize="md">{viewUser?.phoneNo || 'N/A'}</Text>
-              </Box>
-              <Box>
-                <Text fontSize="sm" color="gray.500">
-                  <Icon color={'blue'} as={FaBuilding} mr={1} /> Company
-                </Text>
-                <Text fontSize="md">{viewUser?.companyId?.name || 'N/A'}</Text>
-              </Box>
-            </SimpleGrid>
+            <Text fontSize="2xl" fontWeight="bold">
+              {viewUser?.name || 'N/A'}
+            </Text>
+            <Text color="whiteAlpha.800">{viewUser?.designation || 'N/A'}</Text>
+          </Box>
 
-            {(viewUser?.role === 'user' || viewUser?.role === 'companyUser') &&
-            viewUser?.assignedDevices?.length > 0 ? (
+          {/* Body */}
+          <ModalBody bg={modalBg} px={6} py={4}>
+            <ModalCloseButton />
+            <Text
+              fontSize="lg"
+              fontWeight="bold"
+              mb={4}
+              color="blue.500"
+              textAlign="center"
+            >
+              User Information
+            </Text>
+            <Box bg="gray.50" p={4} rounded="md" shadow="sm" mb={6}>
+              <SimpleGrid columns={{ base: 1, md: 2 }} spacing={4}>
+                <Box>
+                  <Text fontWeight="bold" fontSize="sm" color={labelColor}>
+                    <Icon as={EmailIcon} mr={1} />
+                    Email:
+                  </Text>
+                  <Text color={textColor}>{viewUser?.email || 'N/A'}</Text>
+                </Box>
+                <Box>
+                  <Text fontWeight="bold" fontSize="sm" color={labelColor}>
+                    <Icon as={FaUserAlt} mr={1} />
+                    Username:
+                  </Text>
+                  <Text color={textColor}>{viewUser?.username || 'N/A'}</Text>
+                </Box>
+                <Box>
+                  <Text fontWeight="bold" fontSize="sm" color={labelColor}>
+                    <Icon as={FaIdBadge} mr={1} />
+                    Designation:
+                  </Text>
+                  <Text color={textColor}>
+                    {viewUser?.designation || 'N/A'}
+                  </Text>
+                </Box>
+                <Box>
+                  <Text fontWeight="bold" fontSize="sm" color={labelColor}>
+                    <Icon as={PhoneIcon} mr={1} />
+                    Phone Number:
+                  </Text>
+                  <Text color={textColor}>{viewUser?.phoneNo || 'N/A'}</Text>
+                </Box>
+                <Box>
+                  <Text fontWeight="bold" fontSize="sm" color={labelColor}>
+                    <Icon as={FaBuilding} mr={1} />
+                    Company:
+                  </Text>
+                  <Text color={textColor}>
+                    {viewUser?.companyId?.name || 'N/A'}
+                  </Text>
+                </Box>
+              </SimpleGrid>
+            </Box>
+
+            {/* Assigned Devices Section */}
+            {viewUser?.assignedDevices?.length > 0 && (
               <>
+                <Divider my={6} />
                 <Text
-                  color={'orange.800'}
                   fontSize="lg"
                   fontWeight="bold"
-                  mt={6}
+                  mb={4}
+                  color="orange.500"
+                  textAlign="center"
                 >
-                  <Icon as={MdDevices} mr={2} /> <u>Assigned Devices</u>
+                  <Icon as={MdDevices} mr={2} />
+                  Assigned Devices
                 </Text>
-                <Table
-                  variant="striped"
-                  colorScheme="blue"
-                  color="gray.500"
-                  mt={2}
-                  bg="gray.50"
-                  size="sm"
-                  mb="4"
-                  overflow={'auto'}
-                >
-                  <Thead bg="gray.200" whiteSpace={'nowrap'}>
-                    <Tr>
-                      <Th>Device Name</Th>
-                      <Th>Product ID</Th>
-                    </Tr>
-                  </Thead>
-                  <Tbody>
-                    {viewUser.assignedDevices.map((device) => (
-                      <Tr key={device._id}>
-                        <Td>{device.productName}</Td>
-                        <Td>{device.productId}</Td>
+                <Box bg="gray.50" p={4} rounded="md" shadow="sm">
+                  <Table variant="striped" colorScheme="blue" size="sm">
+                    <Thead>
+                      <Tr>
+                        <Th>Device Name</Th>
+                        <Th>Product ID</Th>
                       </Tr>
-                    ))}
-                  </Tbody>
-                </Table>
+                    </Thead>
+                    <Tbody>
+                      {viewUser.assignedDevices.map((device) => (
+                        <Tr key={device._id}>
+                          <Td>{device.productName}</Td>
+                          <Td>{device.productId}</Td>
+                        </Tr>
+                      ))}
+                    </Tbody>
+                  </Table>
+                </Box>
               </>
-            ) : null}
+            )}
           </ModalBody>
         </ModalContent>
       </Modal>

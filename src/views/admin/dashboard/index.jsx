@@ -811,20 +811,24 @@ const Dashboard = () => {
       </Flex>
 
       {loading ? (
-        <Flex
-          justify="center"
-          align="center"
-          h="200px"
-          flexDirection={'column'}
-        >
-          <Progress
-            isIndeterminate
-            colorScheme="green"
-            size="lg"
-            width={{ base: '70%', md: '50%' }}
-          />
-          <span>Please wait....</span>
-        </Flex>
+        <SimpleGrid columns={{ base: 1, md: 2 }} spacing={6}>
+          {Array.from({ length: 4 }).map((_, index) => (
+            <Box
+              key={index}
+              bg={cardBg}
+              border="1px"
+              borderColor={cardBorder}
+              rounded="lg"
+              p={4}
+              shadow="md"
+            >
+              <Skeleton height="25px" mb="4" />
+              <Skeleton height="20px" mb="4" />
+              <Skeleton height="20px" mb="4" />
+              <Skeleton height="60px" />
+            </Box>
+          ))}
+        </SimpleGrid>
       ) : (
         <SimpleGrid columns={{ base: 1, md: 2 }} spacing={6}>
           {filteredPidData.length > 0 ? (

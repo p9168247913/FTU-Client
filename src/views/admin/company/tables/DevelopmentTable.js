@@ -72,7 +72,8 @@ const DevelopmentTable = ({
         key={company?._id}
         onClick={() => handleRowClick(company)}
         cursor="pointer"
-        _hover={{ backgroundColor: rowHoverBg, boxShadow: shadow }}
+        _hover={{ backgroundColor: rowHoverBg, transform: 'scale(1.01)' }}
+        transition="transform 0.2s"
       >
         <Td>{index + 1 + (page - 1) * 10}</Td>
         <Td
@@ -214,10 +215,10 @@ const DevelopmentTable = ({
           <Thead position="sticky" top={0} zIndex={1} bg={headerBg} shadow="sm">
             <Tr>
               <Th borderColor={borderColor}>No.</Th>
-              <Th borderColor={borderColor}>Company Name</Th>
+              <Th borderColor={borderColor} whiteSpace={'nowrap'}>Company Name</Th>
               <Th borderColor={borderColor}>Address</Th>
-              <Th borderColor={borderColor}>Contact Emails</Th>
-              <Th borderColor={borderColor}>Contact Numbers</Th>
+              <Th borderColor={borderColor} whiteSpace={'nowrap'}>Contact Emails</Th>
+              <Th borderColor={borderColor} whiteSpace={'nowrap'}>Contact Numbers</Th>
               <Th borderColor={borderColor}>Actions</Th>
             </Tr>
           </Thead>

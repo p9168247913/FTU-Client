@@ -126,7 +126,9 @@ const Company = () => {
   const modalBg = useColorModeValue('white', 'gray.800');
   const labelColor = useColorModeValue('gray.800', 'gray.300');
   const columnsCount = useBreakpointValue({ base: 1, sm: 2, md: 2, lg: 3 });
-
+  const headerBg = useColorModeValue('green.300', 'green.300');
+  const sectionBg = useColorModeValue('gray.50', 'gray.700');
+  const textColor = useColorModeValue('gray.700', 'gray.300');
   const handleRowClick = (company) => {
     setSelectedCompany(company);
     onViewOpen();
@@ -997,215 +999,225 @@ const Company = () => {
 
       <Modal isOpen={isViewOpen} onClose={onViewClose} size="lg">
         <ModalOverlay />
-        <ModalContent
-          maxWidth="800px"
-          mx="auto"
-          bg={modalBg}
-          style={{ height: '80vh', overflow: 'auto' }}
-        >
-          <div
-            style={{
-              position: 'sticky',
-              top: 0,
-              backgroundColor: modalBg,
-              zIndex: '1',
-              boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
-            }}
+        <ModalContent maxWidth="800px" mx="auto" rounded="lg" shadow="lg">
+          {/* Header */}
+          <Box
+            bg={headerBg}
+            color="white"
+            py={4}
+            textAlign="center"
+            roundedTop="lg"
           >
-            <ModalHeader fontSize="2xl" fontWeight="bold" textAlign="center">
-              <Icon as={InfoOutlineIcon} mr={2} mb={1} />
-              <span>{'Company Details'.toUpperCase()}</span>
+            <ModalHeader fontSize="2xl" fontWeight="bold">
+              <Icon as={InfoOutlineIcon} mr={2} />
+              COMPANY DETAILS
             </ModalHeader>
             <ModalCloseButton />
-          </div>
+          </Box>
 
+          {/* Body */}
           <ModalBody>
             {selectedCompany && (
-              <Box p="4">
-                <Text
-                  fontSize="lg"
-                  fontWeight="bold"
-                  mt="2"
-                  mb="2"
-                  color="purple"
-                >
-                  <Icon as={InfoIcon} mr={2} />
-                  <u>Basic Info.</u>
-                </Text>
-                <Card bg="gray.200" p="4" boxShadow="md">
-                  <SimpleGrid
-                    columns={{ base: 1, sm: 1, md: 2 }}
-                    spacing={4}
-                    mb="4"
+              <Box p={4}>
+                {/* Basic Info Section */}
+                <Box mb={6}>
+                  <Text
+                    fontSize="lg"
+                    fontWeight="bold"
+                    mb={4}
+                    color="purple.500"
                   >
-                    <Box>
-                      <Text fontWeight="bold" fontSize="sm" color="gray.600">
-                        <Icon color={'gray'} as={AtSignIcon} mr={1} mb={1} />{' '}
-                        Company Name:
-                      </Text>
-                      <Text>{selectedCompany?.name || 'N/A'}</Text>
-                    </Box>
-                    <Box>
-                      <Text fontWeight="bold" fontSize="sm" color="gray.600">
-                        <Icon
-                          color={'orange.600'}
-                          as={EmailIcon}
-                          mr={1}
-                          mb={1}
-                        />{' '}
-                        Primary Email:
-                      </Text>
-                      <Text>{selectedCompany?.email1 || 'N/A'}</Text>
-                    </Box>
-                    <Box>
-                      <Text fontWeight="bold" fontSize="sm" color="gray.600">
-                        <Icon
-                          color={'orange.600'}
-                          as={EmailIcon}
-                          mr={1}
-                          mb={1}
-                        />{' '}
-                        Secondary Email:
-                      </Text>
-                      <Text>{selectedCompany?.email2 || 'N/A'}</Text>
-                    </Box>
-                    <Box>
-                      <Text fontWeight="bold" fontSize="sm" color="gray.600">
-                        <Icon
-                          color={'green.600'}
-                          as={PhoneIcon}
-                          mr={1}
-                          mb={1}
-                        />{' '}
-                        Primary Contact:
-                      </Text>
-                      <Text>{selectedCompany?.contact1 || 'N/A'}</Text>
-                    </Box>
-                    <Box>
-                      <Text fontWeight="bold" fontSize="sm" color="gray.600">
-                        <Icon
-                          color={'green.600'}
-                          as={PhoneIcon}
-                          mr={1}
-                          mb={1}
-                        />{' '}
-                        Secondary Contact:
-                      </Text>
-                      <Text>{selectedCompany?.contact2 || 'N/A'}</Text>
-                    </Box>
-                    <Box>
-                      <Text fontWeight="bold" fontSize="sm" color="gray.600">
-                        <Icon
-                          color={'blue.600'}
-                          as={CheckCircleIcon}
-                          mr={1}
-                          mb={1}
-                        />{' '}
-                        Representative Name:
-                      </Text>
-                      <Text>
-                        {selectedCompany?.companyRepresentativeName || 'N/A'}
-                      </Text>
-                    </Box>
-                    <Box>
-                      <Text fontWeight="bold" fontSize="sm" color="gray.600">
-                        <Icon
-                          color={'blue.600'}
-                          as={CheckCircleIcon}
-                          mr={1}
-                          mb={1}
-                        />{' '}
-                        Company Admin:
-                      </Text>
-                      <Text>
-                        {selectedCompany?.companyAdmin?.name || 'N/A'}
-                      </Text>
-                    </Box>
-                  </SimpleGrid>
-                </Card>
+                    <Icon as={InfoIcon} mr={2} />
+                    Basic Information
+                  </Text>
+                  <Box bg={sectionBg} p={4} rounded="md" shadow="md">
+                    <SimpleGrid columns={{ base: 1, md: 2 }} spacing={4}>
+                      <Box>
+                        <Text
+                          fontWeight="bold"
+                          fontSize="sm"
+                          color={labelColor}
+                        >
+                          <Icon as={AtSignIcon} mr={1} />
+                          Company Name:
+                        </Text>
+                        <Text color={textColor}>
+                          {selectedCompany?.name || 'N/A'}
+                        </Text>
+                      </Box>
+                      <Box>
+                        <Text
+                          fontWeight="bold"
+                          fontSize="sm"
+                          color={labelColor}
+                        >
+                          <Icon as={EmailIcon} mr={1} />
+                          Primary Email:
+                        </Text>
+                        <Text color={textColor}>
+                          {selectedCompany?.email1 || 'N/A'}
+                        </Text>
+                      </Box>
+                      <Box>
+                        <Text
+                          fontWeight="bold"
+                          fontSize="sm"
+                          color={labelColor}
+                        >
+                          <Icon as={EmailIcon} mr={1} />
+                          Secondary Email:
+                        </Text>
+                        <Text color={textColor}>
+                          {selectedCompany?.email2 || 'N/A'}
+                        </Text>
+                      </Box>
+                      <Box>
+                        <Text
+                          fontWeight="bold"
+                          fontSize="sm"
+                          color={labelColor}
+                        >
+                          <Icon as={PhoneIcon} mr={1} />
+                          Primary Contact:
+                        </Text>
+                        <Text color={textColor}>
+                          {selectedCompany?.contact1 || 'N/A'}
+                        </Text>
+                      </Box>
+                      <Box>
+                        <Text
+                          fontWeight="bold"
+                          fontSize="sm"
+                          color={labelColor}
+                        >
+                          <Icon as={PhoneIcon} mr={1} />
+                          Secondary Contact:
+                        </Text>
+                        <Text color={textColor}>
+                          {selectedCompany?.contact2 || 'N/A'}
+                        </Text>
+                      </Box>
+                      <Box>
+                        <Text
+                          fontWeight="bold"
+                          fontSize="sm"
+                          color={labelColor}
+                        >
+                          <Icon as={CheckCircleIcon} mr={1} />
+                          Representative Name:
+                        </Text>
+                        <Text color={textColor}>
+                          {selectedCompany?.companyRepresentativeName || 'N/A'}
+                        </Text>
+                      </Box>
+                    </SimpleGrid>
+                  </Box>
+                </Box>
 
-                {/* Address Section */}
-                <Text
-                  color={'green'}
-                  fontSize="lg"
-                  fontWeight="bold"
-                  mt="4"
-                  mb="2"
-                >
-                  <Icon as={FaMapMarkerAlt} mr={2} />
-                  <u>Address Info.</u>
-                </Text>
-                <Card bg="gray.200" p="4" boxShadow="md">
-                  <SimpleGrid
-                    columns={{ base: 1, sm: 1, md: 2 }}
-                    spacing={4}
-                    mb="4"
+                {/* Address Info Section */}
+                <Box mb={6}>
+                  <Text
+                    fontSize="lg"
+                    fontWeight="bold"
+                    mb={4}
+                    color="green.500"
                   >
-                    <Box>
-                      <Text fontWeight="bold" fontSize="sm" color="gray.600">
-                        <Icon color={'purple'} as={FaHome} mr={1} /> Address
-                        Line:
-                      </Text>
-                      <Text>
-                        {selectedCompany?.address?.addressLine || 'N/A'}
-                      </Text>
-                    </Box>
-                    <Box>
-                      <Text fontWeight="bold" fontSize="sm" color="gray.600">
-                        <Icon color={'pink.400'} as={MdStreetview} mr={1} />{' '}
-                        City:
-                      </Text>
-                      <Text>{selectedCompany?.address?.city || 'N/A'}</Text>
-                    </Box>
-                    <Box>
-                      <Text fontWeight="bold" fontSize="sm" color="gray.600">
-                        <Icon color={'orange.500'} as={FaFlag} mr={1} /> State:
-                      </Text>
-                      <Text>{selectedCompany?.address?.state || 'N/A'}</Text>
-                    </Box>
-                    <Box>
-                      <Text fontWeight="bold" fontSize="sm" color="gray.600">
-                        <Icon color={'blue.300'} as={FaGlobe} mr={1} /> Country:
-                      </Text>
-                      <Text>{selectedCompany?.address?.country || 'N/A'}</Text>
-                    </Box>
-                    <Box>
-                      <Text fontWeight="bold" fontSize="sm" color="gray.600">
-                        <Icon as={MdConfirmationNumber} mr={1} /> Zipcode:
-                      </Text>
-                      <Text>{selectedCompany?.address?.zipcode || 'N/A'}</Text>
-                    </Box>
-                  </SimpleGrid>
-                </Card>
+                    <Icon as={FaMapMarkerAlt} mr={2} />
+                    Address Information
+                  </Text>
+                  <Box bg={sectionBg} p={4} rounded="md" shadow="md">
+                    <SimpleGrid columns={{ base: 1, md: 2 }} spacing={4}>
+                      <Box>
+                        <Text
+                          fontWeight="bold"
+                          fontSize="sm"
+                          color={labelColor}
+                        >
+                          <Icon as={FaHome} mr={1} />
+                          Address Line:
+                        </Text>
+                        <Text color={textColor}>
+                          {selectedCompany?.address?.addressLine || 'N/A'}
+                        </Text>
+                      </Box>
+                      <Box>
+                        <Text
+                          fontWeight="bold"
+                          fontSize="sm"
+                          color={labelColor}
+                        >
+                          <Icon as={MdStreetview} mr={1} />
+                          City:
+                        </Text>
+                        <Text color={textColor}>
+                          {selectedCompany?.address?.city || 'N/A'}
+                        </Text>
+                      </Box>
+                      <Box>
+                        <Text
+                          fontWeight="bold"
+                          fontSize="sm"
+                          color={labelColor}
+                        >
+                          <Icon as={FaFlag} mr={1} />
+                          State:
+                        </Text>
+                        <Text color={textColor}>
+                          {selectedCompany?.address?.state || 'N/A'}
+                        </Text>
+                      </Box>
+                      <Box>
+                        <Text
+                          fontWeight="bold"
+                          fontSize="sm"
+                          color={labelColor}
+                        >
+                          <Icon as={FaGlobe} mr={1} />
+                          Country:
+                        </Text>
+                        <Text color={textColor}>
+                          {selectedCompany?.address?.country || 'N/A'}
+                        </Text>
+                      </Box>
+                      <Box>
+                        <Text
+                          fontWeight="bold"
+                          fontSize="sm"
+                          color={labelColor}
+                        >
+                          <Icon as={MdConfirmationNumber} mr={1} />
+                          Zipcode:
+                        </Text>
+                        <Text color={textColor}>
+                          {selectedCompany?.address?.zipcode || 'N/A'}
+                        </Text>
+                      </Box>
+                    </SimpleGrid>
+                  </Box>
+                </Box>
 
-                {/* Assigned Devices Section */}
                 {selectedCompany?.devices?.length > 0 && (
-                  <>
+                  <Box>
                     <Text
-                      color={'orange.800'}
                       fontSize="lg"
                       fontWeight="bold"
-                      mt="4"
-                      mb="2"
+                      mb={4}
+                      color="orange.500"
                     >
-                      <Icon as={MdDevices} mr={2} /> <u>Assigned Devices</u>
+                      <Icon as={MdDevices} mr={2} />
+                      Assigned Devices
                     </Text>
                     <Table
                       variant="striped"
                       colorScheme="blue"
-                      bg="gray.50"
                       size="sm"
-                      mb="4"
-                      overflow={'auto'}
+                      bg={sectionBg}
+                      shadow="md"
                     >
-                      <Thead bg="gray.200" whiteSpace={'nowrap'}>
+                      <Thead>
                         <Tr>
-                          <Th fontSize="sm" fontWeight="bold">
-                            Device Name
-                          </Th>
-                          <Th fontSize="sm" fontWeight="bold">
-                            Product ID
-                          </Th>
+                          <Th>Device Name</Th>
+                          <Th>Product ID</Th>
                         </Tr>
                       </Thead>
                       <Tbody>
@@ -1217,35 +1229,30 @@ const Company = () => {
                         ))}
                       </Tbody>
                     </Table>
-                  </>
+                  </Box>
                 )}
               </Box>
             )}
-            {/* <Tooltip label="Scroll to Top" placement="top">
-              <Button
-                variant="ghost"
-                ml={2}
-                onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-              >
-                <Icon as={ArrowUpIcon} />
-              </Button>
-            </Tooltip> */}
           </ModalBody>
 
-          {/* Sticky Footer */}
-          {/* <ModalFooter
-            style={{
-              position: 'sticky',
-              bottom: 0,
-              backgroundColor: modalBg,
-              zIndex: '1',
-              boxShadow: '0 -2px 8px rgba(0,0,0,0.1)',
-            }}
+          {/* Footer */}
+          <Box
+            bg={headerBg}
+            py={3}
+            px={6}
+            textAlign="center"
+            roundedBottom="lg"
+            shadow="md"
           >
-            <Button onClick={onViewClose} variant="ghost">
-              <Icon as={CloseIcon} mr={2} /> Close
+            <Button
+              onClick={onViewClose}
+              colorScheme="whiteAlpha"
+              size="md"
+              leftIcon={<CloseIcon />}
+            >
+              Close
             </Button>
-          </ModalFooter> */}
+          </Box>
         </ModalContent>
       </Modal>
     </Box>
