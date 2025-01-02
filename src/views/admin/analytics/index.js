@@ -20,6 +20,9 @@ import {
   useToast,
   Card,
   useColorMode,
+  Skeleton,
+  keyframes,
+  Text,
 } from '@chakra-ui/react';
 import Select from 'react-select';
 import { useColorModeValue } from '@chakra-ui/react';
@@ -78,6 +81,7 @@ const AnalyticsPage = () => {
 
   const selectBg = useColorModeValue('white', 'gray.700');
   const selectTextColor = useColorModeValue('black', 'white');
+  const barColor = useColorModeValue('blue.400', 'blue.600');
 
   const customStyles = {
     container: (base) => ({
@@ -132,6 +136,12 @@ const AnalyticsPage = () => {
       },
     }),
   };
+
+  const barAnimation = keyframes`
+  0% { height: 20%; background-color: rgb(212, 213, 215); }
+  50% { height: 80%; background-color:rgb(66, 225, 148); }
+  100% { height: 20%; background-color:rgb(212, 213, 215); }
+`;
 
   const getQueryString = (params) => {
     return Object.keys(params)
@@ -358,19 +368,20 @@ const AnalyticsPage = () => {
       const queryParams = {};
       let filter = {};
 
-
-
       if (startDate && endDate) {
-        const formattedStartDate = moment.tz(startDate, 'Asia/Kolkata').format('YYYY-MM-DD');
-        const formattedEndDate = moment.tz(endDate, 'Asia/Kolkata').format('YYYY-MM-DD');
-  
+        const formattedStartDate = moment
+          .tz(startDate, 'Asia/Kolkata')
+          .format('YYYY-MM-DD');
+        const formattedEndDate = moment
+          .tz(endDate, 'Asia/Kolkata')
+          .format('YYYY-MM-DD');
+
         filter = {
           ...filter,
           startDate: formattedStartDate,
           endDate: formattedEndDate,
         };
       }
-  
 
       if (productId) {
         queryParams.productId = productId;
@@ -550,15 +561,41 @@ const AnalyticsPage = () => {
       </SimpleGrid>
 
       {loadingGraph ? (
-        <Flex justify="center" align="center" h="200px" flexDirection="column">
-          <Progress
-            isIndeterminate
-            colorScheme="green"
-            size="lg"
-            width={{ base: '70%', md: '50%' }} // Responsive width
-          />
-          <span>Please wait....</span>
-        </Flex>
+        <Card
+          m="auto"
+          w={{ base: '100%', md: '80%', lg: '70%' }}
+          h={{ base: '40vh', md: '50vh', lg: '60vh' }}
+          p={4}
+          shadow="md"
+        >
+          <Flex
+            direction="column"
+            h="100%"
+            justify="space-between"
+            align="center"
+          >
+            <Text fontSize="lg" fontWeight="bold" mb={4} color="gray.500">
+              Loading Graph...
+            </Text>
+
+            <Flex w="100%" h="80%" justify="space-around" align="flex-end">
+              {Array.from({ length: 8 }).map((_, index) => (
+                <Box
+                  key={index}
+                  w="10%"
+                  h="20%"
+                  bg={barColor}
+                  animation={`${barAnimation} 1.5s ease-in-out ${
+                    index * 0.2
+                  }s infinite`}
+                  borderRadius="md"
+                />
+              ))}
+            </Flex>
+
+            <Box mt={4} h="4px" w="100%" bg="gray.300" />
+          </Flex>
+        </Card>
       ) : (
         <Card
           m="auto"
@@ -643,7 +680,6 @@ const AnalyticsPage = () => {
                     // Reset endDate if it is less than startDate
                     setEndDate('');
                   }
-                  
                 }}
                 bg={useColorModeValue('white', 'gray.700')}
                 color={useColorModeValue('black', 'white')}

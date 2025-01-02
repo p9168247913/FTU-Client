@@ -42,17 +42,15 @@ const DevelopmentTable = ({
 
   const renderTableRows = () => {
     if (loading) {
-      return (
-        <Tr>
-          <Td colSpan="6">
-            <Stack spacing="4">
-              {[...Array(3)].map((_, i) => (
-                <Skeleton height="20px" key={i} />
-              ))}
-            </Stack>
-          </Td>
+      return Array.from({ length: 5 }, (_, index) => (
+        <Tr key={index}>
+          {Array.from({ length: 6 }, (_, colIndex) => (
+            <Td key={colIndex}>
+              <Skeleton height="20px" />
+            </Td>
+          ))}
         </Tr>
-      );
+      ));
     }
 
     if (!tableData || tableData.length === 0) {
@@ -76,11 +74,7 @@ const DevelopmentTable = ({
         transition="transform 0.2s"
       >
         <Td>{index + 1 + (page - 1) * 10}</Td>
-        <Td
-          isTruncated
-          maxWidth="200px"
-          title={company?.name}
-        >
+        <Td isTruncated maxWidth="200px" title={company?.name}>
           {company?.name}
         </Td>
         <Td isTruncated maxWidth="300px">
@@ -215,10 +209,16 @@ const DevelopmentTable = ({
           <Thead position="sticky" top={0} zIndex={1} bg={headerBg} shadow="sm">
             <Tr>
               <Th borderColor={borderColor}>No.</Th>
-              <Th borderColor={borderColor} whiteSpace={'nowrap'}>Company Name</Th>
+              <Th borderColor={borderColor} whiteSpace={'nowrap'}>
+                Company Name
+              </Th>
               <Th borderColor={borderColor}>Address</Th>
-              <Th borderColor={borderColor} whiteSpace={'nowrap'}>Contact Emails</Th>
-              <Th borderColor={borderColor} whiteSpace={'nowrap'}>Contact Numbers</Th>
+              <Th borderColor={borderColor} whiteSpace={'nowrap'}>
+                Contact Emails
+              </Th>
+              <Th borderColor={borderColor} whiteSpace={'nowrap'}>
+                Contact Numbers
+              </Th>
               <Th borderColor={borderColor}>Actions</Th>
             </Tr>
           </Thead>

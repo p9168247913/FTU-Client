@@ -15,6 +15,7 @@ import {
   Card,
   Spinner,
   CircularProgress,
+  Skeleton,
 } from '@chakra-ui/react';
 import { ChevronLeftIcon, ChevronRightIcon } from '@chakra-ui/icons';
 import PropTypes from 'prop-types';
@@ -42,19 +43,15 @@ const DevelopmentTable = ({
 
   const renderTableRows = () => {
     if (loading) {
-      return (
-        <Tr style={{ zIndex: 0 }}>
-          <Td colSpan="7" textAlign="center">
-            <CircularProgress
-              isIndeterminate
-              size="30px"
-              thickness="6px"
-              color="teal.500"
-              trackColor="gray.200"
-            />
-          </Td>
+      return Array.from({ length: 4 }, (_, index) => (
+        <Tr key={index}>
+          {Array.from({ length: 4 }, (_, colIndex) => (
+            <Td key={colIndex}>
+              <Skeleton height="20px" />
+            </Td>
+          ))}
         </Tr>
-      );
+      ));
     }
 
     if (!tableData || tableData.length === 0) {
