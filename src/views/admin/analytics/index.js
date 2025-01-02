@@ -21,7 +21,7 @@ import {
   Card,
   useColorMode,
   Skeleton,
-  keyframes,
+  // keyframes,
   Text,
 } from '@chakra-ui/react';
 import Select from 'react-select';
@@ -136,12 +136,6 @@ const AnalyticsPage = () => {
       },
     }),
   };
-
-  const barAnimation = keyframes`
-  0% { height: 20%; background-color: rgb(212, 213, 215); }
-  50% { height: 80%; background-color:rgb(66, 225, 148); }
-  100% { height: 20%; background-color:rgb(212, 213, 215); }
-`;
 
   const getQueryString = (params) => {
     return Object.keys(params)
@@ -585,9 +579,25 @@ const AnalyticsPage = () => {
                   w="10%"
                   h="20%"
                   bg={barColor}
-                  animation={`${barAnimation} 1.5s ease-in-out ${
-                    index * 0.2
-                  }s infinite`}
+                  sx={{
+                    animation: `barAnimation ${1.5}s ease-in-out ${
+                      index * 0.2
+                    }s infinite`,
+                    '@keyframes barAnimation': {
+                      '0%': {
+                        height: '20%',
+                        backgroundColor: 'rgb(212, 213, 215)',
+                      },
+                      '50%': {
+                        height: '80%',
+                        backgroundColor: 'rgb(66, 225, 148)',
+                      },
+                      '100%': {
+                        height: '20%',
+                        backgroundColor: 'rgb(212, 213, 215)',
+                      },
+                    },
+                  }}
                   borderRadius="md"
                 />
               ))}
