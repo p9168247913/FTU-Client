@@ -108,9 +108,9 @@ const User = () => {
   const focusedBg = useColorModeValue('#E2E8F0', '#4A5568');
   const headerBg = useColorModeValue(
     'linear-gradient(90deg, #4299E1 0%, #3182CE 50%, #2B6CB0 100%)',
-    'linear-gradient(90deg, #2C5282 0%, #2A4365 50%, #1A365D 100%)'
+    'linear-gradient(90deg, #2C5282 0%, #2A4365 50%, #1A365D 100%)',
   );
-  
+
   const textColor = useColorModeValue('gray.700', 'gray.300');
   const labelColor = useColorModeValue('gray.600', 'gray.400');
 
@@ -155,10 +155,6 @@ const User = () => {
   useEffect(() => {
     getCompanyList();
   }, []);
-
-  useEffect(() => {
-    console.log(searchTerm, 'selectedCompany');
-  }, [searchTerm]);
 
   const getUsers = async () => {
     try {
@@ -221,8 +217,14 @@ const User = () => {
 
   useEffect(() => {
     fetchCompanies();
-    getUsers();
+  }, []);
+
+  useEffect(() => {
     getAllDeviceList();
+  }, [page, rowsPerPage]);
+
+  useEffect(() => {
+    getUsers();
   }, [page, rowsPerPage, searchTerm]);
 
   const handleDelete = async (id) => {
@@ -546,6 +548,7 @@ const User = () => {
                 ...base,
                 width: ['100%', '100%', '40%'],
                 bgColor: 'gray.100',
+                zIndex: 999,
               }),
               control: (base) => ({
                 ...base,

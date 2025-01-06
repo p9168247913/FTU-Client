@@ -98,9 +98,15 @@ const Devices = () => {
 
   useEffect(() => {
     getAllDevices();
-    productTypes();
-    getAllCompanies();
   }, [page, searchTerm]);
+
+  useEffect(() => {
+    productTypes();
+  }, [page]);
+
+  useEffect(() => {
+    getAllCompanies();
+  }, [page]);
 
   const getAllDevices = async () => {
     try {

@@ -61,6 +61,7 @@ import { FaMapMarkerAlt } from 'react-icons/fa';
 import { MdDevices, MdStreetview } from 'react-icons/md';
 import { FaFlag, FaGlobe, FaHome } from 'react-icons/fa';
 import { useBreakpointValue } from '@chakra-ui/react';
+import { FaUser } from 'react-icons/fa';
 
 import { MdLocationCity, MdConfirmationNumber } from 'react-icons/md';
 
@@ -380,7 +381,7 @@ const Company = () => {
 
   useEffect(() => {
     getUsers();
-  }, [page, rowsPerPage, searchTerm]);
+  }, [page, rowsPerPage]);
 
   const handlePageChange = (page) => {
     setCompany([]);
@@ -1109,6 +1110,19 @@ const Company = () => {
                         </Text>
                         <Text color={textColor}>
                           {selectedCompany?.companyRepresentativeName || 'N/A'}
+                        </Text>
+                      </Box>
+                      <Box>
+                        <Text
+                          fontWeight="bold"
+                          fontSize="sm"
+                          color={labelColor}
+                        >
+                          <Icon as={FaUser} mr={1} />
+                          Company Admin:
+                        </Text>
+                        <Text color={textColor}>
+                          {selectedCompany?.companyAdmin?.name || 'N/A'}
                         </Text>
                       </Box>
                     </SimpleGrid>
