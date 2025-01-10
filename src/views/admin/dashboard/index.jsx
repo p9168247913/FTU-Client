@@ -831,8 +831,8 @@ const Dashboard = () => {
         </SimpleGrid>
       ) : (
         <SimpleGrid columns={{ base: 1, md: 2 }} spacing={6}>
-          {filteredPidData.length > 0 ? (
-            filteredPidData.map((pid) => {
+          {filteredPidData?.length > 0 ? (
+            filteredPidData?.map((pid) => {
               const isOlderThan24Hours =
                 new Date() - new Date(pid.timestamp) > 24 * 60 * 60 * 1000;
 
@@ -921,8 +921,8 @@ const Dashboard = () => {
                           whiteSpace="nowrap"
                           display="inline-block"
                           animation={
-                            pid.productName?.length >= 45 ||
-                            pid.productId?.length >= 45
+                            pid?.productName?.length >= 45 ||
+                            pid?.productId?.length >= 45
                               ? 'marquee 10s linear infinite'
                               : 'none'
                           }
@@ -1192,7 +1192,7 @@ const Dashboard = () => {
         </SimpleGrid>
       )}
 
-      {pidData.length > 0 && (
+      {pidData?.length > 0 && (
         <Flex
           justifyContent={{ base: 'center', md: 'flex-end' }}
           alignItems="center"
