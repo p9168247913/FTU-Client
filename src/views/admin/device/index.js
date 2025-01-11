@@ -42,6 +42,7 @@ const Devices = () => {
   const [searchTerm, setSearchTerm] = useState({
     productName: '',
     productId: '',
+    companyId: '',
   });
   const [addNewDevice, setAddNewDevice] = useState({
     productName: '',
@@ -95,6 +96,41 @@ const Devices = () => {
   const modalBg = useColorModeValue('white', 'gray.800');
   const labelColor = useColorModeValue('gray.800', 'gray.300');
   const borderColor = useColorModeValue('gray.200', 'gray.600');
+  const [companies, setCompanies] = useState([]);
+  const [companyData, setCompanyData] = useState([]);
+  const [selectedCompany, setSelectedCompany] = useState(null);
+  const inputTextColor = useColorModeValue('black', 'white');
+  const inputPlaceholderColor = useColorModeValue('gray.500', 'gray.400');
+  const placeholderColor = useColorModeValue('gray.500', 'gray.400');
+  const hoverBorderColor = useColorModeValue('gray.400', 'gray.500');
+  const selectedBg = useColorModeValue('#EDF2F7', '#2D3748');
+  const focusedBg = useColorModeValue('#E2E8F0', '#4A5568');
+  const headerBg = useColorModeValue(
+    'linear-gradient(90deg, #4299E1 0%, #3182CE 50%, #2B6CB0 100%)',
+    'linear-gradient(90deg, #2C5282 0%, #2A4365 50%, #1A365D 100%)',
+  );
+  const companyOptions = [
+    { value: '', label: 'Select Company' },
+    ...company.map((company) => ({
+      value: company._id,
+      label: company.name,
+    })),
+  ];
+
+  const fetchCompanies = async () => {
+    try {
+      const response = await axiosInstance.get(`${baseUrl}/company/list`, {
+        headers: { Authorization: `Bearer ${Token}` },
+      });
+      setCompanies(response?.data?.data?.data || []);
+    } catch (error) {
+      console.error('Error in getting company data', error);
+    }
+  };
+
+  useEffect(() => {
+    fetchCompanies();
+  }, []);
 
   useEffect(() => {
     getAllDevices();
@@ -369,6 +405,11 @@ const Devices = () => {
     }),
   };
 
+  const handleCompanyChange = (selectedOption) => {
+    setPage(1);
+    setSearchTerm({ ...searchTerm, companyId: selectedOption.value });
+  };
+
   return (
     <Box
       pt={{ base: '140px', md: '90px', xl: '90px', sm: '100px' }}
@@ -383,10 +424,10 @@ const Devices = () => {
       >
         <HStack
           spacing={3}
-          mb={{ base: 4, md: 3 }}
+          mb={{ base: 3, md: 0 }}
+          width="100%"
           flexWrap="wrap"
-          justify={{ base: 'center', md: 'flex-start' }}
-          width={{ base: '100%', md: 'auto' }}
+          gap={3}
         >
           <InputGroup
             width={{ base: '100%', md: 'auto' }}
@@ -435,23 +476,71 @@ const Devices = () => {
               }}
             />
           </InputGroup>
-
-          {/* <Select
-            placeholder="Filter by Product Type"
-            value={searchTerm.productType}
-            onChange={(e) =>
-              setSearchTerm((prev) => ({
-                ...prev,
-                productType: e.target.value,
-              }))
-            }
-          >
-            {productType.map((type) => (
-              <option key={type._id} value={type._id}>
-                {type.type}
-              </option>
-            ))}
-          </Select> */}
+          <ReactSelect
+            options={companyOptions}
+            value={companyOptions.find(
+              (option) => option.value === selectedCompany,
+            )}
+            onChange={(selectedOption) => {
+              handleCompanyChange(selectedOption);
+            }}
+            placeholder="Select Company"
+            isSearchable
+            styles={{
+              container: (base) => ({
+                ...base,
+                width: ['100%', '100%', '40%'],
+                bgColor: 'gray.100',
+                zIndex: 999,
+              }),
+              control: (base) => ({
+                ...base,
+                backgroundColor: inputBg,
+                color: inputTextColor,
+                borderColor: borderColor,
+                borderRadius: '20px',
+                boxShadow: 'none',
+                '&:hover': {
+                  borderColor: hoverBorderColor,
+                },
+                zIndex: 5,
+              }),
+              singleValue: (base) => ({
+                ...base,
+                color: inputTextColor,
+              }),
+              input: (base) => ({
+                ...base,
+                color: inputTextColor,
+              }),
+              placeholder: (base) => ({
+                ...base,
+                color: placeholderColor,
+              }),
+              menu: (base) => ({
+                ...base,
+                backgroundColor: inputBg,
+                maxHeight: '200px',
+                // overflowY: 'auto',
+              }),
+              menuList: (base) => ({
+                ...base,
+                backgroundColor: inputBg,
+              }),
+              option: (base, { isFocused, isSelected }) => ({
+                ...base,
+                backgroundColor: isSelected
+                  ? selectedBg
+                  : isFocused
+                  ? focusedBg
+                  : 'transparent',
+                color: inputTextColor,
+                '&:hover': {
+                  backgroundColor: selectedBg,
+                },
+              }),
+            }}
+          />
         </HStack>
         <Button
           onClick={onOpen}
