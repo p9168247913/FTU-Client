@@ -33,6 +33,7 @@ import {
   Tooltip,
   Icon,
   Divider,
+  Textarea,
 } from '@chakra-ui/react';
 import {
   AddIcon,
@@ -57,7 +58,17 @@ import {
   CheckCircleIcon,
   ArrowUpIcon,
 } from '@chakra-ui/icons';
-import { FaMapMarkerAlt } from 'react-icons/fa';
+import {
+  FaAddressBook,
+  FaBuilding,
+  FaCity,
+  FaClipboardList,
+  FaHashtag,
+  FaInfoCircle,
+  FaMapMarkedAlt,
+  FaMapMarkerAlt,
+  FaPhoneAlt,
+} from 'react-icons/fa';
 import { MdDevices, MdStreetview } from 'react-icons/md';
 import { FaFlag, FaGlobe, FaHome } from 'react-icons/fa';
 import { useBreakpointValue } from '@chakra-ui/react';
@@ -79,7 +90,6 @@ const Company = () => {
     onOpen: onViewOpen,
     onClose: onViewClose,
   } = useDisclosure();
-
   const [company, setCompany] = useState([]);
   const [editCompany, setEditCompany] = useState({
     name: '',
@@ -131,6 +141,11 @@ const Company = () => {
   const headerBg = useColorModeValue(
     'linear-gradient(90deg, #38A169 0%, #48BB78 50%, #68D391 100%)',
     'linear-gradient(90deg, #38A169 0%, #48BB78 50%, #68D391 100%)',
+  );
+
+  const addmodalheaderBg = useColorModeValue(
+    'linear-gradient(90deg,rgb(34, 84, 157) 0%,rgb(60, 129, 159) 50%,rgb(93, 153, 156) 100%)',
+    'linear-gradient(90deg,rgb(39, 205, 230) 0%,rgb(81, 198, 224) 50%,rgb(136, 218, 236) 100%)',
   );
   const sectionBg = useColorModeValue('gray.50', 'gray.700');
   const textColor = useColorModeValue('gray.700', 'gray.300');
@@ -484,257 +499,354 @@ const Company = () => {
 
       <Modal isOpen={isOpen} onClose={onClose} size="lg">
         <ModalOverlay />
-        <ModalContent
-          maxWidth="800px"
-          mx="auto"
-          bg={modalBg}
-          style={{ height: '80vh', overflow: 'auto' }}
-        >
-          <div
-            style={{
-              position: 'sticky',
-              top: 0,
-              backgroundColor: modalBg,
-              zIndex: '1',
-            }}
+        <ModalContent maxWidth="900px" bg={modalBg} rounded="xl" boxShadow="lg">
+          <Box
+            bg={addmodalheaderBg}
+            py={1}
+            px={2}
+            textAlign="center"
+            roundedTop="xl"
           >
-            <ModalHeader>Add Company</ModalHeader>
-            <ModalCloseButton />
-          </div>
-          <ModalBody>
-            <SimpleGrid columns={{ base: 1, md: 2 }} spacing="4">
-              <FormControl mb="4" isRequired>
-                <FormLabel fontSize={'sm'}>Company Name</FormLabel>
-                <Input
-                  name="name"
-                  placeholder="Enter company name"
-                  value={addCompany?.name}
-                  onChange={handleAddChange}
-                  bg={useColorModeValue('white', 'gray.700')}
-                  color={useColorModeValue('black', 'white')}
-                  _placeholder={{
-                    color: useColorModeValue('gray.500', 'gray.400'),
-                  }}
-                />
-              </FormControl>
-              <FormControl mb="4" isRequired>
-                <FormLabel fontSize={'sm'}>Primary Email</FormLabel>
-                <Input
-                  name="email1"
-                  type="email"
-                  placeholder="Enter primary email address"
-                  value={addCompany?.email1}
-                  onChange={handleAddChange}
-                  bg={useColorModeValue('white', 'gray.700')}
-                  color={useColorModeValue('black', 'white')}
-                  _placeholder={{
-                    color: useColorModeValue('gray.500', 'gray.400'),
-                  }}
-                />
-              </FormControl>
-              <FormControl mb="4">
-                <FormLabel fontSize={'sm'}>Secondary Email</FormLabel>
-                <Input
-                  name="email2"
-                  type="email"
-                  placeholder="Enter secondary email address"
-                  value={addCompany?.email2}
-                  onChange={handleAddChange}
-                  bg={useColorModeValue('white', 'gray.700')}
-                  color={useColorModeValue('black', 'white')}
-                  _placeholder={{
-                    color: useColorModeValue('gray.500', 'gray.400'),
-                  }}
-                />
-              </FormControl>
-              <FormControl mb="4" isRequired>
-                <FormLabel fontSize={'sm'}>Primary Contact</FormLabel>
-                <Input
-                  name="contact1"
-                  placeholder="Enter primary contact"
-                  value={addCompany?.contact1}
-                  onChange={handleAddChange}
-                  bg={useColorModeValue('white', 'gray.700')}
-                  color={useColorModeValue('black', 'white')}
-                  _placeholder={{
-                    color: useColorModeValue('gray.500', 'gray.400'),
-                  }}
-                />
-              </FormControl>
-              <FormControl mb="4">
-                <FormLabel fontSize={'sm'}>Secondary Contact</FormLabel>
-                <Input
-                  name="contact2"
-                  placeholder="Enter secondary contact"
-                  value={addCompany?.contact2}
-                  onChange={handleAddChange}
-                  bg={useColorModeValue('white', 'gray.700')}
-                  color={useColorModeValue('black', 'white')}
-                  _placeholder={{
-                    color: useColorModeValue('gray.500', 'gray.400'),
-                  }}
-                />
-              </FormControl>
-              <FormControl mb="4" isRequired>
-                <FormLabel fontSize={'sm'}>Allowed Limit</FormLabel>
-                <InputGroup>
+            <ModalHeader
+              fontSize="2xl"
+              fontWeight="bold"
+              color="white"
+              display="flex"
+              alignItems="center"
+              justifyContent="center"
+            >
+              <Icon as={AddIcon} mr={2} />
+              Add New Company
+            </ModalHeader>
+            <ModalCloseButton color="white" />
+          </Box>
+
+          <ModalBody p={6}>
+            <Box mb={8}>
+              <Flex alignItems="center" mb={4}>
+                <Icon as={FaInfoCircle} w={6} h={6} color="blue.500" mr={2} />{' '}
+                <Text fontSize="lg" fontWeight="semibold">
+                  Basic Details
+                </Text>
+              </Flex>
+              <SimpleGrid columns={{ base: 1, md: 2 }} spacing="6">
+                <FormControl isRequired>
+                  <FormLabel fontSize="sm">Company Name</FormLabel>
+                  <InputGroup>
+                    <InputLeftElement pointerEvents="none" color="gray.400">
+                      <Icon as={FaBuilding} />
+                    </InputLeftElement>
+                    <Input
+                      name="name"
+                      placeholder="Enter company name"
+                      value={addCompany?.name}
+                      onChange={handleAddChange}
+                      bg={useColorModeValue('white', 'gray.700')}
+                      color={useColorModeValue('black', 'white')}
+                      borderRadius="md"
+                    />
+                  </InputGroup>
+                </FormControl>
+              </SimpleGrid>
+            </Box>
+
+            <Box mb={8}>
+              <Flex alignItems="center" mb={4}>
+                <Icon as={FaAddressBook} w={6} h={6} color="green.500" mr={2} />{' '}
+                <Text fontSize="lg" fontWeight="semibold">
+                  Contact Information
+                </Text>
+              </Flex>
+
+              <SimpleGrid columns={{ base: 1, md: 2 }} spacing="6">
+                <FormControl isRequired>
+                  <FormLabel fontSize="sm">Primary Email</FormLabel>
+                  <InputGroup>
+                    <InputLeftElement pointerEvents="none" color="gray.400">
+                      <Icon as={EmailIcon} />
+                    </InputLeftElement>
+                    <Input
+                      name="email1"
+                      type="email"
+                      placeholder="Enter primary email address"
+                      value={addCompany?.email1}
+                      onChange={handleAddChange}
+                      bg={useColorModeValue('white', 'gray.700')}
+                      color={useColorModeValue('black', 'white')}
+                      borderRadius="md"
+                    />
+                  </InputGroup>
+                </FormControl>
+
+                <FormControl>
+                  <FormLabel fontSize="sm">Secondary Email</FormLabel>
+                  <InputGroup>
+                    <InputLeftElement pointerEvents="none" color="gray.400">
+                      <Icon as={EmailIcon} />
+                    </InputLeftElement>
+                    <Input
+                      name="email2"
+                      type="email"
+                      placeholder="Enter secondary email address"
+                      value={addCompany?.email2}
+                      onChange={handleAddChange}
+                      bg={useColorModeValue('white', 'gray.700')}
+                      color={useColorModeValue('black', 'white')}
+                      borderRadius="md"
+                    />
+                  </InputGroup>
+                </FormControl>
+
+                <FormControl isRequired>
+                  <FormLabel fontSize="sm">Primary Contact</FormLabel>
+                  <InputGroup>
+                    <InputLeftElement pointerEvents="none" color="gray.400">
+                      <Icon as={FaPhoneAlt} />
+                    </InputLeftElement>
+                    <Input
+                      name="contact1"
+                      placeholder="Enter primary contact"
+                      value={addCompany?.contact1}
+                      onChange={handleAddChange}
+                      bg={useColorModeValue('white', 'gray.700')}
+                      color={useColorModeValue('black', 'white')}
+                      borderRadius="md"
+                    />
+                  </InputGroup>
+                </FormControl>
+
+                <FormControl>
+                  <FormLabel fontSize="sm">Secondary Contact</FormLabel>
+                  <InputGroup>
+                    <InputLeftElement pointerEvents="none" color="gray.400">
+                      <Icon as={FaPhoneAlt} />
+                    </InputLeftElement>
+                    <Input
+                      name="contact2"
+                      placeholder="Enter secondary contact"
+                      value={addCompany?.contact2}
+                      onChange={handleAddChange}
+                      bg={useColorModeValue('white', 'gray.700')}
+                      color={useColorModeValue('black', 'white')}
+                      borderRadius="md"
+                    />
+                  </InputGroup>
+                </FormControl>
+              </SimpleGrid>
+            </Box>
+
+            <Box mb={8}>
+              <Flex alignItems="center" mb={4}>
+                <Icon
+                  as={FaMapMarkedAlt}
+                  w={6}
+                  h={6}
+                  color="orange.500"
+                  mr={2}
+                />{' '}
+                <Text fontSize="lg" fontWeight="semibold">
+                  Address Information
+                </Text>
+              </Flex>
+
+              <SimpleGrid columns={{ base: 1, md: 2 }} spacing="6">
+                <FormControl>
+                  <FormLabel fontSize="sm">Address Line</FormLabel>
+                  <InputGroup>
+                    <InputLeftElement pointerEvents="none" color="gray.400">
+                      <Icon as={FaMapMarkerAlt} />
+                    </InputLeftElement>
+                    <Textarea
+                      name="addressLine"
+                      placeholder="Enter address"
+                      value={addCompany?.addressLine}
+                      onChange={handleAddChange}
+                      bg={useColorModeValue('white', 'gray.700')}
+                      color={useColorModeValue('black', 'white')}
+                      borderRadius="md"
+                      pl="10" /* Ensure proper padding to the left for icons */
+                    />
+                  </InputGroup>
+                </FormControl>
+
+                <FormControl>
+                  <FormLabel fontSize="sm">City</FormLabel>
+                  <InputGroup>
+                    <InputLeftElement pointerEvents="none" color="gray.400">
+                      <Icon as={FaCity} />
+                    </InputLeftElement>
+                    <Input
+                      name="city"
+                      placeholder="Enter city"
+                      value={addCompany?.city}
+                      onChange={handleAddChange}
+                      bg={useColorModeValue('white', 'gray.700')}
+                      color={useColorModeValue('black', 'white')}
+                      borderRadius="md"
+                    />
+                  </InputGroup>
+                </FormControl>
+
+                <FormControl>
+                  <FormLabel fontSize="sm">State</FormLabel>
+                  <InputGroup>
+                    <InputLeftElement pointerEvents="none" color="gray.400">
+                      <Icon as={FaFlag} />
+                    </InputLeftElement>
+                    <Input
+                      name="state"
+                      placeholder="Enter state"
+                      value={addCompany?.state}
+                      onChange={handleAddChange}
+                      bg={useColorModeValue('white', 'gray.700')}
+                      color={useColorModeValue('black', 'white')}
+                      borderRadius="md"
+                    />
+                  </InputGroup>
+                </FormControl>
+
+                <FormControl>
+                  <FormLabel fontSize="sm">Country</FormLabel>
+                  <InputGroup>
+                    <InputLeftElement pointerEvents="none" color="gray.400">
+                      <Icon as={FaGlobe} />
+                    </InputLeftElement>
+                    <Input
+                      name="country"
+                      placeholder="Enter country"
+                      value={addCompany?.country}
+                      onChange={handleAddChange}
+                      bg={useColorModeValue('white', 'gray.700')}
+                      color={useColorModeValue('black', 'white')}
+                      borderRadius="md"
+                    />
+                  </InputGroup>
+                </FormControl>
+
+                <FormControl>
+                  <FormLabel fontSize="sm">Zipcode</FormLabel>
+                  <InputGroup>
+                    <InputLeftElement pointerEvents="none" color="gray.400">
+                      <Icon as={FaHashtag} />
+                    </InputLeftElement>
+                    <Input
+                      name="zipcode"
+                      placeholder="Enter zipcode"
+                      value={addCompany?.zipcode}
+                      onChange={handleAddChange}
+                      bg={useColorModeValue('white', 'gray.700')}
+                      color={useColorModeValue('black', 'white')}
+                      borderRadius="md"
+                    />
+                  </InputGroup>
+                </FormControl>
+              </SimpleGrid>
+            </Box>
+
+            <Box>
+              <Flex alignItems="center" mb={4}>
+                <Icon
+                  as={FaClipboardList}
+                  w={6}
+                  h={6}
+                  color="purple.500"
+                  mr={2}
+                />{' '}
+                <Text fontSize="lg" fontWeight="semibold">
+                  Additional Information
+                </Text>
+              </Flex>
+              <SimpleGrid columns={{ base: 1, md: 2 }} spacing="6">
+                <FormControl>
+                  <FormLabel fontSize="sm">Company Contact Person</FormLabel>
                   <Input
-                    name="allowedLimit"
-                    placeholder="Enter allowed limit"
-                    value={addCompany?.allowedLimit}
+                    name="companyRepresentativeName"
+                    placeholder="Enter contact person name"
+                    value={addCompany?.companyRepresentativeName}
                     onChange={handleAddChange}
                     bg={useColorModeValue('white', 'gray.700')}
                     color={useColorModeValue('black', 'white')}
-                    _placeholder={{
-                      color: useColorModeValue('gray.500', 'gray.400'),
-                    }}
+                    borderRadius="md"
                   />
-                  <InputRightElement>
-                    <Text
-                      color={useColorModeValue('gray.500', 'gray.400')}
-                      fontSize="sm"
-                    >
-                      m³
-                    </Text>
-                  </InputRightElement>
-                </InputGroup>
-              </FormControl>
-              <FormControl mb="4">
-                <FormLabel fontSize={'sm'}>Address Line</FormLabel>
-                <Input
-                  name="addressLine"
-                  placeholder="Enter address"
-                  value={addCompany?.addressLine}
-                  onChange={handleAddChange}
-                  bg={useColorModeValue('white', 'gray.700')}
-                  color={useColorModeValue('black', 'white')}
-                  _placeholder={{
-                    color: useColorModeValue('gray.500', 'gray.400'),
-                  }}
-                />
-              </FormControl>
-              <FormControl mb="4">
-                <FormLabel fontSize={'sm'}>City</FormLabel>
-                <Input
-                  name="city"
-                  placeholder="Enter city"
-                  value={addCompany?.city}
-                  onChange={handleAddChange}
-                  bg={useColorModeValue('white', 'gray.700')}
-                  color={useColorModeValue('black', 'white')}
-                  _placeholder={{
-                    color: useColorModeValue('gray.500', 'gray.400'),
-                  }}
-                />
-              </FormControl>
-              <FormControl mb="4">
-                <FormLabel fontSize={'sm'}>State</FormLabel>
-                <Input
-                  name="state"
-                  placeholder="Enter state"
-                  value={addCompany?.state}
-                  onChange={handleAddChange}
-                  bg={useColorModeValue('white', 'gray.700')}
-                  color={useColorModeValue('black', 'white')}
-                  _placeholder={{
-                    color: useColorModeValue('gray.500', 'gray.400'),
-                  }}
-                />
-              </FormControl>
-              <FormControl mb="4">
-                <FormLabel fontSize={'sm'}>Country</FormLabel>
-                <Input
-                  name="country"
-                  placeholder="Enter country"
-                  value={addCompany?.country}
-                  onChange={handleAddChange}
-                  bg={useColorModeValue('white', 'gray.700')}
-                  color={useColorModeValue('black', 'white')}
-                  _placeholder={{
-                    color: useColorModeValue('gray.500', 'gray.400'),
-                  }}
-                />
-              </FormControl>
-              <FormControl mb="4">
-                <FormLabel fontSize={'sm'}>Zipcode</FormLabel>
-                <Input
-                  name="zipcode"
-                  placeholder="Enter zipcode"
-                  value={addCompany?.zipcode}
-                  onChange={handleAddChange}
-                  bg={useColorModeValue('white', 'gray.700')}
-                  color={useColorModeValue('black', 'white')}
-                  _placeholder={{
-                    color: useColorModeValue('gray.500', 'gray.400'),
-                  }}
-                />
-              </FormControl>
-              <FormControl mb="4">
-                <FormLabel fontSize={'sm'}>Company Contact Person</FormLabel>
-                <Input
-                  name="companyRepresentativeName"
-                  placeholder="Enter contact person name"
-                  value={addCompany?.companyRepresentativeName}
-                  onChange={handleAddChange}
-                  bg={useColorModeValue('white', 'gray.700')}
-                  color={useColorModeValue('black', 'white')}
-                  _placeholder={{
-                    color: useColorModeValue('gray.500', 'gray.400'),
-                  }}
-                />
-              </FormControl>
-              <FormControl mb="4">
-                <FormLabel fontSize={'sm'}>Aquasense Sales Executive</FormLabel>
-                <Select
-                  name="aquasenseSalesRepresentative"
-                  placeholder="Select Sales Executive"
-                  value={addCompany?.aquasenseSalesRepresentative}
-                  onChange={handleAddChange}
-                >
-                  {users
-                    ?.filter((user) => user?.role === 'sales')
-                    .map((filteredUser) => (
-                      <option key={filteredUser?._id} value={filteredUser?._id}>
-                        {filteredUser?.name}
-                      </option>
-                    ))}
-                </Select>
-              </FormControl>
-              <FormControl mb="4">
-                <FormLabel fontSize={'sm'}>Aquasense IRM Executive</FormLabel>
-                <Select
-                  name="aquasenseIRMUser"
-                  placeholder="Select IRM Executive"
-                  value={addCompany?.aquasenseIRMUser}
-                  onChange={handleAddChange}
-                >
-                  {users
-                    ?.filter((user) => user?.role === 'IRM')
-                    .map((filteredUser) => (
-                      <option key={filteredUser?._id} value={filteredUser?._id}>
-                        {filteredUser?.name}
-                      </option>
-                    ))}
-                </Select>
-              </FormControl>
-            </SimpleGrid>
+                </FormControl>
+
+                <FormControl>
+                  <FormLabel fontSize="sm">Aquasense Sales Executive</FormLabel>
+                  <Select
+                    name="aquasenseSalesRepresentative"
+                    placeholder="Select Sales Executive"
+                    value={addCompany?.aquasenseSalesRepresentative}
+                    onChange={handleAddChange}
+                    bg={useColorModeValue('white', 'gray.700')}
+                    color={useColorModeValue('black', 'white')}
+                    borderRadius="md"
+                  >
+                    {users
+                      ?.filter((user) => user?.role === 'sales')
+                      .map((filteredUser) => (
+                        <option
+                          key={filteredUser?._id}
+                          value={filteredUser?._id}
+                        >
+                          {filteredUser?.name}
+                        </option>
+                      ))}
+                  </Select>
+                </FormControl>
+
+                <FormControl>
+                  <FormLabel fontSize="sm">Aquasense IRM Executive</FormLabel>
+                  <Select
+                    name="aquasenseIRMUser"
+                    placeholder="Select IRM Executive"
+                    value={addCompany?.aquasenseIRMUser}
+                    onChange={handleAddChange}
+                    bg={useColorModeValue('white', 'gray.700')}
+                    color={useColorModeValue('black', 'white')}
+                    borderRadius="md"
+                  >
+                    {users
+                      ?.filter((user) => user?.role === 'IRM')
+                      .map((filteredUser) => (
+                        <option
+                          key={filteredUser?._id}
+                          value={filteredUser?._id}
+                        >
+                          {filteredUser?.name}
+                        </option>
+                      ))}
+                  </Select>
+                </FormControl>
+              </SimpleGrid>
+            </Box>
           </ModalBody>
+
           <ModalFooter
-            style={{
-              position: 'sticky',
-              bottom: 0,
-              backgroundColor: modalBg,
-              zIndex: '1',
-            }}
+            bg={useColorModeValue('gray.50', 'gray.800')}
+            borderTop="1px solid"
+            borderColor={useColorModeValue('gray.200', 'gray.700')}
+            py={5}
+            px={6}
+            justifyContent="space-between"
+            roundedBottom="xl"
           >
-            <Button variant="ghost" onClick={onClose}>
+            <Button
+              variant="ghost"
+              colorScheme="red"
+              fontWeight="medium"
+              onClick={onClose}
+              borderRadius="md"
+              _hover={{ bg: useColorModeValue('red.50', 'red.900') }} // Subtle hover effect
+            >
               Cancel
             </Button>
             <Button
               colorScheme="blue"
               onClick={handleAddCompany}
               isLoading={loading}
-              ml={3}
+              borderRadius="md"
+              shadow="sm"
+              _hover={{ shadow: 'md', transform: 'translateY(-1px)' }} // Slight animation on hover
             >
               Add Company
             </Button>
@@ -745,256 +857,368 @@ const Company = () => {
       <Modal isOpen={isEditOpen} onClose={onEditClose} size="lg">
         <ModalOverlay />
         <ModalContent
-          maxWidth="800px"
+          maxWidth="900px"
           mx="auto"
           bg={modalBg}
-          style={{ height: '80vh', overflow: 'auto' }}
+          rounded="xl"
+          boxShadow="lg"
+          overflow="hidden"
         >
-          <div
-            style={{
-              position: 'sticky',
-              top: 0,
-              backgroundColor: modalBg,
-              zIndex: '1',
-            }}
+          <Box
+            bg={addmodalheaderBg}
+            py={1}
+            px={2}
+            textAlign="center"
+            roundedTop="xl"
           >
-            <ModalHeader>Edit Company</ModalHeader>
+            <ModalHeader
+              fontSize="2xl"
+              fontWeight="bold"
+              color="white"
+              display="flex"
+              alignItems="center"
+              justifyContent="center"
+            >
+              <Icon as={EditIcon} mr={2} />
+              Edit Company
+            </ModalHeader>
             <ModalCloseButton />
-          </div>
-          <ModalBody>
-            <SimpleGrid columns={{ base: 1, md: 2 }} spacing="4">
+          </Box>
+
+          <ModalBody p={6}>
+            <Box mb={8}>
+              <Flex alignItems="center" mb={4}>
+                <Icon as={FaInfoCircle} w={6} h={6} color="blue.500" mr={2} />{' '}
+                <Text fontSize="lg" fontWeight="semibold">
+                  Basic Details
+                </Text>
+              </Flex>{' '}
+              <SimpleGrid columns={{ base: 1, md: 2 }} spacing="6">
+                <FormControl isRequired>
+                  <FormLabel fontSize="sm">Company Name</FormLabel>
+                  <InputGroup>
+                    <InputLeftElement pointerEvents="none" color="gray.400">
+                      <Icon as={FaBuilding} />
+                    </InputLeftElement>
+                    <Input
+                      name="name"
+                      placeholder="Enter company name"
+                      value={editCompany?.name}
+                      onChange={handleEditChange}
+                      bg={useColorModeValue('white', 'gray.700')}
+                      borderRadius="md"
+                      _placeholder={{
+                        color: useColorModeValue('gray.500', 'gray.400'),
+                      }}
+                    />
+                  </InputGroup>
+                </FormControl>
+              </SimpleGrid>
+            </Box>
+
+            <Box mb={8}>
+              <Flex alignItems="center" mb={4}>
+                <Icon as={FaAddressBook} w={6} h={6} color="green.500" mr={2} />{' '}
+                <Text fontSize="lg" fontWeight="semibold">
+                  Contact Information
+                </Text>
+              </Flex>
+              <SimpleGrid columns={{ base: 1, md: 2 }} spacing="6">
+                <FormControl>
+                  <FormLabel fontSize="sm">Primary Contact</FormLabel>
+                  <InputGroup>
+                    <InputLeftElement pointerEvents="none" color="gray.400">
+                      <Icon as={FaPhoneAlt} />
+                    </InputLeftElement>
+                    <Input
+                      name="contact1"
+                      placeholder="Enter primary contact"
+                      value={editCompany?.contact1}
+                      onChange={handleEditChange}
+                      bg={useColorModeValue('white', 'gray.700')}
+                      borderRadius="md"
+                      _placeholder={{
+                        color: useColorModeValue('gray.500', 'gray.400'),
+                      }}
+                    />
+                  </InputGroup>
+                </FormControl>
+                <FormControl>
+                  <FormLabel fontSize="sm">Secondary Contact</FormLabel>
+                  <InputGroup>
+                    <InputLeftElement pointerEvents="none" color="gray.400">
+                      <Icon as={FaPhoneAlt} />
+                    </InputLeftElement>
+                    <Input
+                      name="contact2"
+                      placeholder="Enter secondary contact"
+                      value={editCompany?.contact2}
+                      onChange={handleEditChange}
+                      bg={useColorModeValue('white', 'gray.700')}
+                      borderRadius="md"
+                      _placeholder={{
+                        color: useColorModeValue('gray.500', 'gray.400'),
+                      }}
+                    />
+                  </InputGroup>
+                </FormControl>
+                <FormControl>
+                  <FormLabel fontSize="sm">Primary Email</FormLabel>
+                  <InputGroup>
+                    <InputLeftElement pointerEvents="none" color="gray.400">
+                      <Icon as={EmailIcon} />
+                    </InputLeftElement>
+                    <Input
+                      name="email1"
+                      type="email"
+                      placeholder="Enter primary email address"
+                      value={editCompany?.email1}
+                      onChange={handleEditChange}
+                      bg={useColorModeValue('white', 'gray.700')}
+                      borderRadius="md"
+                      _placeholder={{
+                        color: useColorModeValue('gray.500', 'gray.400'),
+                      }}
+                    />
+                  </InputGroup>
+                </FormControl>
+                <FormControl>
+                  <FormLabel fontSize="sm">Secondary Email</FormLabel>
+                  <InputGroup>
+                    <InputLeftElement pointerEvents="none" color="gray.400">
+                      <Icon as={EmailIcon} />
+                    </InputLeftElement>
+                    <Input
+                      name="email2"
+                      type="email"
+                      placeholder="Enter secondary email address"
+                      value={editCompany?.email2}
+                      onChange={handleEditChange}
+                      bg={useColorModeValue('white', 'gray.700')}
+                      borderRadius="md"
+                      _placeholder={{
+                        color: useColorModeValue('gray.500', 'gray.400'),
+                      }}
+                    />
+                  </InputGroup>
+                </FormControl>
+              </SimpleGrid>
+            </Box>
+
+            <Box mb={8}>
+              <Flex alignItems="center" mb={4}>
+                <Icon
+                  as={FaMapMarkedAlt}
+                  w={6}
+                  h={6}
+                  color="orange.500"
+                  mr={2}
+                />{' '}
+                <Text fontSize="lg" fontWeight="semibold">
+                  Address Information
+                </Text>
+              </Flex>
+
               <FormControl>
-                <FormLabel fontSize={'sm'}>Company Name</FormLabel>
-                <Input
-                  name="name"
-                  placeholder="Enter company name"
-                  value={editCompany?.name}
-                  onChange={handleEditChange}
-                  bg={useColorModeValue('white', 'gray.700')}
-                  color={useColorModeValue('black', 'white')}
-                  _placeholder={{
-                    color: useColorModeValue('gray.500', 'gray.400'),
-                  }}
-                />
-              </FormControl>
-              <FormControl>
-                <FormLabel fontSize={'sm'}>Primary Email</FormLabel>
-                <Input
-                  name="email1"
-                  type="email"
-                  placeholder="Enter primary email address"
-                  value={editCompany?.email1}
-                  onChange={handleEditChange}
-                  bg={useColorModeValue('white', 'gray.700')}
-                  color={useColorModeValue('black', 'white')}
-                  _placeholder={{
-                    color: useColorModeValue('gray.500', 'gray.400'),
-                  }}
-                />
-              </FormControl>
-              <FormControl>
-                <FormLabel fontSize={'sm'}>Secondary Email</FormLabel>
-                <Input
-                  name="email2"
-                  type="email"
-                  placeholder="Enter secondary email address"
-                  value={editCompany?.email2}
-                  onChange={handleEditChange}
-                  bg={useColorModeValue('white', 'gray.700')}
-                  color={useColorModeValue('black', 'white')}
-                  _placeholder={{
-                    color: useColorModeValue('gray.500', 'gray.400'),
-                  }}
-                />
-              </FormControl>
-              <FormControl>
-                <FormLabel fontSize={'sm'}>Primary Contact</FormLabel>
-                <Input
-                  name="contact1"
-                  placeholder="Enter primary contact"
-                  value={editCompany?.contact1}
-                  onChange={handleEditChange}
-                  bg={useColorModeValue('white', 'gray.700')}
-                  color={useColorModeValue('black', 'white')}
-                  _placeholder={{
-                    color: useColorModeValue('gray.500', 'gray.400'),
-                  }}
-                />
-              </FormControl>
-              <FormControl>
-                <FormLabel fontSize={'sm'}>Secondary Contact</FormLabel>
-                <Input
-                  name="contact2"
-                  placeholder="Enter secondary contact"
-                  value={editCompany?.contact2}
-                  onChange={handleEditChange}
-                  bg={useColorModeValue('white', 'gray.700')}
-                  color={useColorModeValue('black', 'white')}
-                  _placeholder={{
-                    color: useColorModeValue('gray.500', 'gray.400'),
-                  }}
-                />
-              </FormControl>
-              <FormControl>
-                <FormLabel fontSize={'sm'}>Allowed Limit</FormLabel>
+                <FormLabel fontSize="sm">Address Line</FormLabel>
                 <InputGroup>
-                  <Input
-                    name="allowedLimit"
-                    placeholder="Enter allowed limit"
-                    value={editCompany?.allowedLimit}
+                  <InputLeftElement pointerEvents="none" color="gray.400">
+                    <Icon as={FaMapMarkerAlt} w={5} h={5} />{' '}
+                  </InputLeftElement>
+                  <Textarea
+                    name="addressLine"
+                    placeholder="Enter address"
+                    value={editCompany?.addressLine}
                     onChange={handleEditChange}
                     bg={useColorModeValue('white', 'gray.700')}
-                    color={useColorModeValue('black', 'white')}
+                    resize="vertical"
+                    borderRadius="md"
+                    pl="12"
+                  />
+                </InputGroup>
+              </FormControl>
+
+              <SimpleGrid columns={{ base: 1, md: 2 }} spacing="4" mt={4}>
+                <FormControl>
+                  <FormLabel fontSize="sm">City</FormLabel>
+                  <InputGroup>
+                    <InputLeftElement pointerEvents="none" color="gray.400">
+                      <Icon as={FaCity} w={5} h={5} />
+                    </InputLeftElement>
+                    <Input
+                      name="city"
+                      placeholder="Enter city"
+                      value={editCompany?.city}
+                      onChange={handleEditChange}
+                      bg={useColorModeValue('white', 'gray.700')}
+                      borderRadius="md"
+                      pl="12"
+                      _placeholder={{
+                        color: useColorModeValue('gray.500', 'gray.400'),
+                      }}
+                    />
+                  </InputGroup>
+                </FormControl>
+
+                <FormControl>
+                  <FormLabel fontSize="sm">State</FormLabel>
+                  <InputGroup>
+                    <InputLeftElement pointerEvents="none" color="gray.400">
+                      <Icon as={FaFlag} w={5} h={5} />
+                    </InputLeftElement>
+                    <Input
+                      name="state"
+                      placeholder="Enter state"
+                      value={editCompany?.state}
+                      onChange={handleEditChange}
+                      bg={useColorModeValue('white', 'gray.700')}
+                      borderRadius="md"
+                      pl="12"
+                      _placeholder={{
+                        color: useColorModeValue('gray.500', 'gray.400'),
+                      }}
+                    />
+                  </InputGroup>
+                </FormControl>
+
+                <FormControl>
+                  <FormLabel fontSize="sm">Country</FormLabel>
+                  <InputGroup>
+                    <InputLeftElement pointerEvents="none" color="gray.400">
+                      <Icon as={FaGlobe} w={5} h={5} />
+                    </InputLeftElement>
+                    <Input
+                      name="country"
+                      placeholder="Enter country"
+                      value={editCompany?.country}
+                      onChange={handleEditChange}
+                      bg={useColorModeValue('white', 'gray.700')}
+                      borderRadius="md"
+                      pl="12"
+                      _placeholder={{
+                        color: useColorModeValue('gray.500', 'gray.400'),
+                      }}
+                    />
+                  </InputGroup>
+                </FormControl>
+
+                <FormControl>
+                  <FormLabel fontSize="sm">Zipcode</FormLabel>
+                  <InputGroup>
+                    <InputLeftElement pointerEvents="none" color="gray.400">
+                      <Icon as={FaHashtag} w={5} h={5} />
+                    </InputLeftElement>
+                    <Input
+                      name="zipcode"
+                      placeholder="Enter zipcode"
+                      value={editCompany?.zipcode}
+                      onChange={handleEditChange}
+                      bg={useColorModeValue('white', 'gray.700')}
+                      borderRadius="md"
+                      pl="12"
+                      _placeholder={{
+                        color: useColorModeValue('gray.500', 'gray.400'),
+                      }}
+                    />
+                  </InputGroup>
+                </FormControl>
+              </SimpleGrid>
+            </Box>
+
+            <Box>
+              <Flex alignItems="center" mb={4}>
+                <Icon
+                  as={FaClipboardList}
+                  w={6}
+                  h={6}
+                  color="purple.500"
+                  mr={2}
+                />{' '}
+                <Text fontSize="lg" fontWeight="semibold">
+                  Additional Information
+                </Text>
+              </Flex>
+
+              <SimpleGrid columns={{ base: 1, md: 2 }} spacing="6">
+                <FormControl>
+                  <FormLabel fontSize="sm">Company Contact Person</FormLabel>
+                  <Input
+                    name="companyRepresentativeName"
+                    placeholder="Enter contact person name"
+                    value={editCompany?.companyRepresentativeName}
+                    onChange={handleEditChange}
+                    bg={useColorModeValue('white', 'gray.700')}
+                    borderRadius="md"
                     _placeholder={{
                       color: useColorModeValue('gray.500', 'gray.400'),
                     }}
                   />
-                  <InputRightElement>
-                    <Text
-                      color={useColorModeValue('gray.500', 'gray.400')}
-                      fontSize="sm"
-                    >
-                      m³
-                    </Text>
-                  </InputRightElement>
-                </InputGroup>
-              </FormControl>
-              <FormControl>
-                <FormLabel fontSize={'sm'}>Address Line</FormLabel>
-                <Input
-                  name="addressLine"
-                  placeholder="Enter address"
-                  value={editCompany?.addressLine}
-                  onChange={handleEditChange}
-                  bg={useColorModeValue('white', 'gray.700')}
-                  color={useColorModeValue('black', 'white')}
-                  _placeholder={{
-                    color: useColorModeValue('gray.500', 'gray.400'),
-                  }}
-                />
-              </FormControl>
-              <FormControl>
-                <FormLabel fontSize={'sm'}>City</FormLabel>
-                <Input
-                  name="city"
-                  placeholder="Enter city"
-                  value={editCompany?.city}
-                  onChange={handleEditChange}
-                  bg={useColorModeValue('white', 'gray.700')}
-                  color={useColorModeValue('black', 'white')}
-                  _placeholder={{
-                    color: useColorModeValue('gray.500', 'gray.400'),
-                  }}
-                />
-              </FormControl>
-              <FormControl>
-                <FormLabel fontSize={'sm'}>State</FormLabel>
-                <Input
-                  name="state"
-                  placeholder="Enter state"
-                  value={editCompany?.state}
-                  onChange={handleEditChange}
-                  bg={useColorModeValue('white', 'gray.700')}
-                  color={useColorModeValue('black', 'white')}
-                  _placeholder={{
-                    color: useColorModeValue('gray.500', 'gray.400'),
-                  }}
-                />
-              </FormControl>
-              <FormControl>
-                <FormLabel fontSize={'sm'}>Country</FormLabel>
-                <Input
-                  name="country"
-                  placeholder="Enter country"
-                  value={editCompany?.country}
-                  onChange={handleEditChange}
-                  bg={useColorModeValue('white', 'gray.700')}
-                  color={useColorModeValue('black', 'white')}
-                  _placeholder={{
-                    color: useColorModeValue('gray.500', 'gray.400'),
-                  }}
-                />
-              </FormControl>
-              <FormControl>
-                <FormLabel fontSize={'sm'}>Zipcode</FormLabel>
-                <Input
-                  name="zipcode"
-                  placeholder="Enter zipcode"
-                  value={editCompany?.zipcode}
-                  onChange={handleEditChange}
-                  bg={useColorModeValue('white', 'gray.700')}
-                  color={useColorModeValue('black', 'white')}
-                  _placeholder={{
-                    color: useColorModeValue('gray.500', 'gray.400'),
-                  }}
-                />
-              </FormControl>
-              <FormControl>
-                <FormLabel fontSize={'sm'}>Company Contact Person</FormLabel>
-                <Input
-                  name="companyRepresentativeName"
-                  placeholder="Enter contact person name"
-                  value={editCompany?.companyRepresentativeName}
-                  onChange={handleEditChange}
-                  bg={useColorModeValue('white', 'gray.700')}
-                  color={useColorModeValue('black', 'white')}
-                  _placeholder={{
-                    color: useColorModeValue('gray.500', 'gray.400'),
-                  }}
-                />
-              </FormControl>
-              <FormControl>
-                <FormLabel fontSize={'sm'}>Aquasense Sales Executive</FormLabel>
-                <Select
-                  name="aquasenseSalesRepresentative"
-                  placeholder="Select Sales Executive"
-                  value={editCompany?.aquasenseSalesRepresentative}
-                  onChange={handleEditChange}
-                >
-                  {users
-                    ?.filter((user) => user?.role === 'sales')
-                    .map((filteredUser) => (
-                      <option key={filteredUser?._id} value={filteredUser?._id}>
-                        {filteredUser?.name}
-                      </option>
-                    ))}
-                </Select>
-              </FormControl>
-              <FormControl>
-                <FormLabel fontSize={'sm'}>Aquasense IRM Executive</FormLabel>
-                <Select
-                  name="aquasenseIRMUser"
-                  placeholder="Select IRM Executive"
-                  value={editCompany?.aquasenseIRMUser}
-                  onChange={handleEditChange}
-                >
-                  {users
-                    ?.filter((user) => user?.role === 'IRM')
-                    .map((filteredUser) => (
-                      <option key={filteredUser?._id} value={filteredUser?._id}>
-                        {filteredUser?.name}
-                      </option>
-                    ))}
-                </Select>
-              </FormControl>
-            </SimpleGrid>
+                </FormControl>
+                <FormControl>
+                  <FormLabel fontSize="sm">Aquasense Sales Executive</FormLabel>
+                  <Select
+                    name="aquasenseSalesRepresentative"
+                    placeholder="Select Sales Executive"
+                    value={editCompany?.aquasenseSalesRepresentative}
+                    onChange={handleEditChange}
+                    bg={useColorModeValue('white', 'gray.700')}
+                    borderRadius="md"
+                  >
+                    {users
+                      ?.filter((user) => user?.role === 'sales')
+                      .map((filteredUser) => (
+                        <option
+                          key={filteredUser?._id}
+                          value={filteredUser?._id}
+                        >
+                          {filteredUser?.name}
+                        </option>
+                      ))}
+                  </Select>
+                </FormControl>
+                <FormControl>
+                  <FormLabel fontSize="sm">Aquasense IRM Executive</FormLabel>
+                  <Select
+                    name="aquasenseIRMUser"
+                    placeholder="Select IRM Executive"
+                    value={editCompany?.aquasenseIRMUser}
+                    onChange={handleEditChange}
+                    bg={useColorModeValue('white', 'gray.700')}
+                    borderRadius="md"
+                  >
+                    {users
+                      ?.filter((user) => user?.role === 'IRM')
+                      .map((filteredUser) => (
+                        <option
+                          key={filteredUser?._id}
+                          value={filteredUser?._id}
+                        >
+                          {filteredUser?.name}
+                        </option>
+                      ))}
+                  </Select>
+                </FormControl>
+              </SimpleGrid>
+            </Box>
           </ModalBody>
+
           <ModalFooter
-            style={{
-              position: 'sticky',
-              bottom: 0,
-              backgroundColor: modalBg,
-              zIndex: '1',
-            }}
+            bg={useColorModeValue('gray.50', 'gray.800')}
+            borderTop="1px solid"
+            borderColor={useColorModeValue('gray.200', 'gray.700')}
+            py={4}
+            justifyContent="space-between"
           >
-            <Button variant="ghost" onClick={onEditClose}>
+            <Button variant="outline" onClick={onEditClose} borderRadius="md">
               Cancel
             </Button>
             <Button
               colorScheme="blue"
               onClick={handleSave}
               isLoading={loading}
-              ml={3}
+              borderRadius="md"
+              shadow="md"
+              _hover={{ transform: 'translateY(-1px)', shadow: 'lg' }}
             >
               Save Changes
             </Button>

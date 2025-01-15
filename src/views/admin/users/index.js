@@ -790,7 +790,6 @@ const User = () => {
         </ModalContent>
       </Modal>
 
-      {/* Edit User Modal */}
       <Modal
         isOpen={isEditOpen}
         onClose={onEditClose}
@@ -1019,7 +1018,6 @@ const User = () => {
         </ModalContent>
       </Modal>
 
-      {/* View User Modal */}
       <Modal isOpen={isViewOpen} onClose={onViewClose} size="lg">
         <ModalOverlay />
         <ModalContent
