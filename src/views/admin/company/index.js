@@ -149,10 +149,12 @@ const Company = () => {
   );
   const sectionBg = useColorModeValue('gray.50', 'gray.700');
   const textColor = useColorModeValue('gray.700', 'gray.300');
+
   const handleRowClick = (company) => {
     setSelectedCompany(company);
     onViewOpen();
   };
+
   useEffect(() => {
     getCompany();
   }, [page, searchTerm, rowsPerPage]);
@@ -541,9 +543,21 @@ const Company = () => {
                       placeholder="Enter company name"
                       value={addCompany?.name}
                       onChange={handleAddChange}
-                      bg={useColorModeValue('white', 'gray.700')}
-                      color={useColorModeValue('black', 'white')}
                       borderRadius="md"
+                      bg={useColorModeValue('white', 'gray.700')}
+                      color={useColorModeValue('gray.800', 'white')}
+                      borderWidth="2px"
+                      borderColor={useColorModeValue('gray.300', 'gray.600')}
+                      _hover={{
+                        borderColor: useColorModeValue('blue.400', 'blue.600'),
+                      }}
+                      _focus={{
+                        borderColor: useColorModeValue('blue.500', 'blue.300'),
+                        boxShadow: 'outline',
+                      }}
+                      _placeholder={{
+                        color: useColorModeValue('gray.500', 'gray.400'),
+                      }}
                     />
                   </InputGroup>
                 </FormControl>
@@ -574,6 +588,18 @@ const Company = () => {
                       bg={useColorModeValue('white', 'gray.700')}
                       color={useColorModeValue('black', 'white')}
                       borderRadius="md"
+                      borderWidth="2px"
+                      borderColor={useColorModeValue('gray.300', 'gray.600')}
+                      _hover={{
+                        borderColor: useColorModeValue('blue.400', 'blue.600'),
+                      }}
+                      _focus={{
+                        borderColor: useColorModeValue('blue.500', 'blue.300'),
+                        boxShadow: 'outline',
+                      }}
+                      _placeholder={{
+                        color: useColorModeValue('gray.500', 'gray.400'),
+                      }}
                     />
                   </InputGroup>
                 </FormControl>
@@ -593,6 +619,18 @@ const Company = () => {
                       bg={useColorModeValue('white', 'gray.700')}
                       color={useColorModeValue('black', 'white')}
                       borderRadius="md"
+                      borderWidth="2px"
+                      borderColor={useColorModeValue('gray.300', 'gray.600')}
+                      _hover={{
+                        borderColor: useColorModeValue('blue.400', 'blue.600'),
+                      }}
+                      _focus={{
+                        borderColor: useColorModeValue('blue.500', 'blue.300'),
+                        boxShadow: 'outline',
+                      }}
+                      _placeholder={{
+                        color: useColorModeValue('gray.500', 'gray.400'),
+                      }}
                     />
                   </InputGroup>
                 </FormControl>
@@ -611,6 +649,18 @@ const Company = () => {
                       bg={useColorModeValue('white', 'gray.700')}
                       color={useColorModeValue('black', 'white')}
                       borderRadius="md"
+                      borderWidth="2px"
+                      borderColor={useColorModeValue('gray.300', 'gray.600')}
+                      _hover={{
+                        borderColor: useColorModeValue('blue.400', 'blue.600'),
+                      }}
+                      _focus={{
+                        borderColor: useColorModeValue('blue.500', 'blue.300'),
+                        boxShadow: 'outline',
+                      }}
+                      _placeholder={{
+                        color: useColorModeValue('gray.500', 'gray.400'),
+                      }}
                     />
                   </InputGroup>
                 </FormControl>
@@ -629,6 +679,18 @@ const Company = () => {
                       bg={useColorModeValue('white', 'gray.700')}
                       color={useColorModeValue('black', 'white')}
                       borderRadius="md"
+                      borderWidth="2px"
+                      borderColor={useColorModeValue('gray.300', 'gray.600')}
+                      _hover={{
+                        borderColor: useColorModeValue('blue.400', 'blue.600'),
+                      }}
+                      _focus={{
+                        borderColor: useColorModeValue('blue.500', 'blue.300'),
+                        boxShadow: 'outline',
+                      }}
+                      _placeholder={{
+                        color: useColorModeValue('gray.500', 'gray.400'),
+                      }}
                     />
                   </InputGroup>
                 </FormControl>
@@ -648,27 +710,37 @@ const Company = () => {
                   Address Information
                 </Text>
               </Flex>
-
-              <SimpleGrid columns={{ base: 1, md: 2 }} spacing="6">
-                <FormControl>
-                  <FormLabel fontSize="sm">Address Line</FormLabel>
-                  <InputGroup>
-                    <InputLeftElement pointerEvents="none" color="gray.400">
-                      <Icon as={FaMapMarkerAlt} />
-                    </InputLeftElement>
-                    <Textarea
-                      name="addressLine"
-                      placeholder="Enter address"
-                      value={addCompany?.addressLine}
-                      onChange={handleAddChange}
-                      bg={useColorModeValue('white', 'gray.700')}
-                      color={useColorModeValue('black', 'white')}
-                      borderRadius="md"
-                      pl="10" /* Ensure proper padding to the left for icons */
-                    />
-                  </InputGroup>
-                </FormControl>
-
+              <FormControl>
+                <FormLabel fontSize="sm">Address Line</FormLabel>
+                <InputGroup>
+                  <InputLeftElement pointerEvents="none" color="gray.400">
+                    <Icon as={FaMapMarkerAlt} />
+                  </InputLeftElement>
+                  <Textarea
+                    name="addressLine"
+                    placeholder="Enter address"
+                    value={addCompany?.addressLine}
+                    onChange={handleAddChange}
+                    bg={useColorModeValue('white', 'gray.700')}
+                    color={useColorModeValue('black', 'white')}
+                    borderRadius="md"
+                    pl="10"
+                    borderWidth="2px"
+                    borderColor={useColorModeValue('gray.300', 'gray.600')}
+                    _hover={{
+                      borderColor: useColorModeValue('blue.400', 'blue.600'),
+                    }}
+                    _focus={{
+                      borderColor: useColorModeValue('blue.500', 'blue.300'),
+                      boxShadow: 'outline',
+                    }}
+                    _placeholder={{
+                      color: useColorModeValue('gray.500', 'gray.400'),
+                    }}
+                  />
+                </InputGroup>
+              </FormControl>
+              <SimpleGrid columns={{ base: 1, md: 2 }} spacing="6" mt={6}>
                 <FormControl>
                   <FormLabel fontSize="sm">City</FormLabel>
                   <InputGroup>
@@ -683,6 +755,18 @@ const Company = () => {
                       bg={useColorModeValue('white', 'gray.700')}
                       color={useColorModeValue('black', 'white')}
                       borderRadius="md"
+                      borderWidth="2px"
+                      borderColor={useColorModeValue('gray.300', 'gray.600')}
+                      _hover={{
+                        borderColor: useColorModeValue('blue.400', 'blue.600'),
+                      }}
+                      _focus={{
+                        borderColor: useColorModeValue('blue.500', 'blue.300'),
+                        boxShadow: 'outline',
+                      }}
+                      _placeholder={{
+                        color: useColorModeValue('gray.500', 'gray.400'),
+                      }}
                     />
                   </InputGroup>
                 </FormControl>
@@ -701,6 +785,18 @@ const Company = () => {
                       bg={useColorModeValue('white', 'gray.700')}
                       color={useColorModeValue('black', 'white')}
                       borderRadius="md"
+                      borderWidth="2px"
+                      borderColor={useColorModeValue('gray.300', 'gray.600')}
+                      _hover={{
+                        borderColor: useColorModeValue('blue.400', 'blue.600'),
+                      }}
+                      _focus={{
+                        borderColor: useColorModeValue('blue.500', 'blue.300'),
+                        boxShadow: 'outline',
+                      }}
+                      _placeholder={{
+                        color: useColorModeValue('gray.500', 'gray.400'),
+                      }}
                     />
                   </InputGroup>
                 </FormControl>
@@ -719,6 +815,18 @@ const Company = () => {
                       bg={useColorModeValue('white', 'gray.700')}
                       color={useColorModeValue('black', 'white')}
                       borderRadius="md"
+                      borderWidth="2px"
+                      borderColor={useColorModeValue('gray.300', 'gray.600')}
+                      _hover={{
+                        borderColor: useColorModeValue('blue.400', 'blue.600'),
+                      }}
+                      _focus={{
+                        borderColor: useColorModeValue('blue.500', 'blue.300'),
+                        boxShadow: 'outline',
+                      }}
+                      _placeholder={{
+                        color: useColorModeValue('gray.500', 'gray.400'),
+                      }}
                     />
                   </InputGroup>
                 </FormControl>
@@ -737,6 +845,18 @@ const Company = () => {
                       bg={useColorModeValue('white', 'gray.700')}
                       color={useColorModeValue('black', 'white')}
                       borderRadius="md"
+                      borderWidth="2px"
+                      borderColor={useColorModeValue('gray.300', 'gray.600')}
+                      _hover={{
+                        borderColor: useColorModeValue('blue.400', 'blue.600'),
+                      }}
+                      _focus={{
+                        borderColor: useColorModeValue('blue.500', 'blue.300'),
+                        boxShadow: 'outline',
+                      }}
+                      _placeholder={{
+                        color: useColorModeValue('gray.500', 'gray.400'),
+                      }}
                     />
                   </InputGroup>
                 </FormControl>
@@ -767,6 +887,18 @@ const Company = () => {
                     bg={useColorModeValue('white', 'gray.700')}
                     color={useColorModeValue('black', 'white')}
                     borderRadius="md"
+                    borderWidth="2px"
+                    borderColor={useColorModeValue('gray.300', 'gray.600')}
+                    _hover={{
+                      borderColor: useColorModeValue('blue.400', 'blue.600'),
+                    }}
+                    _focus={{
+                      borderColor: useColorModeValue('blue.500', 'blue.300'),
+                      boxShadow: 'outline',
+                    }}
+                    _placeholder={{
+                      color: useColorModeValue('gray.500', 'gray.400'),
+                    }}
                   />
                 </FormControl>
 
@@ -780,6 +912,18 @@ const Company = () => {
                     bg={useColorModeValue('white', 'gray.700')}
                     color={useColorModeValue('black', 'white')}
                     borderRadius="md"
+                    borderWidth="2px"
+                    borderColor={useColorModeValue('gray.300', 'gray.600')}
+                    _hover={{
+                      borderColor: useColorModeValue('blue.400', 'blue.600'),
+                    }}
+                    _focus={{
+                      borderColor: useColorModeValue('blue.500', 'blue.300'),
+                      boxShadow: 'outline',
+                    }}
+                    _placeholder={{
+                      color: useColorModeValue('gray.500', 'gray.400'),
+                    }}
                   >
                     {users
                       ?.filter((user) => user?.role === 'sales')
@@ -804,6 +948,18 @@ const Company = () => {
                     bg={useColorModeValue('white', 'gray.700')}
                     color={useColorModeValue('black', 'white')}
                     borderRadius="md"
+                    borderWidth="2px"
+                    borderColor={useColorModeValue('gray.300', 'gray.600')}
+                    _hover={{
+                      borderColor: useColorModeValue('blue.400', 'blue.600'),
+                    }}
+                    _focus={{
+                      borderColor: useColorModeValue('blue.500', 'blue.300'),
+                      boxShadow: 'outline',
+                    }}
+                    _placeholder={{
+                      color: useColorModeValue('gray.500', 'gray.400'),
+                    }}
                   >
                     {users
                       ?.filter((user) => user?.role === 'IRM')
@@ -836,7 +992,7 @@ const Company = () => {
               fontWeight="medium"
               onClick={onClose}
               borderRadius="md"
-              _hover={{ bg: useColorModeValue('red.50', 'red.900') }} // Subtle hover effect
+              _hover={{ bg: useColorModeValue('red.50', 'red.900') }}
             >
               Cancel
             </Button>
@@ -846,7 +1002,7 @@ const Company = () => {
               isLoading={loading}
               borderRadius="md"
               shadow="sm"
-              _hover={{ shadow: 'md', transform: 'translateY(-1px)' }} // Slight animation on hover
+              _hover={{ shadow: 'md', transform: 'translateY(-1px)' }}
             >
               Add Company
             </Button>
@@ -907,6 +1063,15 @@ const Company = () => {
                       onChange={handleEditChange}
                       bg={useColorModeValue('white', 'gray.700')}
                       borderRadius="md"
+                      borderWidth="2px"
+                      borderColor={useColorModeValue('gray.300', 'gray.600')}
+                      _hover={{
+                        borderColor: useColorModeValue('blue.400', 'blue.600'),
+                      }}
+                      _focus={{
+                        borderColor: useColorModeValue('blue.500', 'blue.300'),
+                        boxShadow: 'outline',
+                      }}
                       _placeholder={{
                         color: useColorModeValue('gray.500', 'gray.400'),
                       }}
@@ -940,6 +1105,15 @@ const Company = () => {
                       _placeholder={{
                         color: useColorModeValue('gray.500', 'gray.400'),
                       }}
+                      borderWidth="2px"
+                      borderColor={useColorModeValue('gray.300', 'gray.600')}
+                      _hover={{
+                        borderColor: useColorModeValue('blue.400', 'blue.600'),
+                      }}
+                      _focus={{
+                        borderColor: useColorModeValue('blue.500', 'blue.300'),
+                        boxShadow: 'outline',
+                      }}
                     />
                   </InputGroup>
                 </FormControl>
@@ -958,6 +1132,15 @@ const Company = () => {
                       borderRadius="md"
                       _placeholder={{
                         color: useColorModeValue('gray.500', 'gray.400'),
+                      }}
+                      borderWidth="2px"
+                      borderColor={useColorModeValue('gray.300', 'gray.600')}
+                      _hover={{
+                        borderColor: useColorModeValue('blue.400', 'blue.600'),
+                      }}
+                      _focus={{
+                        borderColor: useColorModeValue('blue.500', 'blue.300'),
+                        boxShadow: 'outline',
                       }}
                     />
                   </InputGroup>
@@ -979,6 +1162,15 @@ const Company = () => {
                       _placeholder={{
                         color: useColorModeValue('gray.500', 'gray.400'),
                       }}
+                      borderWidth="2px"
+                      borderColor={useColorModeValue('gray.300', 'gray.600')}
+                      _hover={{
+                        borderColor: useColorModeValue('blue.400', 'blue.600'),
+                      }}
+                      _focus={{
+                        borderColor: useColorModeValue('blue.500', 'blue.300'),
+                        boxShadow: 'outline',
+                      }}
                     />
                   </InputGroup>
                 </FormControl>
@@ -998,6 +1190,15 @@ const Company = () => {
                       borderRadius="md"
                       _placeholder={{
                         color: useColorModeValue('gray.500', 'gray.400'),
+                      }}
+                      borderWidth="2px"
+                      borderColor={useColorModeValue('gray.300', 'gray.600')}
+                      _hover={{
+                        borderColor: useColorModeValue('blue.400', 'blue.600'),
+                      }}
+                      _focus={{
+                        borderColor: useColorModeValue('blue.500', 'blue.300'),
+                        boxShadow: 'outline',
                       }}
                     />
                   </InputGroup>
@@ -1034,6 +1235,18 @@ const Company = () => {
                     resize="vertical"
                     borderRadius="md"
                     pl="12"
+                    _placeholder={{
+                      color: useColorModeValue('gray.500', 'gray.400'),
+                    }}
+                    borderWidth="2px"
+                    borderColor={useColorModeValue('gray.300', 'gray.600')}
+                    _hover={{
+                      borderColor: useColorModeValue('blue.400', 'blue.600'),
+                    }}
+                    _focus={{
+                      borderColor: useColorModeValue('blue.500', 'blue.300'),
+                      boxShadow: 'outline',
+                    }}
                   />
                 </InputGroup>
               </FormControl>
@@ -1056,6 +1269,15 @@ const Company = () => {
                       _placeholder={{
                         color: useColorModeValue('gray.500', 'gray.400'),
                       }}
+                      borderWidth="2px"
+                      borderColor={useColorModeValue('gray.300', 'gray.600')}
+                      _hover={{
+                        borderColor: useColorModeValue('blue.400', 'blue.600'),
+                      }}
+                      _focus={{
+                        borderColor: useColorModeValue('blue.500', 'blue.300'),
+                        boxShadow: 'outline',
+                      }}
                     />
                   </InputGroup>
                 </FormControl>
@@ -1076,6 +1298,15 @@ const Company = () => {
                       pl="12"
                       _placeholder={{
                         color: useColorModeValue('gray.500', 'gray.400'),
+                      }}
+                      borderWidth="2px"
+                      borderColor={useColorModeValue('gray.300', 'gray.600')}
+                      _hover={{
+                        borderColor: useColorModeValue('blue.400', 'blue.600'),
+                      }}
+                      _focus={{
+                        borderColor: useColorModeValue('blue.500', 'blue.300'),
+                        boxShadow: 'outline',
                       }}
                     />
                   </InputGroup>
@@ -1098,6 +1329,15 @@ const Company = () => {
                       _placeholder={{
                         color: useColorModeValue('gray.500', 'gray.400'),
                       }}
+                      borderWidth="2px"
+                      borderColor={useColorModeValue('gray.300', 'gray.600')}
+                      _hover={{
+                        borderColor: useColorModeValue('blue.400', 'blue.600'),
+                      }}
+                      _focus={{
+                        borderColor: useColorModeValue('blue.500', 'blue.300'),
+                        boxShadow: 'outline',
+                      }}
                     />
                   </InputGroup>
                 </FormControl>
@@ -1118,6 +1358,15 @@ const Company = () => {
                       pl="12"
                       _placeholder={{
                         color: useColorModeValue('gray.500', 'gray.400'),
+                      }}
+                      borderWidth="2px"
+                      borderColor={useColorModeValue('gray.300', 'gray.600')}
+                      _hover={{
+                        borderColor: useColorModeValue('blue.400', 'blue.600'),
+                      }}
+                      _focus={{
+                        borderColor: useColorModeValue('blue.500', 'blue.300'),
+                        boxShadow: 'outline',
                       }}
                     />
                   </InputGroup>
@@ -1152,6 +1401,15 @@ const Company = () => {
                     _placeholder={{
                       color: useColorModeValue('gray.500', 'gray.400'),
                     }}
+                    borderWidth="2px"
+                    borderColor={useColorModeValue('gray.300', 'gray.600')}
+                    _hover={{
+                      borderColor: useColorModeValue('blue.400', 'blue.600'),
+                    }}
+                    _focus={{
+                      borderColor: useColorModeValue('blue.500', 'blue.300'),
+                      boxShadow: 'outline',
+                    }}
                   />
                 </FormControl>
                 <FormControl>
@@ -1163,6 +1421,18 @@ const Company = () => {
                     onChange={handleEditChange}
                     bg={useColorModeValue('white', 'gray.700')}
                     borderRadius="md"
+                    _placeholder={{
+                      color: useColorModeValue('gray.500', 'gray.400'),
+                    }}
+                    borderWidth="2px"
+                    borderColor={useColorModeValue('gray.300', 'gray.600')}
+                    _hover={{
+                      borderColor: useColorModeValue('blue.400', 'blue.600'),
+                    }}
+                    _focus={{
+                      borderColor: useColorModeValue('blue.500', 'blue.300'),
+                      boxShadow: 'outline',
+                    }}
                   >
                     {users
                       ?.filter((user) => user?.role === 'sales')
@@ -1185,6 +1455,18 @@ const Company = () => {
                     onChange={handleEditChange}
                     bg={useColorModeValue('white', 'gray.700')}
                     borderRadius="md"
+                    _placeholder={{
+                      color: useColorModeValue('gray.500', 'gray.400'),
+                    }}
+                    borderWidth="2px"
+                    borderColor={useColorModeValue('gray.300', 'gray.600')}
+                    _hover={{
+                      borderColor: useColorModeValue('blue.400', 'blue.600'),
+                    }}
+                    _focus={{
+                      borderColor: useColorModeValue('blue.500', 'blue.300'),
+                      boxShadow: 'outline',
+                    }}
                   >
                     {users
                       ?.filter((user) => user?.role === 'IRM')
@@ -1209,7 +1491,14 @@ const Company = () => {
             py={4}
             justifyContent="space-between"
           >
-            <Button variant="outline" onClick={onEditClose} borderRadius="md">
+            <Button
+              variant="ghost"
+              colorScheme="red"
+              fontWeight="medium"
+              _hover={{ bg: useColorModeValue('red.50', 'red.900') }}
+              onClick={onEditClose}
+              borderRadius="md"
+            >
               Cancel
             </Button>
             <Button
