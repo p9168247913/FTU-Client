@@ -34,6 +34,11 @@ import {
   Icon,
   Divider,
   Textarea,
+  Accordion,
+  AccordionItem,
+  AccordionButton,
+  AccordionPanel,
+  AccordionIcon,
 } from '@chakra-ui/react';
 import {
   AddIcon,
@@ -63,6 +68,7 @@ import {
   FaBuilding,
   FaCity,
   FaClipboardList,
+  FaEnvelope,
   FaHashtag,
   FaInfoCircle,
   FaMapMarkedAlt,
@@ -134,7 +140,6 @@ const Company = () => {
   const [selectedCompany, setSelectedCompany] = useState(null);
   const [editId, setEditId] = useState('');
   const [users, setUsers] = useState([]);
-
   const modalBg = useColorModeValue('white', 'gray.800');
   const labelColor = useColorModeValue('gray.800', 'gray.300');
   const columnsCount = useBreakpointValue({ base: 1, sm: 2, md: 2, lg: 3 });
@@ -142,7 +147,6 @@ const Company = () => {
     'linear-gradient(90deg, #38A169 0%, #48BB78 50%, #68D391 100%)',
     'linear-gradient(90deg, #38A169 0%, #48BB78 50%, #68D391 100%)',
   );
-
   const addmodalheaderBg = useColorModeValue(
     'linear-gradient(90deg,rgb(34, 84, 157) 0%,rgb(60, 129, 159) 50%,rgb(93, 153, 156) 100%)',
     'linear-gradient(90deg,rgb(39, 205, 230) 0%,rgb(81, 198, 224) 50%,rgb(136, 218, 236) 100%)',
@@ -312,30 +316,6 @@ const Company = () => {
   };
 
   const handleAddCompany = async () => {
-    // if (
-    //   !addCompany.name ||
-    //   !addCompany.email1 ||
-    //   !addCompany.email2 ||
-    //   !addCompany.contact1 ||
-    //   !addCompany.contact2 ||
-    //   !addCompany.addressLine ||
-    //   !addCompany.city ||
-    //   !addCompany.state ||
-    //   !addCompany.country ||
-    //   !addCompany.zipcode ||
-    //   !addCompany.companyRepresentativeName ||
-    //   !addCompany.aquasenseSalesRepresentative ||
-    //   !addCompany.aquasenseIRMUser
-    // ) {
-    //   toast({
-    //     title: 'Please fill all required fields!',
-    //     status: 'info',
-    //     duration: 3000,
-    //     isClosable: true,
-    //   });
-    //   return;
-    // }
-
     try {
       setLoading(true);
       const response = await axiosInstance.post(
@@ -572,129 +552,250 @@ const Company = () => {
                 </Text>
               </Flex>
 
-              <SimpleGrid columns={{ base: 1, md: 2 }} spacing="6">
-                <FormControl isRequired>
-                  <FormLabel fontSize="sm">Primary Email</FormLabel>
-                  <InputGroup>
-                    <InputLeftElement pointerEvents="none" color="gray.400">
-                      <Icon as={EmailIcon} />
-                    </InputLeftElement>
-                    <Input
-                      name="email1"
-                      type="email"
-                      placeholder="Enter primary email address"
-                      value={addCompany?.email1}
-                      onChange={handleAddChange}
-                      bg={useColorModeValue('white', 'gray.700')}
-                      color={useColorModeValue('black', 'white')}
+              <Accordion allowToggle>
+                <AccordionItem border="none">
+                  <h2>
+                    <AccordionButton
+                      _expanded={{
+                        bg: useColorModeValue('gray.200', 'gray.700'),
+                      }}
                       borderRadius="md"
-                      borderWidth="2px"
-                      borderColor={useColorModeValue('gray.300', 'gray.600')}
-                      _hover={{
-                        borderColor: useColorModeValue('blue.400', 'blue.600'),
-                      }}
-                      _focus={{
-                        borderColor: useColorModeValue('blue.500', 'blue.300'),
-                        boxShadow: 'outline',
-                      }}
-                      _placeholder={{
-                        color: useColorModeValue('gray.500', 'gray.400'),
-                      }}
-                    />
-                  </InputGroup>
-                </FormControl>
+                      bg={useColorModeValue('gray.100', 'gray.600')}
+                    >
+                      <Flex
+                        flex="1"
+                        alignContent={'center'}
+                        textAlign="left"
+                        fontWeight="semibold"
+                      >
+                        <Icon
+                          as={FaEnvelope}
+                          w={4}
+                          h={4}
+                          color="orange.500"
+                          mr={2}
+                          mt={1}
+                        />
+                        <Text fontSize="md" fontWeight="semibold">
+                          Email
+                        </Text>
+                      </Flex>
+                      <AccordionIcon />
+                    </AccordionButton>
+                  </h2>
+                  <AccordionPanel pb={4}>
+                    <SimpleGrid columns={{ base: 1, md: 2 }} spacing="6">
+                      <FormControl isRequired>
+                        <FormLabel fontSize="sm">Primary Email</FormLabel>
+                        <InputGroup>
+                          <InputLeftElement
+                            pointerEvents="none"
+                            color="gray.400"
+                          >
+                            <Icon as={EmailIcon} />
+                          </InputLeftElement>
+                          <Input
+                            name="email1"
+                            type="email"
+                            placeholder="Enter primary email address"
+                            value={addCompany?.email1}
+                            onChange={handleAddChange}
+                            bg={useColorModeValue('white', 'gray.700')}
+                            color={useColorModeValue('black', 'white')}
+                            borderRadius="md"
+                            borderWidth="2px"
+                            borderColor={useColorModeValue(
+                              'gray.300',
+                              'gray.600',
+                            )}
+                            _hover={{
+                              borderColor: useColorModeValue(
+                                'blue.400',
+                                'blue.600',
+                              ),
+                            }}
+                            _focus={{
+                              borderColor: useColorModeValue(
+                                'blue.500',
+                                'blue.300',
+                              ),
+                              boxShadow: 'outline',
+                            }}
+                            _placeholder={{
+                              color: useColorModeValue('gray.500', 'gray.400'),
+                            }}
+                          />
+                        </InputGroup>
+                      </FormControl>
 
-                <FormControl>
-                  <FormLabel fontSize="sm">Secondary Email</FormLabel>
-                  <InputGroup>
-                    <InputLeftElement pointerEvents="none" color="gray.400">
-                      <Icon as={EmailIcon} />
-                    </InputLeftElement>
-                    <Input
-                      name="email2"
-                      type="email"
-                      placeholder="Enter secondary email address"
-                      value={addCompany?.email2}
-                      onChange={handleAddChange}
-                      bg={useColorModeValue('white', 'gray.700')}
-                      color={useColorModeValue('black', 'white')}
-                      borderRadius="md"
-                      borderWidth="2px"
-                      borderColor={useColorModeValue('gray.300', 'gray.600')}
-                      _hover={{
-                        borderColor: useColorModeValue('blue.400', 'blue.600'),
-                      }}
-                      _focus={{
-                        borderColor: useColorModeValue('blue.500', 'blue.300'),
-                        boxShadow: 'outline',
-                      }}
-                      _placeholder={{
-                        color: useColorModeValue('gray.500', 'gray.400'),
-                      }}
-                    />
-                  </InputGroup>
-                </FormControl>
+                      {/* Secondary Email */}
+                      <FormControl>
+                        <FormLabel fontSize="sm">Secondary Email</FormLabel>
+                        <InputGroup>
+                          <InputLeftElement
+                            pointerEvents="none"
+                            color="gray.400"
+                          >
+                            <Icon as={EmailIcon} />
+                          </InputLeftElement>
+                          <Input
+                            name="email2"
+                            type="email"
+                            placeholder="Enter secondary email address"
+                            value={addCompany?.email2}
+                            onChange={handleAddChange}
+                            bg={useColorModeValue('white', 'gray.700')}
+                            color={useColorModeValue('black', 'white')}
+                            borderRadius="md"
+                            borderWidth="2px"
+                            borderColor={useColorModeValue(
+                              'gray.300',
+                              'gray.600',
+                            )}
+                            _hover={{
+                              borderColor: useColorModeValue(
+                                'blue.400',
+                                'blue.600',
+                              ),
+                            }}
+                            _focus={{
+                              borderColor: useColorModeValue(
+                                'blue.500',
+                                'blue.300',
+                              ),
+                              boxShadow: 'outline',
+                            }}
+                            _placeholder={{
+                              color: useColorModeValue('gray.500', 'gray.400'),
+                            }}
+                          />
+                        </InputGroup>
+                      </FormControl>
+                    </SimpleGrid>
+                  </AccordionPanel>
+                </AccordionItem>
+              </Accordion>
 
-                <FormControl isRequired>
-                  <FormLabel fontSize="sm">Primary Contact</FormLabel>
-                  <InputGroup>
-                    <InputLeftElement pointerEvents="none" color="gray.400">
-                      <Icon as={FaPhoneAlt} />
-                    </InputLeftElement>
-                    <Input
-                      name="contact1"
-                      placeholder="Enter primary contact"
-                      value={addCompany?.contact1}
-                      onChange={handleAddChange}
-                      bg={useColorModeValue('white', 'gray.700')}
-                      color={useColorModeValue('black', 'white')}
+              <Accordion allowToggle mt={2}>
+                <AccordionItem border="none">
+                  <h2>
+                    <AccordionButton
+                      _expanded={{
+                        bg: useColorModeValue('gray.200', 'gray.700'),
+                      }}
                       borderRadius="md"
-                      borderWidth="2px"
-                      borderColor={useColorModeValue('gray.300', 'gray.600')}
-                      _hover={{
-                        borderColor: useColorModeValue('blue.400', 'blue.600'),
-                      }}
-                      _focus={{
-                        borderColor: useColorModeValue('blue.500', 'blue.300'),
-                        boxShadow: 'outline',
-                      }}
-                      _placeholder={{
-                        color: useColorModeValue('gray.500', 'gray.400'),
-                      }}
-                    />
-                  </InputGroup>
-                </FormControl>
+                      bg={useColorModeValue('gray.100', 'gray.600')}
+                    >
+                      <Flex
+                        flex="1"
+                        alignContent={'center'}
+                        textAlign="left"
+                        fontWeight="semibold"
+                      >
+                        <Icon
+                          as={FaPhoneAlt}
+                          w={4}
+                          h={4}
+                          color="blue.500"
+                          mr={2}
+                          mt={1}
+                        />
+                        <Text fontSize="md" fontWeight="600">
+                          Contact
+                        </Text>
+                      </Flex>
+                      <AccordionIcon />
+                    </AccordionButton>
+                  </h2>
+                  <AccordionPanel pb={4}>
+                    <SimpleGrid columns={{ base: 1, md: 2 }} spacing="6">
+                      <FormControl isRequired>
+                        <FormLabel fontSize="sm">Primary Contact</FormLabel>
+                        <InputGroup>
+                          <InputLeftElement
+                            pointerEvents="none"
+                            color="gray.400"
+                          >
+                            <Icon as={FaPhoneAlt} />
+                          </InputLeftElement>
+                          <Input
+                            name="contact1"
+                            placeholder="Enter primary contact"
+                            value={addCompany?.contact1}
+                            onChange={handleAddChange}
+                            bg={useColorModeValue('white', 'gray.700')}
+                            color={useColorModeValue('black', 'white')}
+                            borderRadius="md"
+                            borderWidth="2px"
+                            borderColor={useColorModeValue(
+                              'gray.300',
+                              'gray.600',
+                            )}
+                            _hover={{
+                              borderColor: useColorModeValue(
+                                'blue.400',
+                                'blue.600',
+                              ),
+                            }}
+                            _focus={{
+                              borderColor: useColorModeValue(
+                                'blue.500',
+                                'blue.300',
+                              ),
+                              boxShadow: 'outline',
+                            }}
+                            _placeholder={{
+                              color: useColorModeValue('gray.500', 'gray.400'),
+                            }}
+                          />
+                        </InputGroup>
+                      </FormControl>
 
-                <FormControl>
-                  <FormLabel fontSize="sm">Secondary Contact</FormLabel>
-                  <InputGroup>
-                    <InputLeftElement pointerEvents="none" color="gray.400">
-                      <Icon as={FaPhoneAlt} />
-                    </InputLeftElement>
-                    <Input
-                      name="contact2"
-                      placeholder="Enter secondary contact"
-                      value={addCompany?.contact2}
-                      onChange={handleAddChange}
-                      bg={useColorModeValue('white', 'gray.700')}
-                      color={useColorModeValue('black', 'white')}
-                      borderRadius="md"
-                      borderWidth="2px"
-                      borderColor={useColorModeValue('gray.300', 'gray.600')}
-                      _hover={{
-                        borderColor: useColorModeValue('blue.400', 'blue.600'),
-                      }}
-                      _focus={{
-                        borderColor: useColorModeValue('blue.500', 'blue.300'),
-                        boxShadow: 'outline',
-                      }}
-                      _placeholder={{
-                        color: useColorModeValue('gray.500', 'gray.400'),
-                      }}
-                    />
-                  </InputGroup>
-                </FormControl>
-              </SimpleGrid>
+                      <FormControl>
+                        <FormLabel fontSize="sm">Secondary Contact</FormLabel>
+                        <InputGroup>
+                          <InputLeftElement
+                            pointerEvents="none"
+                            color="gray.400"
+                          >
+                            <Icon as={FaPhoneAlt} />
+                          </InputLeftElement>
+                          <Input
+                            name="contact2"
+                            placeholder="Enter secondary contact"
+                            value={addCompany?.contact2}
+                            onChange={handleAddChange}
+                            bg={useColorModeValue('white', 'gray.700')}
+                            color={useColorModeValue('black', 'white')}
+                            borderRadius="md"
+                            borderWidth="2px"
+                            borderColor={useColorModeValue(
+                              'gray.300',
+                              'gray.600',
+                            )}
+                            _hover={{
+                              borderColor: useColorModeValue(
+                                'blue.400',
+                                'blue.600',
+                              ),
+                            }}
+                            _focus={{
+                              borderColor: useColorModeValue(
+                                'blue.500',
+                                'blue.300',
+                              ),
+                              boxShadow: 'outline',
+                            }}
+                            _placeholder={{
+                              color: useColorModeValue('gray.500', 'gray.400'),
+                            }}
+                          />
+                        </InputGroup>
+                      </FormControl>
+                    </SimpleGrid>
+                  </AccordionPanel>
+                </AccordionItem>
+              </Accordion>
             </Box>
 
             <Box mb={8}>
@@ -1088,122 +1189,244 @@ const Company = () => {
                   Contact Information
                 </Text>
               </Flex>
-              <SimpleGrid columns={{ base: 1, md: 2 }} spacing="6">
-                <FormControl>
-                  <FormLabel fontSize="sm">Primary Contact</FormLabel>
-                  <InputGroup>
-                    <InputLeftElement pointerEvents="none" color="gray.400">
-                      <Icon as={FaPhoneAlt} />
-                    </InputLeftElement>
-                    <Input
-                      name="contact1"
-                      placeholder="Enter primary contact"
-                      value={editCompany?.contact1}
-                      onChange={handleEditChange}
-                      bg={useColorModeValue('white', 'gray.700')}
+
+              <Accordion allowToggle defaultIndex={[0]}>
+                <AccordionItem border="none">
+                  <h2>
+                    <AccordionButton
+                      _expanded={{
+                        bg: useColorModeValue('gray.200', 'gray.700'),
+                      }}
                       borderRadius="md"
-                      _placeholder={{
-                        color: useColorModeValue('gray.500', 'gray.400'),
+                      bg={useColorModeValue('gray.100', 'gray.600')}
+                    >
+                      <Flex
+                        flex="1"
+                        alignContent={'center'}
+                        textAlign="left"
+                        fontWeight="semibold"
+                      >
+                        <Icon
+                          as={FaEnvelope}
+                          w={4}
+                          h={4}
+                          color="orange.500"
+                          mr={2}
+                          mt={1}
+                        />
+                        <Text fontSize="md" fontWeight="semibold">
+                          Email
+                        </Text>
+                      </Flex>
+                      <AccordionIcon />
+                    </AccordionButton>
+                  </h2>
+                  <AccordionPanel pb={4}>
+                    <SimpleGrid columns={{ base: 1, md: 2 }} spacing="6">
+                      <FormControl>
+                        <FormLabel fontSize="sm">Primary Email</FormLabel>
+                        <InputGroup>
+                          <InputLeftElement
+                            pointerEvents="none"
+                            color="gray.400"
+                          >
+                            <Icon as={EmailIcon} />
+                          </InputLeftElement>
+                          <Input
+                            name="email1"
+                            type="email"
+                            placeholder="Enter primary email address"
+                            value={editCompany?.email1}
+                            onChange={handleEditChange}
+                            bg={useColorModeValue('white', 'gray.700')}
+                            borderRadius="md"
+                            _placeholder={{
+                              color: useColorModeValue('gray.500', 'gray.400'),
+                            }}
+                            borderWidth="2px"
+                            borderColor={useColorModeValue(
+                              'gray.300',
+                              'gray.600',
+                            )}
+                            _hover={{
+                              borderColor: useColorModeValue(
+                                'blue.400',
+                                'blue.600',
+                              ),
+                            }}
+                            _focus={{
+                              borderColor: useColorModeValue(
+                                'blue.500',
+                                'blue.300',
+                              ),
+                              boxShadow: 'outline',
+                            }}
+                          />
+                        </InputGroup>
+                      </FormControl>
+                      <FormControl>
+                        <FormLabel fontSize="sm">Secondary Email</FormLabel>
+                        <InputGroup>
+                          <InputLeftElement
+                            pointerEvents="none"
+                            color="gray.400"
+                          >
+                            <Icon as={EmailIcon} />
+                          </InputLeftElement>
+                          <Input
+                            name="email2"
+                            type="email"
+                            placeholder="Enter secondary email address"
+                            value={editCompany?.email2}
+                            onChange={handleEditChange}
+                            bg={useColorModeValue('white', 'gray.700')}
+                            borderRadius="md"
+                            _placeholder={{
+                              color: useColorModeValue('gray.500', 'gray.400'),
+                            }}
+                            borderWidth="2px"
+                            borderColor={useColorModeValue(
+                              'gray.300',
+                              'gray.600',
+                            )}
+                            _hover={{
+                              borderColor: useColorModeValue(
+                                'blue.400',
+                                'blue.600',
+                              ),
+                            }}
+                            _focus={{
+                              borderColor: useColorModeValue(
+                                'blue.500',
+                                'blue.300',
+                              ),
+                              boxShadow: 'outline',
+                            }}
+                          />
+                        </InputGroup>
+                      </FormControl>
+                    </SimpleGrid>
+                  </AccordionPanel>
+                </AccordionItem>
+              </Accordion>
+
+              <Accordion allowToggle mt={2} defaultIndex={[0]}>
+                <AccordionItem border="none">
+                  <h2>
+                    <AccordionButton
+                      _expanded={{
+                        bg: useColorModeValue('gray.200', 'gray.700'),
                       }}
-                      borderWidth="2px"
-                      borderColor={useColorModeValue('gray.300', 'gray.600')}
-                      _hover={{
-                        borderColor: useColorModeValue('blue.400', 'blue.600'),
-                      }}
-                      _focus={{
-                        borderColor: useColorModeValue('blue.500', 'blue.300'),
-                        boxShadow: 'outline',
-                      }}
-                    />
-                  </InputGroup>
-                </FormControl>
-                <FormControl>
-                  <FormLabel fontSize="sm">Secondary Contact</FormLabel>
-                  <InputGroup>
-                    <InputLeftElement pointerEvents="none" color="gray.400">
-                      <Icon as={FaPhoneAlt} />
-                    </InputLeftElement>
-                    <Input
-                      name="contact2"
-                      placeholder="Enter secondary contact"
-                      value={editCompany?.contact2}
-                      onChange={handleEditChange}
-                      bg={useColorModeValue('white', 'gray.700')}
                       borderRadius="md"
-                      _placeholder={{
-                        color: useColorModeValue('gray.500', 'gray.400'),
-                      }}
-                      borderWidth="2px"
-                      borderColor={useColorModeValue('gray.300', 'gray.600')}
-                      _hover={{
-                        borderColor: useColorModeValue('blue.400', 'blue.600'),
-                      }}
-                      _focus={{
-                        borderColor: useColorModeValue('blue.500', 'blue.300'),
-                        boxShadow: 'outline',
-                      }}
-                    />
-                  </InputGroup>
-                </FormControl>
-                <FormControl>
-                  <FormLabel fontSize="sm">Primary Email</FormLabel>
-                  <InputGroup>
-                    <InputLeftElement pointerEvents="none" color="gray.400">
-                      <Icon as={EmailIcon} />
-                    </InputLeftElement>
-                    <Input
-                      name="email1"
-                      type="email"
-                      placeholder="Enter primary email address"
-                      value={editCompany?.email1}
-                      onChange={handleEditChange}
-                      bg={useColorModeValue('white', 'gray.700')}
-                      borderRadius="md"
-                      _placeholder={{
-                        color: useColorModeValue('gray.500', 'gray.400'),
-                      }}
-                      borderWidth="2px"
-                      borderColor={useColorModeValue('gray.300', 'gray.600')}
-                      _hover={{
-                        borderColor: useColorModeValue('blue.400', 'blue.600'),
-                      }}
-                      _focus={{
-                        borderColor: useColorModeValue('blue.500', 'blue.300'),
-                        boxShadow: 'outline',
-                      }}
-                    />
-                  </InputGroup>
-                </FormControl>
-                <FormControl>
-                  <FormLabel fontSize="sm">Secondary Email</FormLabel>
-                  <InputGroup>
-                    <InputLeftElement pointerEvents="none" color="gray.400">
-                      <Icon as={EmailIcon} />
-                    </InputLeftElement>
-                    <Input
-                      name="email2"
-                      type="email"
-                      placeholder="Enter secondary email address"
-                      value={editCompany?.email2}
-                      onChange={handleEditChange}
-                      bg={useColorModeValue('white', 'gray.700')}
-                      borderRadius="md"
-                      _placeholder={{
-                        color: useColorModeValue('gray.500', 'gray.400'),
-                      }}
-                      borderWidth="2px"
-                      borderColor={useColorModeValue('gray.300', 'gray.600')}
-                      _hover={{
-                        borderColor: useColorModeValue('blue.400', 'blue.600'),
-                      }}
-                      _focus={{
-                        borderColor: useColorModeValue('blue.500', 'blue.300'),
-                        boxShadow: 'outline',
-                      }}
-                    />
-                  </InputGroup>
-                </FormControl>
-              </SimpleGrid>
+                      bg={useColorModeValue('gray.100', 'gray.600')}
+                    >
+                      <Flex
+                        flex="1"
+                        alignContent={'center'}
+                        textAlign="left"
+                        fontWeight="semibold"
+                      >
+                        <Icon
+                          as={FaPhoneAlt}
+                          w={4}
+                          h={4}
+                          color="blue.500"
+                          mr={2}
+                          mt={1}
+                        />
+                        <Text fontSize="md" fontWeight="600">
+                          Contact
+                        </Text>
+                      </Flex>
+                      <AccordionIcon />
+                    </AccordionButton>
+                  </h2>
+                  <AccordionPanel pb={4}>
+                    <SimpleGrid columns={{ base: 1, md: 2 }} spacing="6">
+                      <FormControl>
+                        <FormLabel fontSize="sm">Primary Contact</FormLabel>
+                        <InputGroup>
+                          <InputLeftElement
+                            pointerEvents="none"
+                            color="gray.400"
+                          >
+                            <Icon as={FaPhoneAlt} />
+                          </InputLeftElement>
+                          <Input
+                            name="contact1"
+                            placeholder="Enter primary contact"
+                            value={editCompany?.contact1}
+                            onChange={handleEditChange}
+                            bg={useColorModeValue('white', 'gray.700')}
+                            borderRadius="md"
+                            _placeholder={{
+                              color: useColorModeValue('gray.500', 'gray.400'),
+                            }}
+                            borderWidth="2px"
+                            borderColor={useColorModeValue(
+                              'gray.300',
+                              'gray.600',
+                            )}
+                            _hover={{
+                              borderColor: useColorModeValue(
+                                'blue.400',
+                                'blue.600',
+                              ),
+                            }}
+                            _focus={{
+                              borderColor: useColorModeValue(
+                                'blue.500',
+                                'blue.300',
+                              ),
+                              boxShadow: 'outline',
+                            }}
+                          />
+                        </InputGroup>
+                      </FormControl>
+                      <FormControl>
+                        <FormLabel fontSize="sm">Secondary Contact</FormLabel>
+                        <InputGroup>
+                          <InputLeftElement
+                            pointerEvents="none"
+                            color="gray.400"
+                          >
+                            <Icon as={FaPhoneAlt} />
+                          </InputLeftElement>
+                          <Input
+                            name="contact2"
+                            placeholder="Enter secondary contact"
+                            value={editCompany?.contact2}
+                            onChange={handleEditChange}
+                            bg={useColorModeValue('white', 'gray.700')}
+                            borderRadius="md"
+                            _placeholder={{
+                              color: useColorModeValue('gray.500', 'gray.400'),
+                            }}
+                            borderWidth="2px"
+                            borderColor={useColorModeValue(
+                              'gray.300',
+                              'gray.600',
+                            )}
+                            _hover={{
+                              borderColor: useColorModeValue(
+                                'blue.400',
+                                'blue.600',
+                              ),
+                            }}
+                            _focus={{
+                              borderColor: useColorModeValue(
+                                'blue.500',
+                                'blue.300',
+                              ),
+                              boxShadow: 'outline',
+                            }}
+                          />
+                        </InputGroup>
+                      </FormControl>
+                    </SimpleGrid>
+                  </AccordionPanel>
+                </AccordionItem>
+              </Accordion>
             </Box>
 
             <Box mb={8}>
@@ -1517,9 +1740,9 @@ const Company = () => {
 
       <Modal isOpen={isViewOpen} onClose={onViewClose} size="lg">
         <ModalOverlay />
-        <ModalContent maxWidth="800px" mx="auto" rounded="lg" shadow="lg">
+        <ModalContent maxWidth="900px" mx="auto" rounded="lg" shadow="lg">
           <Box
-            bg={headerBg}
+            bg={addmodalheaderBg}
             color="white"
             py={1}
             textAlign="center"
@@ -1765,9 +1988,8 @@ const Company = () => {
             )}
           </ModalBody>
 
-          {/* Footer */}
           <Box
-            bg={headerBg}
+            bg={addmodalheaderBg}
             py={3}
             px={6}
             textAlign="center"

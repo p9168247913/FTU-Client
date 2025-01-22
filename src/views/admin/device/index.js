@@ -1,5 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import {
+  Accordion,
+  AccordionItem,
+  AccordionButton,
+  AccordionPanel,
+  AccordionIcon,
   Box,
   Button,
   Flex,
@@ -38,6 +43,7 @@ import {
   FaCalendarAlt,
   FaCalendarCheck,
   FaCalendarTimes,
+  FaCertificate,
   FaCircle,
   FaClipboardCheck,
   FaClipboardList,
@@ -45,8 +51,10 @@ import {
   FaHashtag,
   FaIndustry,
   FaNetworkWired,
+  FaSatelliteDish,
   FaShieldAlt,
   FaSimCard,
+  FaTachometerAlt,
   FaTag,
   FaTools,
   FaUserTie,
@@ -845,7 +853,6 @@ const Devices = () => {
               </SimpleGrid>
             </Box>
 
-            {/* Warranty Details Section */}
             <Box mb={8}>
               <Flex alignItems="center" mb={4}>
                 <Icon as={FaShieldAlt} w={6} h={6} color="green.500" mr={2} />
@@ -853,303 +860,558 @@ const Devices = () => {
                   Warranty Details
                 </Text>
               </Flex>
-              <SimpleGrid columns={{ base: 1, md: 2 }} spacing="4">
-                <FormControl>
-                  <FormLabel fontSize="sm" color={labelColor}>
-                    Flowmeter Warranty Start Date
-                  </FormLabel>
-                  <InputGroup>
-                    <InputLeftElement pointerEvents="none" color="gray.400">
-                      <Icon as={FaCalendarAlt} />
-                    </InputLeftElement>
-                    <Input
-                      name="flowmeterWarranty.startDate"
-                      type="date"
-                      value={addNewDevice.flowmeterWarranty.startDate}
-                      onChange={handleAddChange}
-                      bg={useColorModeValue('white', 'gray.700')}
-                      color={useColorModeValue('gray.800', 'white')}
-                      borderRadius="md"
-                      borderWidth="2px"
-                      borderColor={useColorModeValue('gray.300', 'gray.600')}
-                      _hover={{
-                        borderColor: useColorModeValue('blue.400', 'blue.600'),
-                      }}
-                      _focus={{
-                        borderColor: useColorModeValue('blue.500', 'blue.300'),
-                        boxShadow: 'outline',
-                      }}
-                      _placeholder={{
-                        color: useColorModeValue('gray.500', 'gray.400'),
-                      }}
-                    />
-                  </InputGroup>
-                </FormControl>
 
-                <FormControl>
-                  <FormLabel fontSize="sm" color={labelColor}>
-                    Flowmeter Warranty End Date
-                  </FormLabel>
-                  <InputGroup>
-                    <InputLeftElement pointerEvents="none" color="gray.400">
-                      <Icon as={FaCalendarTimes} />
-                    </InputLeftElement>
-                    <Input
-                      name="flowmeterWarranty.endDate"
-                      type="date"
-                      value={addNewDevice.flowmeterWarranty.endDate}
-                      onChange={handleAddChange}
-                      bg={useColorModeValue('white', 'gray.700')}
-                      color={useColorModeValue('gray.800', 'white')}
+              <Accordion allowToggle>
+                <AccordionItem border="none">
+                  <h2>
+                    <AccordionButton
+                      _expanded={{
+                        bg: useColorModeValue('gray.200', 'gray.700'),
+                      }}
                       borderRadius="md"
-                      borderWidth="2px"
-                      borderColor={useColorModeValue('gray.300', 'gray.600')}
-                      _hover={{
-                        borderColor: useColorModeValue('blue.400', 'blue.600'),
-                      }}
-                      _focus={{
-                        borderColor: useColorModeValue('blue.500', 'blue.300'),
-                        boxShadow: 'outline',
-                      }}
-                      _placeholder={{
-                        color: useColorModeValue('gray.500', 'gray.400'),
-                      }}
-                    />
-                  </InputGroup>
-                </FormControl>
+                      bg={useColorModeValue('gray.100', 'gray.600')}
+                    >
+                      <Flex
+                        flex="1"
+                        alignContent={'center'}
+                        textAlign="left"
+                        fontWeight="semibold"
+                      >
+                        <Icon
+                          as={FaCertificate}
+                          w={4}
+                          h={4}
+                          color="orange.500"
+                          mr={2}
+                          mt={1}
+                        />
+                        <Text fontSize="md" fontWeight="semibold">
+                          Flowmeter Warranty
+                        </Text>
+                      </Flex>
+                      <AccordionIcon />
+                    </AccordionButton>
+                  </h2>
+                  <AccordionPanel pb={4}>
+                    <SimpleGrid columns={{ base: 1, md: 2 }} spacing="6">
+                      <FormControl>
+                        <FormLabel fontSize="sm" color={labelColor}>
+                          Start Date
+                        </FormLabel>
+                        <InputGroup>
+                          <InputLeftElement
+                            pointerEvents="none"
+                            color="gray.400"
+                          >
+                            <Icon as={FaCalendarAlt} />
+                          </InputLeftElement>
+                          <Input
+                            name="flowmeterWarranty.startDate"
+                            type="date"
+                            value={addNewDevice.flowmeterWarranty.startDate}
+                            onChange={handleAddChange}
+                            bg={useColorModeValue('white', 'gray.700')}
+                            color={useColorModeValue('gray.800', 'white')}
+                            borderRadius="md"
+                            borderWidth="2px"
+                            borderColor={useColorModeValue(
+                              'gray.300',
+                              'gray.600',
+                            )}
+                            _hover={{
+                              borderColor: useColorModeValue(
+                                'blue.400',
+                                'blue.600',
+                              ),
+                            }}
+                            _focus={{
+                              borderColor: useColorModeValue(
+                                'blue.500',
+                                'blue.300',
+                              ),
+                              boxShadow: 'outline',
+                            }}
+                            _placeholder={{
+                              color: useColorModeValue('gray.500', 'gray.400'),
+                            }}
+                          />
+                        </InputGroup>
+                      </FormControl>
 
-                <FormControl>
-                  <FormLabel fontSize="sm" color={labelColor}>
-                    Telemetry Warranty Start Date
-                  </FormLabel>
-                  <InputGroup>
-                    <InputLeftElement pointerEvents="none" color="gray.400">
-                      <Icon as={FaCalendarAlt} />
-                    </InputLeftElement>
-                    <Input
-                      name="flowmeterTelemetryWarrantyValidity.startDate"
-                      type="date"
-                      value={
-                        addNewDevice.flowmeterTelemetryWarrantyValidity
-                          .startDate
-                      }
-                      onChange={handleAddChange}
-                      bg={useColorModeValue('white', 'gray.700')}
-                      color={useColorModeValue('gray.800', 'white')}
-                      borderRadius="md"
-                      borderWidth="2px"
-                      borderColor={useColorModeValue('gray.300', 'gray.600')}
-                      _hover={{
-                        borderColor: useColorModeValue('blue.400', 'blue.600'),
-                      }}
-                      _focus={{
-                        borderColor: useColorModeValue('blue.500', 'blue.300'),
-                        boxShadow: 'outline',
-                      }}
-                      _placeholder={{
-                        color: useColorModeValue('gray.500', 'gray.400'),
-                      }}
-                    />
-                  </InputGroup>
-                </FormControl>
+                      <FormControl>
+                        <FormLabel fontSize="sm" color={labelColor}>
+                          End Date
+                        </FormLabel>
+                        <InputGroup>
+                          <InputLeftElement
+                            pointerEvents="none"
+                            color="gray.400"
+                          >
+                            <Icon as={FaCalendarTimes} />
+                          </InputLeftElement>
+                          <Input
+                            name="flowmeterWarranty.endDate"
+                            type="date"
+                            value={addNewDevice.flowmeterWarranty.endDate}
+                            onChange={handleAddChange}
+                            bg={useColorModeValue('white', 'gray.700')}
+                            color={useColorModeValue('gray.800', 'white')}
+                            borderRadius="md"
+                            borderWidth="2px"
+                            borderColor={useColorModeValue(
+                              'gray.300',
+                              'gray.600',
+                            )}
+                            _hover={{
+                              borderColor: useColorModeValue(
+                                'blue.400',
+                                'blue.600',
+                              ),
+                            }}
+                            _focus={{
+                              borderColor: useColorModeValue(
+                                'blue.500',
+                                'blue.300',
+                              ),
+                              boxShadow: 'outline',
+                            }}
+                            _placeholder={{
+                              color: useColorModeValue('gray.500', 'gray.400'),
+                            }}
+                          />
+                        </InputGroup>
+                      </FormControl>
+                    </SimpleGrid>
+                  </AccordionPanel>
+                </AccordionItem>
+              </Accordion>
 
-                <FormControl>
-                  <FormLabel fontSize="sm" color={labelColor}>
-                    Telemetry Warranty End Date
-                  </FormLabel>
-                  <InputGroup>
-                    <InputLeftElement pointerEvents="none" color="gray.400">
-                      <Icon as={FaCalendarTimes} />
-                    </InputLeftElement>
-                    <Input
-                      name="flowmeterTelemetryWarrantyValidity.endDate"
-                      type="date"
-                      value={
-                        addNewDevice.flowmeterTelemetryWarrantyValidity.endDate
-                      }
-                      onChange={handleAddChange}
-                      bg={useColorModeValue('white', 'gray.700')}
-                      color={useColorModeValue('gray.800', 'white')}
+              <Accordion allowToggle mt={2}>
+                <AccordionItem border="none">
+                  <h2>
+                    <AccordionButton
+                      _expanded={{
+                        bg: useColorModeValue('gray.200', 'gray.700'),
+                      }}
                       borderRadius="md"
-                      borderWidth="2px"
-                      borderColor={useColorModeValue('gray.300', 'gray.600')}
-                      _hover={{
-                        borderColor: useColorModeValue('blue.400', 'blue.600'),
-                      }}
-                      _focus={{
-                        borderColor: useColorModeValue('blue.500', 'blue.300'),
-                        boxShadow: 'outline',
-                      }}
-                      _placeholder={{
-                        color: useColorModeValue('gray.500', 'gray.400'),
-                      }}
-                    />
-                  </InputGroup>
-                </FormControl>
+                      bg={useColorModeValue('gray.100', 'gray.600')}
+                    >
+                      <Flex
+                        flex="1"
+                        alignContent={'center'}
+                        textAlign="left"
+                        fontWeight="semibold"
+                      >
+                        <Icon
+                          as={FaSatelliteDish}
+                          w={4}
+                          h={4}
+                          color="orange.500"
+                          mr={2}
+                          mt={1}
+                        />
+                        <Text fontSize="md" fontWeight="semibold">
+                          Telemetry Warranty
+                        </Text>
+                      </Flex>
+                      <AccordionIcon />
+                    </AccordionButton>
+                  </h2>
+                  <AccordionPanel pb={4}>
+                    <SimpleGrid columns={{ base: 1, md: 2 }} spacing="6">
+                      <FormControl>
+                        <FormLabel fontSize="sm" color={labelColor}>
+                          Start Date
+                        </FormLabel>
+                        <InputGroup>
+                          <InputLeftElement
+                            pointerEvents="none"
+                            color="gray.400"
+                          >
+                            <Icon as={FaCalendarAlt} />
+                          </InputLeftElement>
+                          <Input
+                            name="flowmeterTelemetryWarrantyValidity.startDate"
+                            type="date"
+                            value={
+                              addNewDevice.flowmeterTelemetryWarrantyValidity
+                                .startDate
+                            }
+                            onChange={handleAddChange}
+                            bg={useColorModeValue('white', 'gray.700')}
+                            color={useColorModeValue('gray.800', 'white')}
+                            borderRadius="md"
+                            borderWidth="2px"
+                            borderColor={useColorModeValue(
+                              'gray.300',
+                              'gray.600',
+                            )}
+                            _hover={{
+                              borderColor: useColorModeValue(
+                                'blue.400',
+                                'blue.600',
+                              ),
+                            }}
+                            _focus={{
+                              borderColor: useColorModeValue(
+                                'blue.500',
+                                'blue.300',
+                              ),
+                              boxShadow: 'outline',
+                            }}
+                            _placeholder={{
+                              color: useColorModeValue('gray.500', 'gray.400'),
+                            }}
+                          />
+                        </InputGroup>
+                      </FormControl>
 
-                <FormControl>
-                  <FormLabel fontSize="sm" color={labelColor}>
-                    Dashboard Validity Start Date
-                  </FormLabel>
-                  <InputGroup>
-                    <InputLeftElement pointerEvents="none" color="gray.400">
-                      <Icon as={FaCalendarAlt} />
-                    </InputLeftElement>
-                    <Input
-                      name="dashboardValidity.startDate"
-                      type="date"
-                      value={addNewDevice.dashboardValidity.startDate}
-                      onChange={handleAddChange}
-                      bg={useColorModeValue('white', 'gray.700')}
-                      color={useColorModeValue('gray.800', 'white')}
-                      borderRadius="md"
-                      borderWidth="2px"
-                      borderColor={useColorModeValue('gray.300', 'gray.600')}
-                      _hover={{
-                        borderColor: useColorModeValue('blue.400', 'blue.600'),
-                      }}
-                      _focus={{
-                        borderColor: useColorModeValue('blue.500', 'blue.300'),
-                        boxShadow: 'outline',
-                      }}
-                      _placeholder={{
-                        color: useColorModeValue('gray.500', 'gray.400'),
-                      }}
-                    />
-                  </InputGroup>
-                </FormControl>
+                      <FormControl>
+                        <FormLabel fontSize="sm" color={labelColor}>
+                          End Date
+                        </FormLabel>
+                        <InputGroup>
+                          <InputLeftElement
+                            pointerEvents="none"
+                            color="gray.400"
+                          >
+                            <Icon as={FaCalendarTimes} />
+                          </InputLeftElement>
+                          <Input
+                            name="flowmeterTelemetryWarrantyValidity.endDate"
+                            type="date"
+                            value={
+                              addNewDevice.flowmeterTelemetryWarrantyValidity
+                                .endDate
+                            }
+                            onChange={handleAddChange}
+                            bg={useColorModeValue('white', 'gray.700')}
+                            color={useColorModeValue('gray.800', 'white')}
+                            borderRadius="md"
+                            borderWidth="2px"
+                            borderColor={useColorModeValue(
+                              'gray.300',
+                              'gray.600',
+                            )}
+                            _hover={{
+                              borderColor: useColorModeValue(
+                                'blue.400',
+                                'blue.600',
+                              ),
+                            }}
+                            _focus={{
+                              borderColor: useColorModeValue(
+                                'blue.500',
+                                'blue.300',
+                              ),
+                              boxShadow: 'outline',
+                            }}
+                            _placeholder={{
+                              color: useColorModeValue('gray.500', 'gray.400'),
+                            }}
+                          />
+                        </InputGroup>
+                      </FormControl>
+                    </SimpleGrid>
+                  </AccordionPanel>
+                </AccordionItem>
+              </Accordion>
 
-                <FormControl>
-                  <FormLabel fontSize="sm" color={labelColor}>
-                    Dashboard Validity End Date
-                  </FormLabel>
-                  <InputGroup>
-                    <InputLeftElement pointerEvents="none" color="gray.400">
-                      <Icon as={FaCalendarTimes} />
-                    </InputLeftElement>
-                    <Input
-                      name="dashboardValidity.endDate"
-                      type="date"
-                      value={addNewDevice.dashboardValidity.endDate}
-                      onChange={handleAddChange}
-                      bg={useColorModeValue('white', 'gray.700')}
-                      color={useColorModeValue('gray.800', 'white')}
+              <Accordion allowToggle mt={2}>
+                <AccordionItem border="none">
+                  <h2>
+                    <AccordionButton
+                      _expanded={{
+                        bg: useColorModeValue('gray.200', 'gray.700'),
+                      }}
                       borderRadius="md"
-                      borderWidth="2px"
-                      borderColor={useColorModeValue('gray.300', 'gray.600')}
-                      _hover={{
-                        borderColor: useColorModeValue('blue.400', 'blue.600'),
-                      }}
-                      _focus={{
-                        borderColor: useColorModeValue('blue.500', 'blue.300'),
-                        boxShadow: 'outline',
-                      }}
-                      _placeholder={{
-                        color: useColorModeValue('gray.500', 'gray.400'),
-                      }}
-                    />
-                  </InputGroup>
-                </FormControl>
+                      bg={useColorModeValue('gray.100', 'gray.600')}
+                    >
+                      <Flex
+                        flex="1"
+                        alignContent={'center'}
+                        textAlign="left"
+                        fontWeight="semibold"
+                      >
+                        <Icon
+                          as={FaTachometerAlt}
+                          w={4}
+                          h={4}
+                          color="orange.500"
+                          mr={2}
+                          mt={1}
+                        />
+                        <Text fontSize="md" fontWeight="semibold">
+                          Dashboard Validity
+                        </Text>
+                      </Flex>
+                      <AccordionIcon />
+                    </AccordionButton>
+                  </h2>
+                  <AccordionPanel pb={4}>
+                    <SimpleGrid columns={{ base: 1, md: 2 }} spacing="6">
+                      <FormControl>
+                        <FormLabel fontSize="sm" color={labelColor}>
+                          Start Date
+                        </FormLabel>
+                        <InputGroup>
+                          <InputLeftElement
+                            pointerEvents="none"
+                            color="gray.400"
+                          >
+                            <Icon as={FaCalendarAlt} />
+                          </InputLeftElement>
+                          <Input
+                            name="dashboardValidity.startDate"
+                            type="date"
+                            value={addNewDevice.dashboardValidity.startDate}
+                            onChange={handleAddChange}
+                            bg={useColorModeValue('white', 'gray.700')}
+                            color={useColorModeValue('gray.800', 'white')}
+                            borderRadius="md"
+                            borderWidth="2px"
+                            borderColor={useColorModeValue(
+                              'gray.300',
+                              'gray.600',
+                            )}
+                            _hover={{
+                              borderColor: useColorModeValue(
+                                'blue.400',
+                                'blue.600',
+                              ),
+                            }}
+                            _focus={{
+                              borderColor: useColorModeValue(
+                                'blue.500',
+                                'blue.300',
+                              ),
+                              boxShadow: 'outline',
+                            }}
+                            _placeholder={{
+                              color: useColorModeValue('gray.500', 'gray.400'),
+                            }}
+                          />
+                        </InputGroup>
+                      </FormControl>
 
-                <FormControl>
-                  <FormLabel fontSize="sm" color={labelColor}>
-                    SIM Card Validity Start Date
-                  </FormLabel>
-                  <InputGroup>
-                    <InputLeftElement pointerEvents="none" color="gray.400">
-                      <Icon as={FaSimCard} />
-                    </InputLeftElement>
-                    <Input
-                      name="simcardValidity.startDate"
-                      type="date"
-                      value={addNewDevice.simcardValidity.startDate}
-                      onChange={handleAddChange}
-                      bg={useColorModeValue('white', 'gray.700')}
-                      color={useColorModeValue('gray.800', 'white')}
-                      borderRadius="md"
-                      borderWidth="2px"
-                      borderColor={useColorModeValue('gray.300', 'gray.600')}
-                      _hover={{
-                        borderColor: useColorModeValue('blue.400', 'blue.600'),
-                      }}
-                      _focus={{
-                        borderColor: useColorModeValue('blue.500', 'blue.300'),
-                        boxShadow: 'outline',
-                      }}
-                      _placeholder={{
-                        color: useColorModeValue('gray.500', 'gray.400'),
-                      }}
-                    />
-                  </InputGroup>
-                </FormControl>
+                      <FormControl>
+                        <FormLabel fontSize="sm" color={labelColor}>
+                          End Date
+                        </FormLabel>
+                        <InputGroup>
+                          <InputLeftElement
+                            pointerEvents="none"
+                            color="gray.400"
+                          >
+                            <Icon as={FaCalendarTimes} />
+                          </InputLeftElement>
+                          <Input
+                            name="dashboardValidity.endDate"
+                            type="date"
+                            value={addNewDevice.dashboardValidity.endDate}
+                            onChange={handleAddChange}
+                            bg={useColorModeValue('white', 'gray.700')}
+                            color={useColorModeValue('gray.800', 'white')}
+                            borderRadius="md"
+                            borderWidth="2px"
+                            borderColor={useColorModeValue(
+                              'gray.300',
+                              'gray.600',
+                            )}
+                            _hover={{
+                              borderColor: useColorModeValue(
+                                'blue.400',
+                                'blue.600',
+                              ),
+                            }}
+                            _focus={{
+                              borderColor: useColorModeValue(
+                                'blue.500',
+                                'blue.300',
+                              ),
+                              boxShadow: 'outline',
+                            }}
+                            _placeholder={{
+                              color: useColorModeValue('gray.500', 'gray.400'),
+                            }}
+                          />
+                        </InputGroup>
+                      </FormControl>
 
-                <FormControl>
-                  <FormLabel fontSize="sm" color={labelColor}>
-                    SIM Card Validity End Date
-                  </FormLabel>
-                  <InputGroup>
-                    <InputLeftElement pointerEvents="none" color="gray.400">
-                      <Icon as={FaSimCard} />
-                    </InputLeftElement>
-                    <Input
-                      name="simcardValidity.endDate"
-                      type="date"
-                      value={addNewDevice.simcardValidity.endDate}
-                      onChange={handleAddChange}
-                      bg={useColorModeValue('white', 'gray.700')}
-                      color={useColorModeValue('gray.800', 'white')}
-                      borderRadius="md"
-                      borderWidth="2px"
-                      borderColor={useColorModeValue('gray.300', 'gray.600')}
-                      _hover={{
-                        borderColor: useColorModeValue('blue.400', 'blue.600'),
-                      }}
-                      _focus={{
-                        borderColor: useColorModeValue('blue.500', 'blue.300'),
-                        boxShadow: 'outline',
-                      }}
-                      _placeholder={{
-                        color: useColorModeValue('gray.500', 'gray.400'),
-                      }}
-                    />
-                  </InputGroup>
-                </FormControl>
+                      <FormControl>
+                        <FormLabel fontSize="sm" color={labelColor}>
+                          Dashboard Licensing Expiry
+                        </FormLabel>
+                        <InputGroup>
+                          <InputLeftElement
+                            pointerEvents="none"
+                            color="gray.400"
+                          >
+                            <Icon as={FaClipboardCheck} />
+                          </InputLeftElement>
+                          <Input
+                            name="dashboardLicensingExpiry"
+                            type="date"
+                            value={addNewDevice.dashboardLicensingExpiry}
+                            onChange={handleAddChange}
+                            bg={useColorModeValue('white', 'gray.700')}
+                            color={useColorModeValue('gray.800', 'white')}
+                            borderRadius="md"
+                            borderWidth="2px"
+                            borderColor={useColorModeValue(
+                              'gray.300',
+                              'gray.600',
+                            )}
+                            _hover={{
+                              borderColor: useColorModeValue(
+                                'blue.400',
+                                'blue.600',
+                              ),
+                            }}
+                            _focus={{
+                              borderColor: useColorModeValue(
+                                'blue.500',
+                                'blue.300',
+                              ),
+                              boxShadow: 'outline',
+                            }}
+                            _placeholder={{
+                              color: useColorModeValue('gray.500', 'gray.400'),
+                            }}
+                          />
+                        </InputGroup>
+                      </FormControl>
+                    </SimpleGrid>
+                  </AccordionPanel>
+                </AccordionItem>
+              </Accordion>
 
-                <FormControl>
-                  <FormLabel fontSize="sm" color={labelColor}>
-                    Dashboard Licensing Expiry
-                  </FormLabel>
-                  <InputGroup>
-                    <InputLeftElement pointerEvents="none" color="gray.400">
-                      <Icon as={FaClipboardCheck} />
-                    </InputLeftElement>
-                    <Input
-                      name="dashboardLicensingExpiry"
-                      type="date"
-                      value={addNewDevice.dashboardLicensingExpiry}
-                      onChange={handleAddChange}
-                      bg={useColorModeValue('white', 'gray.700')}
-                      color={useColorModeValue('gray.800', 'white')}
+              <Accordion allowToggle mt={2}>
+                <AccordionItem border="none">
+                  <h2>
+                    <AccordionButton
+                      _expanded={{
+                        bg: useColorModeValue('gray.200', 'gray.700'),
+                      }}
                       borderRadius="md"
-                      borderWidth="2px"
-                      borderColor={useColorModeValue('gray.300', 'gray.600')}
-                      _hover={{
-                        borderColor: useColorModeValue('blue.400', 'blue.600'),
-                      }}
-                      _focus={{
-                        borderColor: useColorModeValue('blue.500', 'blue.300'),
-                        boxShadow: 'outline',
-                      }}
-                      _placeholder={{
-                        color: useColorModeValue('gray.500', 'gray.400'),
-                      }}
-                    />
-                  </InputGroup>
-                </FormControl>
-              </SimpleGrid>
+                      bg={useColorModeValue('gray.100', 'gray.600')}
+                    >
+                      <Flex
+                        flex="1"
+                        alignContent={'center'}
+                        textAlign="left"
+                        fontWeight="semibold"
+                      >
+                        <Icon
+                          as={FaSimCard}
+                          w={4}
+                          h={4}
+                          color="orange.500"
+                          mr={2}
+                          mt={1}
+                        />
+                        <Text fontSize="md" fontWeight="semibold">
+                          SIM Card Validity
+                        </Text>
+                      </Flex>
+                      <AccordionIcon />
+                    </AccordionButton>
+                  </h2>
+                  <AccordionPanel pb={4}>
+                    <SimpleGrid columns={{ base: 1, md: 2 }} spacing="6">
+                      <FormControl>
+                        <FormLabel fontSize="sm" color={labelColor}>
+                          Start Date
+                        </FormLabel>
+                        <InputGroup>
+                          <InputLeftElement
+                            pointerEvents="none"
+                            color="gray.400"
+                          >
+                            <Icon as={FaSimCard} />
+                          </InputLeftElement>
+                          <Input
+                            name="simcardValidity.startDate"
+                            type="date"
+                            value={addNewDevice.simcardValidity.startDate}
+                            onChange={handleAddChange}
+                            bg={useColorModeValue('white', 'gray.700')}
+                            color={useColorModeValue('gray.800', 'white')}
+                            borderRadius="md"
+                            borderWidth="2px"
+                            borderColor={useColorModeValue(
+                              'gray.300',
+                              'gray.600',
+                            )}
+                            _hover={{
+                              borderColor: useColorModeValue(
+                                'blue.400',
+                                'blue.600',
+                              ),
+                            }}
+                            _focus={{
+                              borderColor: useColorModeValue(
+                                'blue.500',
+                                'blue.300',
+                              ),
+                              boxShadow: 'outline',
+                            }}
+                            _placeholder={{
+                              color: useColorModeValue('gray.500', 'gray.400'),
+                            }}
+                          />
+                        </InputGroup>
+                      </FormControl>
+
+                      <FormControl>
+                        <FormLabel fontSize="sm" color={labelColor}>
+                          End Date
+                        </FormLabel>
+                        <InputGroup>
+                          <InputLeftElement
+                            pointerEvents="none"
+                            color="gray.400"
+                          >
+                            <Icon as={FaSimCard} />
+                          </InputLeftElement>
+                          <Input
+                            name="simcardValidity.endDate"
+                            type="date"
+                            value={addNewDevice.simcardValidity.endDate}
+                            onChange={handleAddChange}
+                            bg={useColorModeValue('white', 'gray.700')}
+                            color={useColorModeValue('gray.800', 'white')}
+                            borderRadius="md"
+                            borderWidth="2px"
+                            borderColor={useColorModeValue(
+                              'gray.300',
+                              'gray.600',
+                            )}
+                            _hover={{
+                              borderColor: useColorModeValue(
+                                'blue.400',
+                                'blue.600',
+                              ),
+                            }}
+                            _focus={{
+                              borderColor: useColorModeValue(
+                                'blue.500',
+                                'blue.300',
+                              ),
+                              boxShadow: 'outline',
+                            }}
+                            _placeholder={{
+                              color: useColorModeValue('gray.500', 'gray.400'),
+                            }}
+                          />
+                        </InputGroup>
+                      </FormControl>
+                    </SimpleGrid>
+                  </AccordionPanel>
+                </AccordionItem>
+              </Accordion>
             </Box>
 
-            {/* Installation Details Section */}
             <Box mb={8}>
               <Flex alignItems="center" mb={4}>
                 <Icon as={FaTools} w={6} h={6} color="orange.500" mr={2} />
@@ -1224,185 +1486,263 @@ const Devices = () => {
               </SimpleGrid>
             </Box>
 
-            {/* Additional Details Section */}
             <Box mb={8}>
-              <Flex alignItems="center" mb={4}>
-                <Icon
-                  as={FaClipboardList}
-                  w={6}
-                  h={6}
-                  color="purple.500"
-                  mr={2}
-                />
-                <Text fontSize="lg" fontWeight="semibold">
-                  Additional Details
-                </Text>
-              </Flex>
-              <SimpleGrid columns={{ base: 1, md: 2 }} spacing="4">
-                {/* Value */}
-                <FormControl>
-                  <FormLabel fontSize="sm" color={labelColor}>
-                    Value
-                  </FormLabel>
-                  <InputGroup>
-                    <InputLeftElement pointerEvents="none" color="gray.400">
-                      <Icon as={FaTag} />
-                    </InputLeftElement>
-                    <Input
-                      name="value"
-                      type="number"
-                      placeholder="Enter value"
-                      value={addNewDevice.value}
-                      onChange={handleAddChange}
-                      bg={useColorModeValue('white', 'gray.700')}
-                      color={useColorModeValue('gray.800', 'white')}
+              <Accordion allowToggle>
+                <AccordionItem border="none">
+                  <h2>
+                    <AccordionButton
+                      _expanded={{
+                        bg: useColorModeValue('gray.200', 'gray.700'),
+                      }}
                       borderRadius="md"
-                      borderWidth="2px"
-                      borderColor={useColorModeValue('gray.300', 'gray.600')}
-                      _hover={{
-                        borderColor: useColorModeValue('blue.400', 'blue.600'),
-                      }}
-                      _focus={{
-                        borderColor: useColorModeValue('blue.500', 'blue.300'),
-                        boxShadow: 'outline',
-                      }}
-                      _placeholder={{
-                        color: useColorModeValue('gray.500', 'gray.400'),
-                      }}
-                    />
-                  </InputGroup>
-                </FormControl>
+                      bg={useColorModeValue('gray.100', 'gray.600')}
+                    >
+                      <Flex
+                        flex="1"
+                        alignContent={'center'}
+                        textAlign="left"
+                        fontWeight="semibold"
+                      >
+                        <Icon
+                          as={FaClipboardList}
+                          w={6}
+                          h={6}
+                          color="purple.500"
+                          mr={2}
+                        />
+                        <Text fontSize="lg" fontWeight="semibold">
+                          Additional Details
+                        </Text>
+                      </Flex>
+                      <AccordionIcon />
+                    </AccordionButton>
+                  </h2>
+                  <AccordionPanel pb={4}>
+                    <SimpleGrid columns={{ base: 1, md: 2 }} spacing="4">
+                      <FormControl>
+                        <FormLabel fontSize="sm" color={labelColor}>
+                          Value
+                        </FormLabel>
+                        <InputGroup>
+                          <InputLeftElement
+                            pointerEvents="none"
+                            color="gray.400"
+                          >
+                            <Icon as={FaTag} />
+                          </InputLeftElement>
+                          <Input
+                            name="value"
+                            type="number"
+                            placeholder="Enter value"
+                            value={addNewDevice.value}
+                            onChange={handleAddChange}
+                            bg={useColorModeValue('white', 'gray.700')}
+                            color={useColorModeValue('gray.800', 'white')}
+                            borderRadius="md"
+                            borderWidth="2px"
+                            borderColor={useColorModeValue(
+                              'gray.300',
+                              'gray.600',
+                            )}
+                            _hover={{
+                              borderColor: useColorModeValue(
+                                'blue.400',
+                                'blue.600',
+                              ),
+                            }}
+                            _focus={{
+                              borderColor: useColorModeValue(
+                                'blue.500',
+                                'blue.300',
+                              ),
+                              boxShadow: 'outline',
+                            }}
+                            _placeholder={{
+                              color: useColorModeValue('gray.500', 'gray.400'),
+                            }}
+                          />
+                        </InputGroup>
+                      </FormControl>
 
-                {/* Diameter */}
-                <FormControl>
-                  <FormLabel fontSize="sm" color={labelColor}>
-                    Diameter
-                  </FormLabel>
-                  <InputGroup>
-                    <InputLeftElement pointerEvents="none" color="gray.400">
-                      <Icon as={FaCircle} />
-                    </InputLeftElement>
-                    <Input
-                      name="diameter"
-                      placeholder="Enter diameter"
-                      value={addNewDevice.diameter}
-                      onChange={handleAddChange}
-                      bg={useColorModeValue('white', 'gray.700')}
-                      color={useColorModeValue('gray.800', 'white')}
-                      borderRadius="md"
-                      borderWidth="2px"
-                      borderColor={useColorModeValue('gray.300', 'gray.600')}
-                      _hover={{
-                        borderColor: useColorModeValue('blue.400', 'blue.600'),
-                      }}
-                      _focus={{
-                        borderColor: useColorModeValue('blue.500', 'blue.300'),
-                        boxShadow: 'outline',
-                      }}
-                      _placeholder={{
-                        color: useColorModeValue('gray.500', 'gray.400'),
-                      }}
-                    />
-                  </InputGroup>
-                </FormControl>
+                      <FormControl>
+                        <FormLabel fontSize="sm" color={labelColor}>
+                          Diameter
+                        </FormLabel>
+                        <InputGroup>
+                          <InputLeftElement
+                            pointerEvents="none"
+                            color="gray.400"
+                          >
+                            <Icon as={FaCircle} />
+                          </InputLeftElement>
+                          <Input
+                            name="diameter"
+                            placeholder="Enter diameter"
+                            value={addNewDevice.diameter}
+                            onChange={handleAddChange}
+                            bg={useColorModeValue('white', 'gray.700')}
+                            color={useColorModeValue('gray.800', 'white')}
+                            borderRadius="md"
+                            borderWidth="2px"
+                            borderColor={useColorModeValue(
+                              'gray.300',
+                              'gray.600',
+                            )}
+                            _hover={{
+                              borderColor: useColorModeValue(
+                                'blue.400',
+                                'blue.600',
+                              ),
+                            }}
+                            _focus={{
+                              borderColor: useColorModeValue(
+                                'blue.500',
+                                'blue.300',
+                              ),
+                              boxShadow: 'outline',
+                            }}
+                            _placeholder={{
+                              color: useColorModeValue('gray.500', 'gray.400'),
+                            }}
+                          />
+                        </InputGroup>
+                      </FormControl>
 
-                {/* Make */}
-                <FormControl>
-                  <FormLabel fontSize="sm" color={labelColor}>
-                    Make
-                  </FormLabel>
-                  <InputGroup>
-                    <InputLeftElement pointerEvents="none" color="gray.400">
-                      <Icon as={FaIndustry} />
-                    </InputLeftElement>
-                    <Input
-                      name="make"
-                      placeholder="Enter make"
-                      value={addNewDevice.make}
-                      onChange={handleAddChange}
-                      bg={useColorModeValue('white', 'gray.700')}
-                      color={useColorModeValue('gray.800', 'white')}
-                      borderRadius="md"
-                      borderWidth="2px"
-                      borderColor={useColorModeValue('gray.300', 'gray.600')}
-                      _hover={{
-                        borderColor: useColorModeValue('blue.400', 'blue.600'),
-                      }}
-                      _focus={{
-                        borderColor: useColorModeValue('blue.500', 'blue.300'),
-                        boxShadow: 'outline',
-                      }}
-                      _placeholder={{
-                        color: useColorModeValue('gray.500', 'gray.400'),
-                      }}
-                    />
-                  </InputGroup>
-                </FormControl>
+                      <FormControl>
+                        <FormLabel fontSize="sm" color={labelColor}>
+                          Make
+                        </FormLabel>
+                        <InputGroup>
+                          <InputLeftElement
+                            pointerEvents="none"
+                            color="gray.400"
+                          >
+                            <Icon as={FaIndustry} />
+                          </InputLeftElement>
+                          <Input
+                            name="make"
+                            placeholder="Enter make"
+                            value={addNewDevice.make}
+                            onChange={handleAddChange}
+                            bg={useColorModeValue('white', 'gray.700')}
+                            color={useColorModeValue('gray.800', 'white')}
+                            borderRadius="md"
+                            borderWidth="2px"
+                            borderColor={useColorModeValue(
+                              'gray.300',
+                              'gray.600',
+                            )}
+                            _hover={{
+                              borderColor: useColorModeValue(
+                                'blue.400',
+                                'blue.600',
+                              ),
+                            }}
+                            _focus={{
+                              borderColor: useColorModeValue(
+                                'blue.500',
+                                'blue.300',
+                              ),
+                              boxShadow: 'outline',
+                            }}
+                            _placeholder={{
+                              color: useColorModeValue('gray.500', 'gray.400'),
+                            }}
+                          />
+                        </InputGroup>
+                      </FormControl>
 
-                <FormControl>
-                  <FormLabel fontSize="sm" color={labelColor}>
-                    Model
-                  </FormLabel>
-                  <InputGroup>
-                    <InputLeftElement pointerEvents="none" color="gray.400">
-                      <Icon as={FaCogs} />
-                    </InputLeftElement>
-                    <Input
-                      name="model"
-                      placeholder="Enter model"
-                      value={addNewDevice.model}
-                      onChange={handleAddChange}
-                      bg={useColorModeValue('white', 'gray.700')}
-                      color={useColorModeValue('gray.800', 'white')}
-                      borderRadius="md"
-                      borderWidth="2px"
-                      borderColor={useColorModeValue('gray.300', 'gray.600')}
-                      _hover={{
-                        borderColor: useColorModeValue('blue.400', 'blue.600'),
-                      }}
-                      _focus={{
-                        borderColor: useColorModeValue('blue.500', 'blue.300'),
-                        boxShadow: 'outline',
-                      }}
-                      _placeholder={{
-                        color: useColorModeValue('gray.500', 'gray.400'),
-                      }}
-                    />
-                  </InputGroup>
-                </FormControl>
+                      <FormControl>
+                        <FormLabel fontSize="sm" color={labelColor}>
+                          Model
+                        </FormLabel>
+                        <InputGroup>
+                          <InputLeftElement
+                            pointerEvents="none"
+                            color="gray.400"
+                          >
+                            <Icon as={FaCogs} />
+                          </InputLeftElement>
+                          <Input
+                            name="model"
+                            placeholder="Enter model"
+                            value={addNewDevice.model}
+                            onChange={handleAddChange}
+                            bg={useColorModeValue('white', 'gray.700')}
+                            color={useColorModeValue('gray.800', 'white')}
+                            borderRadius="md"
+                            borderWidth="2px"
+                            borderColor={useColorModeValue(
+                              'gray.300',
+                              'gray.600',
+                            )}
+                            _hover={{
+                              borderColor: useColorModeValue(
+                                'blue.400',
+                                'blue.600',
+                              ),
+                            }}
+                            _focus={{
+                              borderColor: useColorModeValue(
+                                'blue.500',
+                                'blue.300',
+                              ),
+                              boxShadow: 'outline',
+                            }}
+                            _placeholder={{
+                              color: useColorModeValue('gray.500', 'gray.400'),
+                            }}
+                          />
+                        </InputGroup>
+                      </FormControl>
 
-                <FormControl>
-                  <FormLabel fontSize="sm" color={labelColor}>
-                    Protocol
-                  </FormLabel>
-                  <InputGroup>
-                    <InputLeftElement pointerEvents="none" color="gray.400">
-                      <Icon as={FaNetworkWired} />
-                    </InputLeftElement>
-                    <Input
-                      name="protocol"
-                      placeholder="Enter protocol"
-                      value={addNewDevice.protocol}
-                      onChange={handleAddChange}
-                      bg={useColorModeValue('white', 'gray.700')}
-                      color={useColorModeValue('gray.800', 'white')}
-                      borderRadius="md"
-                      borderWidth="2px"
-                      borderColor={useColorModeValue('gray.300', 'gray.600')}
-                      _hover={{
-                        borderColor: useColorModeValue('blue.400', 'blue.600'),
-                      }}
-                      _focus={{
-                        borderColor: useColorModeValue('blue.500', 'blue.300'),
-                        boxShadow: 'outline',
-                      }}
-                      _placeholder={{
-                        color: useColorModeValue('gray.500', 'gray.400'),
-                      }}
-                    />
-                  </InputGroup>
-                </FormControl>
-              </SimpleGrid>
+                      <FormControl>
+                        <FormLabel fontSize="sm" color={labelColor}>
+                          Protocol
+                        </FormLabel>
+                        <InputGroup>
+                          <InputLeftElement
+                            pointerEvents="none"
+                            color="gray.400"
+                          >
+                            <Icon as={FaNetworkWired} />
+                          </InputLeftElement>
+                          <Input
+                            name="protocol"
+                            placeholder="Enter protocol"
+                            value={addNewDevice.protocol}
+                            onChange={handleAddChange}
+                            bg={useColorModeValue('white', 'gray.700')}
+                            color={useColorModeValue('gray.800', 'white')}
+                            borderRadius="md"
+                            borderWidth="2px"
+                            borderColor={useColorModeValue(
+                              'gray.300',
+                              'gray.600',
+                            )}
+                            _hover={{
+                              borderColor: useColorModeValue(
+                                'blue.400',
+                                'blue.600',
+                              ),
+                            }}
+                            _focus={{
+                              borderColor: useColorModeValue(
+                                'blue.500',
+                                'blue.300',
+                              ),
+                              boxShadow: 'outline',
+                            }}
+                            _placeholder={{
+                              color: useColorModeValue('gray.500', 'gray.400'),
+                            }}
+                          />
+                        </InputGroup>
+                      </FormControl>
+                    </SimpleGrid>
+                  </AccordionPanel>
+                </AccordionItem>
+              </Accordion>
             </Box>
           </ModalBody>
 
@@ -1763,423 +2103,688 @@ const Devices = () => {
                   Warranty Details
                 </Text>
               </Flex>
-              <SimpleGrid columns={{ base: 1, md: 2 }} spacing="4">
-                <FormControl>
-                  <FormLabel fontSize="sm" color={labelColor}>
-                    Flowmeter Warranty Start Date
-                  </FormLabel>
-                  <InputGroup>
-                    <InputLeftElement pointerEvents="none" color="gray.400">
-                      <Icon as={FaCalendarAlt} />
-                    </InputLeftElement>
-                    <Input
-                      name="flowmeterWarranty.startDate"
-                      type="date"
-                      value={
-                        editDevice?.flowmeterWarranty?.startDate
-                          ? new Date(editDevice?.flowmeterWarranty?.startDate)
-                              .toISOString()
-                              .split('T')[0]
-                          : ''
-                      }
-                      onChange={(e) =>
-                        setEditDevice((prev) => ({
-                          ...prev,
-                          flowmeterWarranty: {
-                            ...prev.flowmeterWarranty,
-                            startDate: e.target.value,
-                          },
-                        }))
-                      }
-                      bg={useColorModeValue('white', 'gray.700')}
-                      color={useColorModeValue('gray.800', 'white')}
-                      borderRadius="md"
-                      borderWidth="2px"
-                      borderColor={useColorModeValue('gray.300', 'gray.600')}
-                      _hover={{
-                        borderColor: useColorModeValue('blue.400', 'blue.600'),
-                      }}
-                      _focus={{
-                        borderColor: useColorModeValue('blue.500', 'blue.300'),
-                        boxShadow: 'outline',
-                      }}
-                      _placeholder={{
-                        color: useColorModeValue('gray.500', 'gray.400'),
-                      }}
-                    />
-                  </InputGroup>
-                </FormControl>
 
-                <FormControl>
-                  <FormLabel fontSize="sm" color={labelColor}>
-                    Flowmeter Warranty End Date
-                  </FormLabel>
-                  <InputGroup>
-                    <InputLeftElement pointerEvents="none" color="gray.400">
-                      <Icon as={FaCalendarTimes} />
-                    </InputLeftElement>
-                    <Input
-                      name="flowmeterWarranty.endDate"
-                      type="date"
-                      value={
-                        editDevice?.flowmeterWarranty?.endDate
-                          ? new Date(editDevice?.flowmeterWarranty?.endDate)
-                              .toISOString()
-                              .split('T')[0]
-                          : ''
-                      }
-                      onChange={(e) =>
-                        setEditDevice((prev) => ({
-                          ...prev,
-                          flowmeterWarranty: {
-                            ...prev.flowmeterWarranty,
-                            endDate: e.target.value,
-                          },
-                        }))
-                      }
-                      bg={useColorModeValue('white', 'gray.700')}
-                      color={useColorModeValue('gray.800', 'white')}
+              <Accordion allowToggle>
+                <AccordionItem border="none">
+                  <h2>
+                    <AccordionButton
+                      _expanded={{
+                        bg: useColorModeValue('gray.200', 'gray.700'),
+                      }}
                       borderRadius="md"
-                      borderWidth="2px"
-                      borderColor={useColorModeValue('gray.300', 'gray.600')}
-                      _hover={{
-                        borderColor: useColorModeValue('blue.400', 'blue.600'),
-                      }}
-                      _focus={{
-                        borderColor: useColorModeValue('blue.500', 'blue.300'),
-                        boxShadow: 'outline',
-                      }}
-                      _placeholder={{
-                        color: useColorModeValue('gray.500', 'gray.400'),
-                      }}
-                    />
-                  </InputGroup>
-                </FormControl>
+                      bg={useColorModeValue('gray.100', 'gray.600')}
+                    >
+                      <Flex
+                        flex="1"
+                        alignContent={'center'}
+                        textAlign="left"
+                        fontWeight="semibold"
+                      >
+                        <Icon
+                          as={FaCertificate}
+                          w={4}
+                          h={4}
+                          color="orange.500"
+                          mr={2}
+                          mt={1}
+                        />
+                        <Text fontSize="md" fontWeight="semibold">
+                          Flowmeter Warranty
+                        </Text>
+                      </Flex>
+                      <AccordionIcon />
+                    </AccordionButton>
+                  </h2>
+                  <AccordionPanel pb={4}>
+                    <SimpleGrid columns={{ base: 1, md: 2 }} spacing="6">
+                      <FormControl>
+                        <FormLabel fontSize="sm" color={labelColor}>
+                          Start Date
+                        </FormLabel>
+                        <InputGroup>
+                          <InputLeftElement
+                            pointerEvents="none"
+                            color="gray.400"
+                          >
+                            <Icon as={FaCalendarAlt} />
+                          </InputLeftElement>
+                          <Input
+                            name="flowmeterWarranty.startDate"
+                            type="date"
+                            value={
+                              editDevice?.flowmeterWarranty?.startDate
+                                ? new Date(
+                                    editDevice?.flowmeterWarranty?.startDate,
+                                  )
+                                    .toISOString()
+                                    .split('T')[0]
+                                : ''
+                            }
+                            onChange={(e) =>
+                              setEditDevice((prev) => ({
+                                ...prev,
+                                flowmeterWarranty: {
+                                  ...prev.flowmeterWarranty,
+                                  startDate: e.target.value,
+                                },
+                              }))
+                            }
+                            bg={useColorModeValue('white', 'gray.700')}
+                            color={useColorModeValue('gray.800', 'white')}
+                            borderRadius="md"
+                            borderWidth="2px"
+                            borderColor={useColorModeValue(
+                              'gray.300',
+                              'gray.600',
+                            )}
+                            _hover={{
+                              borderColor: useColorModeValue(
+                                'blue.400',
+                                'blue.600',
+                              ),
+                            }}
+                            _focus={{
+                              borderColor: useColorModeValue(
+                                'blue.500',
+                                'blue.300',
+                              ),
+                              boxShadow: 'outline',
+                            }}
+                            _placeholder={{
+                              color: useColorModeValue('gray.500', 'gray.400'),
+                            }}
+                          />
+                        </InputGroup>
+                      </FormControl>
 
-                <FormControl>
-                  <FormLabel fontSize="sm" color={labelColor}>
-                    Telemetry Warranty Start Date
-                  </FormLabel>
-                  <InputGroup>
-                    <InputLeftElement pointerEvents="none" color="gray.400">
-                      <Icon as={FaCalendarAlt} />
-                    </InputLeftElement>
-                    <Input
-                      name="flowmeterTelemetryWarrantyValidity.startDate"
-                      type="date"
-                      value={
-                        editDevice?.flowmeterTelemetryWarrantyValidity
-                          ?.startDate
-                          ? new Date(
-                              editDevice?.flowmeterTelemetryWarrantyValidity?.startDate,
-                            )
-                              .toISOString()
-                              .split('T')[0]
-                          : ''
-                      }
-                      onChange={(e) =>
-                        setEditDevice((prev) => ({
-                          ...prev,
-                          flowmeterTelemetryWarrantyValidity: {
-                            ...prev.flowmeterTelemetryWarrantyValidity,
-                            startDate: e.target.value,
-                          },
-                        }))
-                      }
-                      bg={useColorModeValue('white', 'gray.700')}
-                      color={useColorModeValue('gray.800', 'white')}
-                      borderRadius="md"
-                      borderWidth="2px"
-                      borderColor={useColorModeValue('gray.300', 'gray.600')}
-                      _hover={{
-                        borderColor: useColorModeValue('blue.400', 'blue.600'),
-                      }}
-                      _focus={{
-                        borderColor: useColorModeValue('blue.500', 'blue.300'),
-                        boxShadow: 'outline',
-                      }}
-                      _placeholder={{
-                        color: useColorModeValue('gray.500', 'gray.400'),
-                      }}
-                    />
-                  </InputGroup>
-                </FormControl>
-                {/* ---- */}
-                <FormControl>
-                  <FormLabel fontSize="sm" color={labelColor}>
-                    Telemetry Warranty End Date
-                  </FormLabel>
-                  <InputGroup>
-                    <InputLeftElement pointerEvents="none" color="gray.400">
-                      <Icon as={FaCalendarTimes} />
-                    </InputLeftElement>
-                    <Input
-                      name="flowmeterTelemetryWarrantyValidity.endDate"
-                      type="date"
-                      value={
-                        editDevice?.flowmeterTelemetryWarrantyValidity?.endDate
-                          ? new Date(
-                              editDevice?.flowmeterTelemetryWarrantyValidity?.endDate,
-                            )
-                              .toISOString()
-                              .split('T')[0]
-                          : ''
-                      }
-                      onChange={(e) =>
-                        setEditDevice((prev) => ({
-                          ...prev,
-                          flowmeterTelemetryWarrantyValidity: {
-                            ...prev.flowmeterTelemetryWarrantyValidity,
-                            endDate: e.target.value,
-                          },
-                        }))
-                      }
-                      bg={useColorModeValue('white', 'gray.700')}
-                      color={useColorModeValue('gray.800', 'white')}
-                      borderRadius="md"
-                      borderWidth="2px"
-                      borderColor={useColorModeValue('gray.300', 'gray.600')}
-                      _hover={{
-                        borderColor: useColorModeValue('blue.400', 'blue.600'),
-                      }}
-                      _focus={{
-                        borderColor: useColorModeValue('blue.500', 'blue.300'),
-                        boxShadow: 'outline',
-                      }}
-                      _placeholder={{
-                        color: useColorModeValue('gray.500', 'gray.400'),
-                      }}
-                    />
-                  </InputGroup>
-                </FormControl>
+                      <FormControl>
+                        <FormLabel fontSize="sm" color={labelColor}>
+                          End Date
+                        </FormLabel>
+                        <InputGroup>
+                          <InputLeftElement
+                            pointerEvents="none"
+                            color="gray.400"
+                          >
+                            <Icon as={FaCalendarTimes} />
+                          </InputLeftElement>
+                          <Input
+                            name="flowmeterWarranty.endDate"
+                            type="date"
+                            value={
+                              editDevice?.flowmeterWarranty?.endDate
+                                ? new Date(
+                                    editDevice?.flowmeterWarranty?.endDate,
+                                  )
+                                    .toISOString()
+                                    .split('T')[0]
+                                : ''
+                            }
+                            onChange={(e) =>
+                              setEditDevice((prev) => ({
+                                ...prev,
+                                flowmeterWarranty: {
+                                  ...prev.flowmeterWarranty,
+                                  endDate: e.target.value,
+                                },
+                              }))
+                            }
+                            bg={useColorModeValue('white', 'gray.700')}
+                            color={useColorModeValue('gray.800', 'white')}
+                            borderRadius="md"
+                            borderWidth="2px"
+                            borderColor={useColorModeValue(
+                              'gray.300',
+                              'gray.600',
+                            )}
+                            _hover={{
+                              borderColor: useColorModeValue(
+                                'blue.400',
+                                'blue.600',
+                              ),
+                            }}
+                            _focus={{
+                              borderColor: useColorModeValue(
+                                'blue.500',
+                                'blue.300',
+                              ),
+                              boxShadow: 'outline',
+                            }}
+                            _placeholder={{
+                              color: useColorModeValue('gray.500', 'gray.400'),
+                            }}
+                          />
+                        </InputGroup>
+                      </FormControl>
+                    </SimpleGrid>
+                  </AccordionPanel>
+                </AccordionItem>
+              </Accordion>
 
-                <FormControl>
-                  <FormLabel fontSize="sm" color={labelColor}>
-                    Dashboard Validity Start Date
-                  </FormLabel>
-                  <InputGroup>
-                    <InputLeftElement pointerEvents="none" color="gray.400">
-                      <Icon as={FaCalendarAlt} />
-                    </InputLeftElement>
-                    <Input
-                      name="dashboardValidity.startDate"
-                      type="date"
-                      value={
-                        editDevice?.dashboardValidity?.startDate
-                          ? new Date(editDevice?.dashboardValidity?.startDate)
-                              .toISOString()
-                              .split('T')[0]
-                          : ''
-                      }
-                      onChange={(e) =>
-                        setEditDevice((prev) => ({
-                          ...prev,
-                          dashboardValidity: {
-                            ...prev.dashboardValidity,
-                            startDate: e.target.value,
-                          },
-                        }))
-                      }
-                      bg={useColorModeValue('white', 'gray.700')}
-                      color={useColorModeValue('gray.800', 'white')}
+              <Accordion allowToggle mt={2}>
+                <AccordionItem border="none">
+                  <h2>
+                    <AccordionButton
+                      _expanded={{
+                        bg: useColorModeValue('gray.200', 'gray.700'),
+                      }}
                       borderRadius="md"
-                      borderWidth="2px"
-                      borderColor={useColorModeValue('gray.300', 'gray.600')}
-                      _hover={{
-                        borderColor: useColorModeValue('blue.400', 'blue.600'),
-                      }}
-                      _focus={{
-                        borderColor: useColorModeValue('blue.500', 'blue.300'),
-                        boxShadow: 'outline',
-                      }}
-                      _placeholder={{
-                        color: useColorModeValue('gray.500', 'gray.400'),
-                      }}
-                    />
-                  </InputGroup>
-                </FormControl>
+                      bg={useColorModeValue('gray.100', 'gray.600')}
+                    >
+                      <Flex
+                        flex="1"
+                        alignContent={'center'}
+                        textAlign="left"
+                        fontWeight="semibold"
+                      >
+                        <Icon
+                          as={FaSatelliteDish}
+                          w={4}
+                          h={4}
+                          color="orange.500"
+                          mr={2}
+                          mt={1}
+                        />
+                        <Text fontSize="md" fontWeight="semibold">
+                          Telemetry Warranty
+                        </Text>
+                      </Flex>
+                      <AccordionIcon />
+                    </AccordionButton>
+                  </h2>
+                  <AccordionPanel pb={4}>
+                    <SimpleGrid columns={{ base: 1, md: 2 }} spacing="6">
+                      <FormControl>
+                        <FormLabel fontSize="sm" color={labelColor}>
+                          Start Date
+                        </FormLabel>
+                        <InputGroup>
+                          <InputLeftElement
+                            pointerEvents="none"
+                            color="gray.400"
+                          >
+                            <Icon as={FaCalendarAlt} />
+                          </InputLeftElement>
+                          <Input
+                            name="flowmeterTelemetryWarrantyValidity.startDate"
+                            type="date"
+                            value={
+                              editDevice?.flowmeterTelemetryWarrantyValidity
+                                ?.startDate
+                                ? new Date(
+                                    editDevice?.flowmeterTelemetryWarrantyValidity?.startDate,
+                                  )
+                                    .toISOString()
+                                    .split('T')[0]
+                                : ''
+                            }
+                            onChange={(e) =>
+                              setEditDevice((prev) => ({
+                                ...prev,
+                                flowmeterTelemetryWarrantyValidity: {
+                                  ...prev.flowmeterTelemetryWarrantyValidity,
+                                  startDate: e.target.value,
+                                },
+                              }))
+                            }
+                            bg={useColorModeValue('white', 'gray.700')}
+                            color={useColorModeValue('gray.800', 'white')}
+                            borderRadius="md"
+                            borderWidth="2px"
+                            borderColor={useColorModeValue(
+                              'gray.300',
+                              'gray.600',
+                            )}
+                            _hover={{
+                              borderColor: useColorModeValue(
+                                'blue.400',
+                                'blue.600',
+                              ),
+                            }}
+                            _focus={{
+                              borderColor: useColorModeValue(
+                                'blue.500',
+                                'blue.300',
+                              ),
+                              boxShadow: 'outline',
+                            }}
+                            _placeholder={{
+                              color: useColorModeValue('gray.500', 'gray.400'),
+                            }}
+                          />
+                        </InputGroup>
+                      </FormControl>
 
-                <FormControl>
-                  <FormLabel fontSize="sm" color={labelColor}>
-                    Dashboard Validity End Date
-                  </FormLabel>
-                  <InputGroup>
-                    <InputLeftElement pointerEvents="none" color="gray.400">
-                      <Icon as={FaCalendarTimes} />
-                    </InputLeftElement>
-                    <Input
-                      name="dashboardValidity.endDate"
-                      type="date"
-                      value={
-                        editDevice?.dashboardValidity?.endDate
-                          ? new Date(editDevice?.dashboardValidity?.endDate)
-                              .toISOString()
-                              .split('T')[0]
-                          : ''
-                      }
-                      onChange={(e) =>
-                        setEditDevice((prev) => ({
-                          ...prev,
-                          dashboardValidity: {
-                            ...prev.dashboardValidity,
-                            endDate: e.target.value,
-                          },
-                        }))
-                      }
-                      bg={useColorModeValue('white', 'gray.700')}
-                      color={useColorModeValue('gray.800', 'white')}
-                      borderRadius="md"
-                      borderWidth="2px"
-                      borderColor={useColorModeValue('gray.300', 'gray.600')}
-                      _hover={{
-                        borderColor: useColorModeValue('blue.400', 'blue.600'),
-                      }}
-                      _focus={{
-                        borderColor: useColorModeValue('blue.500', 'blue.300'),
-                        boxShadow: 'outline',
-                      }}
-                      _placeholder={{
-                        color: useColorModeValue('gray.500', 'gray.400'),
-                      }}
-                    />
-                  </InputGroup>
-                </FormControl>
+                      <FormControl>
+                        <FormLabel fontSize="sm" color={labelColor}>
+                          End Date
+                        </FormLabel>
+                        <InputGroup>
+                          <InputLeftElement
+                            pointerEvents="none"
+                            color="gray.400"
+                          >
+                            <Icon as={FaCalendarTimes} />
+                          </InputLeftElement>
+                          <Input
+                            name="flowmeterTelemetryWarrantyValidity.endDate"
+                            type="date"
+                            value={
+                              editDevice?.flowmeterTelemetryWarrantyValidity
+                                ?.endDate
+                                ? new Date(
+                                    editDevice?.flowmeterTelemetryWarrantyValidity?.endDate,
+                                  )
+                                    .toISOString()
+                                    .split('T')[0]
+                                : ''
+                            }
+                            onChange={(e) =>
+                              setEditDevice((prev) => ({
+                                ...prev,
+                                flowmeterTelemetryWarrantyValidity: {
+                                  ...prev.flowmeterTelemetryWarrantyValidity,
+                                  endDate: e.target.value,
+                                },
+                              }))
+                            }
+                            bg={useColorModeValue('white', 'gray.700')}
+                            color={useColorModeValue('gray.800', 'white')}
+                            borderRadius="md"
+                            borderWidth="2px"
+                            borderColor={useColorModeValue(
+                              'gray.300',
+                              'gray.600',
+                            )}
+                            _hover={{
+                              borderColor: useColorModeValue(
+                                'blue.400',
+                                'blue.600',
+                              ),
+                            }}
+                            _focus={{
+                              borderColor: useColorModeValue(
+                                'blue.500',
+                                'blue.300',
+                              ),
+                              boxShadow: 'outline',
+                            }}
+                            _placeholder={{
+                              color: useColorModeValue('gray.500', 'gray.400'),
+                            }}
+                          />
+                        </InputGroup>
+                      </FormControl>
+                    </SimpleGrid>
+                  </AccordionPanel>
+                </AccordionItem>
+              </Accordion>
 
-                <FormControl>
-                  <FormLabel fontSize="sm" color={labelColor}>
-                    SIM Card Validity Start Date
-                  </FormLabel>
-                  <InputGroup>
-                    <InputLeftElement pointerEvents="none" color="gray.400">
-                      <Icon as={FaSimCard} />
-                    </InputLeftElement>
-                    <Input
-                      name="simcardValidity.startDate"
-                      type="date"
-                      value={
-                        editDevice?.simcardValidity?.startDate
-                          ? new Date(editDevice?.simcardValidity?.startDate)
-                              .toISOString()
-                              .split('T')[0]
-                          : ''
-                      }
-                      onChange={(e) =>
-                        setEditDevice((prev) => ({
-                          ...prev,
-                          simcardValidity: {
-                            ...prev.simcardValidity,
-                            startDate: e.target.value,
-                          },
-                        }))
-                      }
-                      bg={useColorModeValue('white', 'gray.700')}
-                      color={useColorModeValue('gray.800', 'white')}
+              <Accordion allowToggle mt={2}>
+                <AccordionItem border="none">
+                  <h2>
+                    <AccordionButton
+                      _expanded={{
+                        bg: useColorModeValue('gray.200', 'gray.700'),
+                      }}
                       borderRadius="md"
-                      borderWidth="2px"
-                      borderColor={useColorModeValue('gray.300', 'gray.600')}
-                      _hover={{
-                        borderColor: useColorModeValue('blue.400', 'blue.600'),
-                      }}
-                      _focus={{
-                        borderColor: useColorModeValue('blue.500', 'blue.300'),
-                        boxShadow: 'outline',
-                      }}
-                      _placeholder={{
-                        color: useColorModeValue('gray.500', 'gray.400'),
-                      }}
-                    />
-                  </InputGroup>
-                </FormControl>
+                      bg={useColorModeValue('gray.100', 'gray.600')}
+                    >
+                      <Flex
+                        flex="1"
+                        alignContent={'center'}
+                        textAlign="left"
+                        fontWeight="semibold"
+                      >
+                        <Icon
+                          as={FaTachometerAlt}
+                          w={4}
+                          h={4}
+                          color="orange.500"
+                          mr={2}
+                          mt={1}
+                        />
+                        <Text fontSize="md" fontWeight="semibold">
+                          Dashboard Validity
+                        </Text>
+                      </Flex>
+                      <AccordionIcon />
+                    </AccordionButton>
+                  </h2>
+                  <AccordionPanel pb={4}>
+                    <SimpleGrid columns={{ base: 1, md: 2 }} spacing="6">
+                      <FormControl>
+                        <FormLabel fontSize="sm" color={labelColor}>
+                          Start Date
+                        </FormLabel>
+                        <InputGroup>
+                          <InputLeftElement
+                            pointerEvents="none"
+                            color="gray.400"
+                          >
+                            <Icon as={FaCalendarAlt} />
+                          </InputLeftElement>
+                          <Input
+                            name="dashboardValidity.startDate"
+                            type="date"
+                            value={
+                              editDevice?.dashboardValidity?.startDate
+                                ? new Date(
+                                    editDevice?.dashboardValidity?.startDate,
+                                  )
+                                    .toISOString()
+                                    .split('T')[0]
+                                : ''
+                            }
+                            onChange={(e) =>
+                              setEditDevice((prev) => ({
+                                ...prev,
+                                dashboardValidity: {
+                                  ...prev.dashboardValidity,
+                                  startDate: e.target.value,
+                                },
+                              }))
+                            }
+                            bg={useColorModeValue('white', 'gray.700')}
+                            color={useColorModeValue('gray.800', 'white')}
+                            borderRadius="md"
+                            borderWidth="2px"
+                            borderColor={useColorModeValue(
+                              'gray.300',
+                              'gray.600',
+                            )}
+                            _hover={{
+                              borderColor: useColorModeValue(
+                                'blue.400',
+                                'blue.600',
+                              ),
+                            }}
+                            _focus={{
+                              borderColor: useColorModeValue(
+                                'blue.500',
+                                'blue.300',
+                              ),
+                              boxShadow: 'outline',
+                            }}
+                            _placeholder={{
+                              color: useColorModeValue('gray.500', 'gray.400'),
+                            }}
+                          />
+                        </InputGroup>
+                      </FormControl>
 
-                <FormControl>
-                  <FormLabel fontSize="sm" color={labelColor}>
-                    SIM Card Validity End Date
-                  </FormLabel>
-                  <InputGroup>
-                    <InputLeftElement pointerEvents="none" color="gray.400">
-                      <Icon as={FaSimCard} />
-                    </InputLeftElement>
-                    <Input
-                      name="simcardValidity.endDate"
-                      type="date"
-                      value={
-                        editDevice?.simcardValidity?.endDate
-                          ? new Date(editDevice?.simcardValidity?.endDate)
-                              .toISOString()
-                              .split('T')[0]
-                          : ''
-                      }
-                      onChange={(e) =>
-                        setEditDevice((prev) => ({
-                          ...prev,
-                          simcardValidity: {
-                            ...prev.simcardValidity,
-                            endDate: e.target.value,
-                          },
-                        }))
-                      }
-                      bg={useColorModeValue('white', 'gray.700')}
-                      color={useColorModeValue('gray.800', 'white')}
-                      borderRadius="md"
-                      borderWidth="2px"
-                      borderColor={useColorModeValue('gray.300', 'gray.600')}
-                      _hover={{
-                        borderColor: useColorModeValue('blue.400', 'blue.600'),
-                      }}
-                      _focus={{
-                        borderColor: useColorModeValue('blue.500', 'blue.300'),
-                        boxShadow: 'outline',
-                      }}
-                      _placeholder={{
-                        color: useColorModeValue('gray.500', 'gray.400'),
-                      }}
-                    />
-                  </InputGroup>
-                </FormControl>
+                      <FormControl>
+                        <FormLabel fontSize="sm" color={labelColor}>
+                          End Date
+                        </FormLabel>
+                        <InputGroup>
+                          <InputLeftElement
+                            pointerEvents="none"
+                            color="gray.400"
+                          >
+                            <Icon as={FaCalendarTimes} />
+                          </InputLeftElement>
+                          <Input
+                            name="dashboardValidity.endDate"
+                            type="date"
+                            value={
+                              editDevice?.dashboardValidity?.endDate
+                                ? new Date(
+                                    editDevice?.dashboardValidity?.endDate,
+                                  )
+                                    .toISOString()
+                                    .split('T')[0]
+                                : ''
+                            }
+                            onChange={(e) =>
+                              setEditDevice((prev) => ({
+                                ...prev,
+                                dashboardValidity: {
+                                  ...prev.dashboardValidity,
+                                  endDate: e.target.value,
+                                },
+                              }))
+                            }
+                            bg={useColorModeValue('white', 'gray.700')}
+                            color={useColorModeValue('gray.800', 'white')}
+                            borderRadius="md"
+                            borderWidth="2px"
+                            borderColor={useColorModeValue(
+                              'gray.300',
+                              'gray.600',
+                            )}
+                            _hover={{
+                              borderColor: useColorModeValue(
+                                'blue.400',
+                                'blue.600',
+                              ),
+                            }}
+                            _focus={{
+                              borderColor: useColorModeValue(
+                                'blue.500',
+                                'blue.300',
+                              ),
+                              boxShadow: 'outline',
+                            }}
+                            _placeholder={{
+                              color: useColorModeValue('gray.500', 'gray.400'),
+                            }}
+                          />
+                        </InputGroup>
+                      </FormControl>
+                      <FormControl>
+                        <FormLabel fontSize="sm" color={labelColor}>
+                          Dashboard Licensing Expiry
+                        </FormLabel>
+                        <InputGroup>
+                          <InputLeftElement
+                            pointerEvents="none"
+                            color="gray.400"
+                          >
+                            <Icon as={FaClipboardCheck} />
+                          </InputLeftElement>
+                          <Input
+                            name="dashboardLicensingExpiry"
+                            type="date"
+                            value={
+                              editDevice.dashboardLicensingExpiry
+                                ? new Date(editDevice.dashboardLicensingExpiry)
+                                    .toISOString()
+                                    .split('T')[0]
+                                : ''
+                            }
+                            onChange={(e) =>
+                              setEditDevice({
+                                ...editDevice,
+                                dashboardLicensingExpiry: e.target.value,
+                              })
+                            }
+                            bg={useColorModeValue('white', 'gray.700')}
+                            color={useColorModeValue('gray.800', 'white')}
+                            borderRadius="md"
+                            borderWidth="2px"
+                            borderColor={useColorModeValue(
+                              'gray.300',
+                              'gray.600',
+                            )}
+                            _hover={{
+                              borderColor: useColorModeValue(
+                                'blue.400',
+                                'blue.600',
+                              ),
+                            }}
+                            _focus={{
+                              borderColor: useColorModeValue(
+                                'blue.500',
+                                'blue.300',
+                              ),
+                              boxShadow: 'outline',
+                            }}
+                            _placeholder={{
+                              color: useColorModeValue('gray.500', 'gray.400'),
+                            }}
+                          />
+                        </InputGroup>
+                      </FormControl>
+                    </SimpleGrid>
+                  </AccordionPanel>
+                </AccordionItem>
+              </Accordion>
 
-                <FormControl>
-                  <FormLabel fontSize="sm" color={labelColor}>
-                    Dashboard Licensing Expiry
-                  </FormLabel>
-                  <InputGroup>
-                    <InputLeftElement pointerEvents="none" color="gray.400">
-                      <Icon as={FaClipboardCheck} />
-                    </InputLeftElement>
-                    <Input
-                      name="dashboardLicensingExpiry"
-                      type="date"
-                      value={
-                        editDevice.dashboardLicensingExpiry
-                          ? new Date(editDevice.dashboardLicensingExpiry)
-                              .toISOString()
-                              .split('T')[0]
-                          : ''
-                      }
-                      onChange={(e) =>
-                        setEditDevice({
-                          ...editDevice,
-                          dashboardLicensingExpiry: e.target.value,
-                        })
-                      }
-                      bg={useColorModeValue('white', 'gray.700')}
-                      color={useColorModeValue('gray.800', 'white')}
+              <Accordion allowToggle mt={2}>
+                <AccordionItem border="none">
+                  <h2>
+                    <AccordionButton
+                      _expanded={{
+                        bg: useColorModeValue('gray.200', 'gray.700'),
+                      }}
                       borderRadius="md"
-                      borderWidth="2px"
-                      borderColor={useColorModeValue('gray.300', 'gray.600')}
-                      _hover={{
-                        borderColor: useColorModeValue('blue.400', 'blue.600'),
-                      }}
-                      _focus={{
-                        borderColor: useColorModeValue('blue.500', 'blue.300'),
-                        boxShadow: 'outline',
-                      }}
-                      _placeholder={{
-                        color: useColorModeValue('gray.500', 'gray.400'),
-                      }}
-                    />
-                  </InputGroup>
-                </FormControl>
-              </SimpleGrid>
+                      bg={useColorModeValue('gray.100', 'gray.600')}
+                    >
+                      <Flex
+                        flex="1"
+                        alignContent={'center'}
+                        textAlign="left"
+                        fontWeight="semibold"
+                      >
+                        <Icon
+                          as={FaSimCard}
+                          w={4}
+                          h={4}
+                          color="orange.500"
+                          mr={2}
+                          mt={1}
+                        />
+                        <Text fontSize="md" fontWeight="semibold">
+                          SIM Card Validity
+                        </Text>
+                      </Flex>
+                      <AccordionIcon />
+                    </AccordionButton>
+                  </h2>
+                  <AccordionPanel pb={4}>
+                    <SimpleGrid columns={{ base: 1, md: 2 }} spacing="6">
+                      <FormControl>
+                        <FormLabel fontSize="sm" color={labelColor}>
+                          Start Date
+                        </FormLabel>
+                        <InputGroup>
+                          <InputLeftElement
+                            pointerEvents="none"
+                            color="gray.400"
+                          >
+                            <Icon as={FaSimCard} />
+                          </InputLeftElement>
+                          <Input
+                            name="simcardValidity.startDate"
+                            type="date"
+                            value={
+                              editDevice?.simcardValidity?.startDate
+                                ? new Date(
+                                    editDevice?.simcardValidity?.startDate,
+                                  )
+                                    .toISOString()
+                                    .split('T')[0]
+                                : ''
+                            }
+                            onChange={(e) =>
+                              setEditDevice((prev) => ({
+                                ...prev,
+                                simcardValidity: {
+                                  ...prev.simcardValidity,
+                                  startDate: e.target.value,
+                                },
+                              }))
+                            }
+                            bg={useColorModeValue('white', 'gray.700')}
+                            color={useColorModeValue('gray.800', 'white')}
+                            borderRadius="md"
+                            borderWidth="2px"
+                            borderColor={useColorModeValue(
+                              'gray.300',
+                              'gray.600',
+                            )}
+                            _hover={{
+                              borderColor: useColorModeValue(
+                                'blue.400',
+                                'blue.600',
+                              ),
+                            }}
+                            _focus={{
+                              borderColor: useColorModeValue(
+                                'blue.500',
+                                'blue.300',
+                              ),
+                              boxShadow: 'outline',
+                            }}
+                            _placeholder={{
+                              color: useColorModeValue('gray.500', 'gray.400'),
+                            }}
+                          />
+                        </InputGroup>
+                      </FormControl>
+
+                      <FormControl>
+                        <FormLabel fontSize="sm" color={labelColor}>
+                          End Date
+                        </FormLabel>
+                        <InputGroup>
+                          <InputLeftElement
+                            pointerEvents="none"
+                            color="gray.400"
+                          >
+                            <Icon as={FaSimCard} />
+                          </InputLeftElement>
+                          <Input
+                            name="simcardValidity.endDate"
+                            type="date"
+                            value={
+                              editDevice?.simcardValidity?.endDate
+                                ? new Date(editDevice?.simcardValidity?.endDate)
+                                    .toISOString()
+                                    .split('T')[0]
+                                : ''
+                            }
+                            onChange={(e) =>
+                              setEditDevice((prev) => ({
+                                ...prev,
+                                simcardValidity: {
+                                  ...prev.simcardValidity,
+                                  endDate: e.target.value,
+                                },
+                              }))
+                            }
+                            bg={useColorModeValue('white', 'gray.700')}
+                            color={useColorModeValue('gray.800', 'white')}
+                            borderRadius="md"
+                            borderWidth="2px"
+                            borderColor={useColorModeValue(
+                              'gray.300',
+                              'gray.600',
+                            )}
+                            _hover={{
+                              borderColor: useColorModeValue(
+                                'blue.400',
+                                'blue.600',
+                              ),
+                            }}
+                            _focus={{
+                              borderColor: useColorModeValue(
+                                'blue.500',
+                                'blue.300',
+                              ),
+                              boxShadow: 'outline',
+                            }}
+                            _placeholder={{
+                              color: useColorModeValue('gray.500', 'gray.400'),
+                            }}
+                          />
+                        </InputGroup>
+                      </FormControl>
+                    </SimpleGrid>
+                  </AccordionPanel>
+                </AccordionItem>
+              </Accordion>
             </Box>
 
             <Box mb={8}>
@@ -2272,191 +2877,287 @@ const Devices = () => {
             </Box>
 
             <Box mb={8}>
-              <Flex alignItems="center" mb={4}>
-                <Icon
-                  as={FaClipboardList}
-                  w={6}
-                  h={6}
-                  color="purple.500"
-                  mr={2}
-                />
-                <Text fontSize="lg" fontWeight="semibold">
-                  Additional Details
-                </Text>
-              </Flex>
-              <SimpleGrid columns={{ base: 1, md: 2 }} spacing="4">
-                <FormControl>
-                  <FormLabel fontSize="sm" color={labelColor}>
-                    Value
-                  </FormLabel>
-                  <InputGroup>
-                    <InputLeftElement pointerEvents="none" color="gray.400">
-                      <Icon as={FaTag} />
-                    </InputLeftElement>
-                    <Input
-                      name="value"
-                      type="number"
-                      value={editDevice.value}
-                      onChange={(e) =>
-                        setEditDevice({ ...editDevice, value: e.target.value })
-                      }
-                      bg={useColorModeValue('white', 'gray.700')}
-                      color={useColorModeValue('gray.800', 'white')}
+              <Accordion allowToggle>
+                <AccordionItem border="none">
+                  <h2>
+                    <AccordionButton
+                      _expanded={{
+                        bg: useColorModeValue('gray.200', 'gray.700'),
+                      }}
                       borderRadius="md"
-                      borderWidth="2px"
-                      borderColor={useColorModeValue('gray.300', 'gray.600')}
-                      _hover={{
-                        borderColor: useColorModeValue('blue.400', 'blue.600'),
-                      }}
-                      _focus={{
-                        borderColor: useColorModeValue('blue.500', 'blue.300'),
-                        boxShadow: 'outline',
-                      }}
-                      _placeholder={{
-                        color: useColorModeValue('gray.500', 'gray.400'),
-                      }}
-                    />
-                  </InputGroup>
-                </FormControl>
+                      bg={useColorModeValue('gray.100', 'gray.600')}
+                    >
+                      <Flex
+                        flex="1"
+                        alignContent={'center'}
+                        textAlign="left"
+                        fontWeight="semibold"
+                      >
+                        <Icon
+                          as={FaClipboardList}
+                          w={6}
+                          h={6}
+                          color="purple.500"
+                          mr={2}
+                        />
+                        <Text fontSize="lg" fontWeight="semibold">
+                          Additional Details
+                        </Text>
+                      </Flex>
+                      <AccordionIcon />
+                    </AccordionButton>
+                  </h2>
+                  <AccordionPanel pb={4}>
+                    <SimpleGrid columns={{ base: 1, md: 2 }} spacing="4">
+                      <FormControl>
+                        <FormLabel fontSize="sm" color={labelColor}>
+                          Value
+                        </FormLabel>
+                        <InputGroup>
+                          <InputLeftElement
+                            pointerEvents="none"
+                            color="gray.400"
+                          >
+                            <Icon as={FaTag} />
+                          </InputLeftElement>
+                          <Input
+                            name="value"
+                            type="number"
+                            placeholder="Enter value"
+                            value={editDevice.value}
+                            onChange={(e) =>
+                              setEditDevice({
+                                ...editDevice,
+                                value: e.target.value,
+                              })
+                            }
+                            bg={useColorModeValue('white', 'gray.700')}
+                            color={useColorModeValue('gray.800', 'white')}
+                            borderRadius="md"
+                            borderWidth="2px"
+                            borderColor={useColorModeValue(
+                              'gray.300',
+                              'gray.600',
+                            )}
+                            _hover={{
+                              borderColor: useColorModeValue(
+                                'blue.400',
+                                'blue.600',
+                              ),
+                            }}
+                            _focus={{
+                              borderColor: useColorModeValue(
+                                'blue.500',
+                                'blue.300',
+                              ),
+                              boxShadow: 'outline',
+                            }}
+                            _placeholder={{
+                              color: useColorModeValue('gray.500', 'gray.400'),
+                            }}
+                          />
+                        </InputGroup>
+                      </FormControl>
 
-                <FormControl>
-                  <FormLabel fontSize="sm" color={labelColor}>
-                    Diameter
-                  </FormLabel>
-                  <InputGroup>
-                    <InputLeftElement pointerEvents="none" color="gray.400">
-                      <Icon as={FaCircle} />
-                    </InputLeftElement>
-                    <Input
-                      name="diameter"
-                      value={editDevice.diameter}
-                      onChange={(e) =>
-                        setEditDevice({
-                          ...editDevice,
-                          diameter: e.target.value,
-                        })
-                      }
-                      bg={useColorModeValue('white', 'gray.700')}
-                      color={useColorModeValue('gray.800', 'white')}
-                      borderRadius="md"
-                      borderWidth="2px"
-                      borderColor={useColorModeValue('gray.300', 'gray.600')}
-                      _hover={{
-                        borderColor: useColorModeValue('blue.400', 'blue.600'),
-                      }}
-                      _focus={{
-                        borderColor: useColorModeValue('blue.500', 'blue.300'),
-                        boxShadow: 'outline',
-                      }}
-                      _placeholder={{
-                        color: useColorModeValue('gray.500', 'gray.400'),
-                      }}
-                    />
-                  </InputGroup>
-                </FormControl>
+                      <FormControl>
+                        <FormLabel fontSize="sm" color={labelColor}>
+                          Diameter
+                        </FormLabel>
+                        <InputGroup>
+                          <InputLeftElement
+                            pointerEvents="none"
+                            color="gray.400"
+                          >
+                            <Icon as={FaCircle} />
+                          </InputLeftElement>
+                          <Input
+                            name="diameter"
+                            placeholder="Enter diameter"
+                            value={editDevice.diameter}
+                            onChange={(e) =>
+                              setEditDevice({
+                                ...editDevice,
+                                diameter: e.target.value,
+                              })
+                            }
+                            bg={useColorModeValue('white', 'gray.700')}
+                            color={useColorModeValue('gray.800', 'white')}
+                            borderRadius="md"
+                            borderWidth="2px"
+                            borderColor={useColorModeValue(
+                              'gray.300',
+                              'gray.600',
+                            )}
+                            _hover={{
+                              borderColor: useColorModeValue(
+                                'blue.400',
+                                'blue.600',
+                              ),
+                            }}
+                            _focus={{
+                              borderColor: useColorModeValue(
+                                'blue.500',
+                                'blue.300',
+                              ),
+                              boxShadow: 'outline',
+                            }}
+                            _placeholder={{
+                              color: useColorModeValue('gray.500', 'gray.400'),
+                            }}
+                          />
+                        </InputGroup>
+                      </FormControl>
 
-                <FormControl>
-                  <FormLabel fontSize="sm" color={labelColor}>
-                    Make
-                  </FormLabel>
-                  <InputGroup>
-                    <InputLeftElement pointerEvents="none" color="gray.400">
-                      <Icon as={FaIndustry} />
-                    </InputLeftElement>
-                    <Input
-                      name="make"
-                      value={editDevice.make}
-                      onChange={(e) =>
-                        setEditDevice({ ...editDevice, make: e.target.value })
-                      }
-                      bg={useColorModeValue('white', 'gray.700')}
-                      color={useColorModeValue('gray.800', 'white')}
-                      borderRadius="md"
-                      borderWidth="2px"
-                      borderColor={useColorModeValue('gray.300', 'gray.600')}
-                      _hover={{
-                        borderColor: useColorModeValue('blue.400', 'blue.600'),
-                      }}
-                      _focus={{
-                        borderColor: useColorModeValue('blue.500', 'blue.300'),
-                        boxShadow: 'outline',
-                      }}
-                      _placeholder={{
-                        color: useColorModeValue('gray.500', 'gray.400'),
-                      }}
-                    />
-                  </InputGroup>
-                </FormControl>
+                      <FormControl>
+                        <FormLabel fontSize="sm" color={labelColor}>
+                          Make
+                        </FormLabel>
+                        <InputGroup>
+                          <InputLeftElement
+                            pointerEvents="none"
+                            color="gray.400"
+                          >
+                            <Icon as={FaIndustry} />
+                          </InputLeftElement>
+                          <Input
+                            name="make"
+                            placeholder="Enter make"
+                            value={editDevice.make}
+                            onChange={(e) =>
+                              setEditDevice({
+                                ...editDevice,
+                                make: e.target.value,
+                              })
+                            }
+                            bg={useColorModeValue('white', 'gray.700')}
+                            color={useColorModeValue('gray.800', 'white')}
+                            borderRadius="md"
+                            borderWidth="2px"
+                            borderColor={useColorModeValue(
+                              'gray.300',
+                              'gray.600',
+                            )}
+                            _hover={{
+                              borderColor: useColorModeValue(
+                                'blue.400',
+                                'blue.600',
+                              ),
+                            }}
+                            _focus={{
+                              borderColor: useColorModeValue(
+                                'blue.500',
+                                'blue.300',
+                              ),
+                              boxShadow: 'outline',
+                            }}
+                            _placeholder={{
+                              color: useColorModeValue('gray.500', 'gray.400'),
+                            }}
+                          />
+                        </InputGroup>
+                      </FormControl>
 
-                <FormControl>
-                  <FormLabel fontSize="sm" color={labelColor}>
-                    Model
-                  </FormLabel>
-                  <InputGroup>
-                    <InputLeftElement pointerEvents="none" color="gray.400">
-                      <Icon as={FaCogs} />
-                    </InputLeftElement>
-                    <Input
-                      name="model"
-                      value={editDevice.model}
-                      onChange={(e) =>
-                        setEditDevice({ ...editDevice, model: e.target.value })
-                      }
-                      bg={useColorModeValue('white', 'gray.700')}
-                      color={useColorModeValue('gray.800', 'white')}
-                      borderRadius="md"
-                      borderWidth="2px"
-                      borderColor={useColorModeValue('gray.300', 'gray.600')}
-                      _hover={{
-                        borderColor: useColorModeValue('blue.400', 'blue.600'),
-                      }}
-                      _focus={{
-                        borderColor: useColorModeValue('blue.500', 'blue.300'),
-                        boxShadow: 'outline',
-                      }}
-                      _placeholder={{
-                        color: useColorModeValue('gray.500', 'gray.400'),
-                      }}
-                    />
-                  </InputGroup>
-                </FormControl>
+                      <FormControl>
+                        <FormLabel fontSize="sm" color={labelColor}>
+                          Model
+                        </FormLabel>
+                        <InputGroup>
+                          <InputLeftElement
+                            pointerEvents="none"
+                            color="gray.400"
+                          >
+                            <Icon as={FaCogs} />
+                          </InputLeftElement>
+                          <Input
+                            name="model"
+                            placeholder="Enter model"
+                            value={editDevice.model}
+                            onChange={(e) =>
+                              setEditDevice({
+                                ...editDevice,
+                                model: e.target.value,
+                              })
+                            }
+                            bg={useColorModeValue('white', 'gray.700')}
+                            color={useColorModeValue('gray.800', 'white')}
+                            borderRadius="md"
+                            borderWidth="2px"
+                            borderColor={useColorModeValue(
+                              'gray.300',
+                              'gray.600',
+                            )}
+                            _hover={{
+                              borderColor: useColorModeValue(
+                                'blue.400',
+                                'blue.600',
+                              ),
+                            }}
+                            _focus={{
+                              borderColor: useColorModeValue(
+                                'blue.500',
+                                'blue.300',
+                              ),
+                              boxShadow: 'outline',
+                            }}
+                            _placeholder={{
+                              color: useColorModeValue('gray.500', 'gray.400'),
+                            }}
+                          />
+                        </InputGroup>
+                      </FormControl>
 
-                <FormControl>
-                  <FormLabel fontSize="sm" color={labelColor}>
-                    Protocol
-                  </FormLabel>
-                  <InputGroup>
-                    <InputLeftElement pointerEvents="none" color="gray.400">
-                      <Icon as={FaNetworkWired} />
-                    </InputLeftElement>
-                    <Input
-                      name="protocol"
-                      value={editDevice.protocol}
-                      onChange={(e) =>
-                        setEditDevice({
-                          ...editDevice,
-                          protocol: e.target.value,
-                        })
-                      }
-                      bg={useColorModeValue('white', 'gray.700')}
-                      color={useColorModeValue('gray.800', 'white')}
-                      borderRadius="md"
-                      borderWidth="2px"
-                      borderColor={useColorModeValue('gray.300', 'gray.600')}
-                      _hover={{
-                        borderColor: useColorModeValue('blue.400', 'blue.600'),
-                      }}
-                      _focus={{
-                        borderColor: useColorModeValue('blue.500', 'blue.300'),
-                        boxShadow: 'outline',
-                      }}
-                      _placeholder={{
-                        color: useColorModeValue('gray.500', 'gray.400'),
-                      }}
-                    />
-                  </InputGroup>
-                </FormControl>
-              </SimpleGrid>
+                      <FormControl>
+                        <FormLabel fontSize="sm" color={labelColor}>
+                          Protocol
+                        </FormLabel>
+                        <InputGroup>
+                          <InputLeftElement
+                            pointerEvents="none"
+                            color="gray.400"
+                          >
+                            <Icon as={FaNetworkWired} />
+                          </InputLeftElement>
+                          <Input
+                            name="protocol"
+                            placeholder="Enter protocol"
+                            value={editDevice.protocol}
+                            onChange={(e) =>
+                              setEditDevice({
+                                ...editDevice,
+                                protocol: e.target.value,
+                              })
+                            }
+                            bg={useColorModeValue('white', 'gray.700')}
+                            color={useColorModeValue('gray.800', 'white')}
+                            borderRadius="md"
+                            borderWidth="2px"
+                            borderColor={useColorModeValue(
+                              'gray.300',
+                              'gray.600',
+                            )}
+                            _hover={{
+                              borderColor: useColorModeValue(
+                                'blue.400',
+                                'blue.600',
+                              ),
+                            }}
+                            _focus={{
+                              borderColor: useColorModeValue(
+                                'blue.500',
+                                'blue.300',
+                              ),
+                              boxShadow: 'outline',
+                            }}
+                            _placeholder={{
+                              color: useColorModeValue('gray.500', 'gray.400'),
+                            }}
+                          />
+                        </InputGroup>
+                      </FormControl>
+                    </SimpleGrid>
+                  </AccordionPanel>
+                </AccordionItem>
+              </Accordion>
             </Box>
           </ModalBody>
           <ModalFooter

@@ -1,5 +1,5 @@
 // Chakra imports
-import { Portal, Box, useDisclosure } from '@chakra-ui/react';
+import { Portal, Box, useDisclosure, useColorModeValue } from '@chakra-ui/react';
 import Footer from 'components/footer/FooterAdmin.js';
 // Layout components
 import Navbar from 'components/navbar/NavbarAdmin.js';
@@ -128,8 +128,10 @@ export default function Dashboard(props) {
             transitionDuration=".2s, .2s, .35s"
             transitionProperty="top, bottom, width"
             transitionTimingFunction="linear, linear, ease"
-            // border={"1px solid RED"}
-            background="linear-gradient(to right, #eef2f3, #ffffff)"
+            background={useColorModeValue(
+              'linear-gradient(to right, #eef2f3, #ffffff)', 
+              'linear-gradient(to right, #2c3e50,rgb(55, 117, 127))'
+            )}
             // bgImage="url('https://media.giphy.com/media/mmv4ATlqgLC81TvAyg/giphy.gif')"
           >
             <Portal>

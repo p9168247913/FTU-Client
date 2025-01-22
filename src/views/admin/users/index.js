@@ -46,7 +46,20 @@ import { useColorModeValue } from '@chakra-ui/react';
 import Select from 'react-select';
 import { set } from 'date-fns';
 import { EmailIcon, PhoneIcon } from '@chakra-ui/icons';
-import { FaUserAlt, FaBuilding, FaIdBadge } from 'react-icons/fa';
+import {
+  FaUserAlt,
+  FaBuilding,
+  FaIdBadge,
+  FaInfoCircle,
+  FaUserTie,
+  FaPhoneAlt,
+  FaClipboardList,
+  FaUser,
+  FaUserCircle,
+  FaLock,
+  FaBriefcase,
+  FaUserTag,
+} from 'react-icons/fa';
 import { MdDevices } from 'react-icons/md';
 import { use } from 'react';
 
@@ -104,6 +117,8 @@ const User = () => {
   const borderColor = useColorModeValue('gray.200', 'gray.600');
   const placeholderColor = useColorModeValue('gray.500', 'gray.400');
   const hoverBorderColor = useColorModeValue('gray.400', 'gray.500');
+  const inputBorderColor = useColorModeValue('gray.300', 'gray.600');
+  const focusBorderColor = useColorModeValue('blue.500', 'blue.300');
   const selectedBg = useColorModeValue('#EDF2F7', '#2D3748');
   const focusedBg = useColorModeValue('#E2E8F0', '#4A5568');
   const headerBg = useColorModeValue(
@@ -113,7 +128,10 @@ const User = () => {
 
   const textColor = useColorModeValue('gray.700', 'gray.300');
   const labelColor = useColorModeValue('gray.600', 'gray.400');
-
+  const addmodalheaderBg = useColorModeValue(
+    'linear-gradient(90deg,rgb(34, 84, 157) 0%,rgb(60, 129, 159) 50%,rgb(93, 153, 156) 100%)',
+    'linear-gradient(90deg,rgb(39, 205, 230) 0%,rgb(81, 198, 224) 50%,rgb(136, 218, 236) 100%)',
+  );
   const companyOptions = [
     { value: '', label: 'Select Company' },
     ...companyData.map((company) => ({
@@ -620,302 +638,647 @@ const User = () => {
         loading={loading}
       />
 
-      <Modal isOpen={isOpen} onClose={onClose} motionPreset="slideInRight">
+      <Modal isOpen={isOpen} onClose={onClose} size="lg">
         <ModalOverlay />
-        <ModalContent
-          maxWidth="800px"
-          mx="auto"
-          style={{ height: '77vh', overflow: 'auto' }}
-        >
-          <div
-            style={{
-              position: 'sticky',
-              top: 0,
-              zIndex: '1',
-              backgroundColor: modalBg,
-            }}
+        <ModalContent maxWidth="900px" bg={modalBg} rounded="xl" boxShadow="lg">
+          <Box
+            bg={addmodalheaderBg}
+            py={1}
+            px={2}
+            textAlign="center"
+            roundedTop="xl"
           >
-            <ModalHeader>Add New User</ModalHeader>
-            <ModalCloseButton />
-          </div>
-          <ModalBody>
-            <SimpleGrid columns={{ base: 1, md: 2 }} spacing="4">
-              <FormControl>
-                <FormLabel>Name</FormLabel>
-                <Input
-                  name="name"
-                  value={addUser.name}
-                  onChange={(e) =>
-                    setAddUser({ ...addUser, name: e.target.value })
-                  }
-                  bg={useColorModeValue('white', 'gray.700')}
-                  color={useColorModeValue('black', 'white')}
-                  _placeholder={{
-                    color: useColorModeValue('gray.500', 'gray.400'),
-                  }}
-                />
-              </FormControl>
-              <FormControl>
-                <FormLabel>Email</FormLabel>
-                <Input
-                  name="email"
-                  value={addUser.email}
-                  onChange={(e) =>
-                    setAddUser({ ...addUser, email: e.target.value })
-                  }
-                  bg={useColorModeValue('white', 'gray.700')}
-                  color={useColorModeValue('black', 'white')}
-                  _placeholder={{
-                    color: useColorModeValue('gray.500', 'gray.400'),
-                  }}
-                />
-              </FormControl>
-              <FormControl>
-                <FormLabel>Username</FormLabel>
-                <Input
-                  name="username"
-                  value={addUser.username}
-                  onChange={(e) =>
-                    setAddUser({ ...addUser, username: e.target.value })
-                  }
-                  bg={useColorModeValue('white', 'gray.700')}
-                  color={useColorModeValue('black', 'white')}
-                  _placeholder={{
-                    color: useColorModeValue('gray.500', 'gray.400'),
-                  }}
-                />
-              </FormControl>
-              <FormControl>
-                <FormLabel>Password</FormLabel>
-                <Input
-                  name="password"
-                  type="password"
-                  value={addUser.password}
-                  onChange={(e) =>
-                    setAddUser({ ...addUser, password: e.target.value })
-                  }
-                  bg={useColorModeValue('white', 'gray.700')}
-                  color={useColorModeValue('black', 'white')}
-                  _placeholder={{
-                    color: useColorModeValue('gray.500', 'gray.400'),
-                  }}
-                />
-              </FormControl>
-              <FormControl>
-                <FormLabel>Role</FormLabel>
-                <Select
-                  options={addRoleOptions[role]}
-                  value={addRoleOptions[role].find(
-                    (option) => option.value === addUser.role,
-                  )}
-                  onChange={(selectedOption) =>
-                    setAddUser({ ...addUser, role: selectedOption.value })
-                  }
-                />
-              </FormControl>
-              <FormControl>
-                <FormLabel>Designation</FormLabel>
-                <Input
-                  name="designation"
-                  value={addUser.designation}
-                  onChange={(e) =>
-                    setAddUser({ ...addUser, designation: e.target.value })
-                  }
-                  bg={useColorModeValue('white', 'gray.700')}
-                  color={useColorModeValue('black', 'white')}
-                  _placeholder={{
-                    color: useColorModeValue('gray.500', 'gray.400'),
-                  }}
-                />
-              </FormControl>
-              <FormControl>
-                <FormLabel>Phone No.</FormLabel>
-                <Input
-                  name="phoneNo"
-                  value={addUser.phoneNo}
-                  onChange={(e) =>
-                    setAddUser({ ...addUser, phoneNo: e.target.value })
-                  }
-                  bg={useColorModeValue('white', 'gray.700')}
-                  color={useColorModeValue('black', 'white')}
-                  _placeholder={{
-                    color: useColorModeValue('gray.500', 'gray.400'),
-                  }}
-                />
-              </FormControl>
-              {(addUser.role === 'companyUser' || addUser.role === 'user') && (
+            <ModalHeader
+              fontSize="2xl"
+              fontWeight="bold"
+              color="white"
+              display="flex"
+              alignItems="center"
+              justifyContent="center"
+            >
+              <Icon as={AddIcon} mr={2} />
+              Add New User
+            </ModalHeader>
+            <ModalCloseButton color="white" />
+          </Box>
+
+          <ModalBody p={6}>
+            <Box mb={8}>
+              <Flex alignItems="center" mb={4}>
+                <Icon as={FaInfoCircle} w={6} h={6} color="blue.500" mr={2} />
+                <Text fontSize="lg" fontWeight="semibold">
+                  Basic Details
+                </Text>
+              </Flex>
+              <SimpleGrid columns={{ base: 1, md: 2 }} spacing="6">
+                <FormControl isRequired>
+                  <FormLabel fontSize="sm">Name</FormLabel>
+                  <InputGroup>
+                    <InputLeftElement pointerEvents="none" color="gray.400">
+                      <Icon as={FaUser} />
+                    </InputLeftElement>
+                    <Input
+                      name="name"
+                      placeholder="Enter user name"
+                      value={addUser.name}
+                      onChange={(e) =>
+                        setAddUser({ ...addUser, name: e.target.value })
+                      }
+                      bg={useColorModeValue('white', 'gray.700')}
+                      color={useColorModeValue('black', 'white')}
+                      borderRadius="md"
+                      borderWidth="2px"
+                      borderColor={useColorModeValue('gray.300', 'gray.600')}
+                      _hover={{
+                        borderColor: useColorModeValue('blue.400', 'blue.600'),
+                      }}
+                      _focus={{
+                        borderColor: useColorModeValue('blue.500', 'blue.300'),
+                        boxShadow: 'outline',
+                      }}
+                      _placeholder={{
+                        color: useColorModeValue('gray.500', 'gray.400'),
+                      }}
+                    />
+                  </InputGroup>
+                </FormControl>
+
+                <FormControl isRequired>
+                  <FormLabel fontSize="sm">Username</FormLabel>
+                  <InputGroup>
+                    <InputLeftElement pointerEvents="none" color="gray.400">
+                      <Icon as={FaUserCircle} />
+                    </InputLeftElement>
+                    <Input
+                      name="username"
+                      placeholder="Enter username"
+                      value={addUser.username}
+                      onChange={(e) =>
+                        setAddUser({ ...addUser, username: e.target.value })
+                      }
+                      bg={useColorModeValue('white', 'gray.700')}
+                      color={useColorModeValue('black', 'white')}
+                      borderRadius="md"
+                      borderWidth="2px"
+                      borderColor={useColorModeValue('gray.300', 'gray.600')}
+                      _hover={{
+                        borderColor: useColorModeValue('blue.400', 'blue.600'),
+                      }}
+                      _focus={{
+                        borderColor: useColorModeValue('blue.500', 'blue.300'),
+                        boxShadow: 'outline',
+                      }}
+                      _placeholder={{
+                        color: useColorModeValue('gray.500', 'gray.400'),
+                      }}
+                    />
+                  </InputGroup>
+                </FormControl>
+
+                <FormControl isRequired>
+                  <FormLabel fontSize="sm">Password</FormLabel>
+                  <InputGroup>
+                    <InputLeftElement pointerEvents="none" color="gray.400">
+                      <Icon as={FaLock} />
+                    </InputLeftElement>
+                    <Input
+                      name="password"
+                      type="password"
+                      placeholder="Enter password"
+                      value={addUser.password}
+                      onChange={(e) =>
+                        setAddUser({ ...addUser, password: e.target.value })
+                      }
+                      bg={useColorModeValue('white', 'gray.700')}
+                      color={useColorModeValue('black', 'white')}
+                      borderRadius="md"
+                      borderWidth="2px"
+                      borderColor={useColorModeValue('gray.300', 'gray.600')}
+                      _hover={{
+                        borderColor: useColorModeValue('blue.400', 'blue.600'),
+                      }}
+                      _focus={{
+                        borderColor: useColorModeValue('blue.500', 'blue.300'),
+                        boxShadow: 'outline',
+                      }}
+                      _placeholder={{
+                        color: useColorModeValue('gray.500', 'gray.400'),
+                      }}
+                    />
+                  </InputGroup>
+                </FormControl>
+              </SimpleGrid>
+            </Box>
+
+            <Box mb={8}>
+              <Flex alignItems="center" mb={4}>
+                <Icon as={FaPhoneAlt} w={6} h={6} color="orange.500" mr={2} />
+                <Text fontSize="lg" fontWeight="semibold">
+                  Contact Details
+                </Text>
+              </Flex>
+              <SimpleGrid columns={{ base: 1, md: 2 }} spacing="6">
+                <FormControl isRequired>
+                  <FormLabel fontSize="sm">Email</FormLabel>
+                  <InputGroup>
+                    <InputLeftElement pointerEvents="none" color="gray.400">
+                      <Icon as={EmailIcon} />
+                    </InputLeftElement>
+                    <Input
+                      name="email"
+                      placeholder="Enter user email"
+                      value={addUser.email}
+                      onChange={(e) =>
+                        setAddUser({ ...addUser, email: e.target.value })
+                      }
+                      bg={useColorModeValue('white', 'gray.700')}
+                      color={useColorModeValue('black', 'white')}
+                      borderRadius="md"
+                      borderWidth="2px"
+                      borderColor={useColorModeValue('gray.300', 'gray.600')}
+                      _hover={{
+                        borderColor: useColorModeValue('blue.400', 'blue.600'),
+                      }}
+                      _focus={{
+                        borderColor: useColorModeValue('blue.500', 'blue.300'),
+                        boxShadow: 'outline',
+                      }}
+                      _placeholder={{
+                        color: useColorModeValue('gray.500', 'gray.400'),
+                      }}
+                    />
+                  </InputGroup>
+                </FormControl>
+
                 <FormControl>
-                  <FormLabel>Company</FormLabel>
+                  <FormLabel fontSize="sm">Phone Number</FormLabel>
+                  <InputGroup>
+                    <InputLeftElement pointerEvents="none" color="gray.400">
+                      <Icon as={FaPhoneAlt} />
+                    </InputLeftElement>
+                    <Input
+                      name="phoneNo"
+                      placeholder="Enter phone number"
+                      value={addUser.phoneNo}
+                      onChange={(e) =>
+                        setAddUser({ ...addUser, phoneNo: e.target.value })
+                      }
+                      bg={useColorModeValue('white', 'gray.700')}
+                      color={useColorModeValue('black', 'white')}
+                      borderRadius="md"
+                      borderWidth="2px"
+                      borderColor={useColorModeValue('gray.300', 'gray.600')}
+                      _hover={{
+                        borderColor: useColorModeValue('blue.400', 'blue.600'),
+                      }}
+                      _focus={{
+                        borderColor: useColorModeValue('blue.500', 'blue.300'),
+                        boxShadow: 'outline',
+                      }}
+                      _placeholder={{
+                        color: useColorModeValue('gray.500', 'gray.400'),
+                      }}
+                    />
+                  </InputGroup>
+                </FormControl>
+              </SimpleGrid>
+            </Box>
+
+            <Box mb={8}>
+              <Flex alignItems="center" mb={4}>
+                <Icon as={FaUserTie} w={6} h={6} color="teal.500" mr={2} />
+                <Text fontSize="lg" fontWeight="semibold">
+                  Role and Designation
+                </Text>
+              </Flex>
+              <SimpleGrid columns={{ base: 1, md: 2 }} spacing="6">
+                <FormControl isRequired>
+                  <FormLabel fontSize="sm">Role</FormLabel>
+
                   <Select
-                    options={companies.map((company) => ({
-                      value: company._id,
-                      label: company.name,
-                    }))}
-                    value={
-                      addUser.companyId
-                        ? {
-                            value: addUser.companyId,
-                            label: companies.find(
-                              (c) => c._id === addUser.companyId,
-                            )?.name,
-                          }
-                        : null
-                    }
+                    options={addRoleOptions[role]}
+                    placeholder="Select role"
+                    value={addRoleOptions[role].find(
+                      (option) => option.value === addUser.role,
+                    )}
                     onChange={(selectedOption) =>
-                      setAddUser({
-                        ...addUser,
-                        companyId: selectedOption ? selectedOption.value : '',
-                      })
+                      setAddUser({ ...addUser, role: selectedOption.value })
                     }
+                    bg={useColorModeValue('white', 'gray.700')}
+                    color={useColorModeValue('black', 'white')}
+                    borderRadius="md"
+                    pl="10"
+                    borderWidth="2px"
+                    borderColor={useColorModeValue('gray.300', 'gray.600')}
+                    _hover={{
+                      borderColor: useColorModeValue('blue.400', 'blue.600'),
+                    }}
+                    _focus={{
+                      borderColor: useColorModeValue('blue.500', 'blue.300'),
+                      boxShadow: 'outline',
+                    }}
+                    _placeholder={{
+                      color: useColorModeValue('gray.500', 'gray.400'),
+                    }}
                   />
                 </FormControl>
-              )}
-            </SimpleGrid>
+
+                <FormControl>
+                  <FormLabel fontSize="sm">Designation</FormLabel>
+                  <InputGroup>
+                    <InputLeftElement pointerEvents="none" color="gray.400">
+                      <Icon as={FaBriefcase} />
+                    </InputLeftElement>
+                    <Input
+                      name="designation"
+                      placeholder="Enter designation"
+                      value={addUser.designation}
+                      onChange={(e) =>
+                        setAddUser({ ...addUser, designation: e.target.value })
+                      }
+                      bg={useColorModeValue('white', 'gray.700')}
+                      color={useColorModeValue('black', 'white')}
+                      borderRadius="md"
+                      borderWidth="2px"
+                      borderColor={useColorModeValue('gray.300', 'gray.600')}
+                      _hover={{
+                        borderColor: useColorModeValue('blue.400', 'blue.600'),
+                      }}
+                      _focus={{
+                        borderColor: useColorModeValue('blue.500', 'blue.300'),
+                        boxShadow: 'outline',
+                      }}
+                      _placeholder={{
+                        color: useColorModeValue('gray.500', 'gray.400'),
+                      }}
+                    />
+                  </InputGroup>
+                </FormControl>
+              </SimpleGrid>
+            </Box>
+
+            {addUser.role === 'companyUser' || addUser.role === 'user' ? (
+              <Box mb={8}>
+                <Flex alignItems="center" mb={4}>
+                  <Icon as={FaBuilding} w={6} h={6} color="purple.500" mr={2} />
+                  <Text fontSize="lg" fontWeight="semibold">
+                    Company Association
+                  </Text>
+                </Flex>
+                <SimpleGrid columns={{ base: 1, md: 2 }} spacing="6">
+                  <FormControl>
+                    <FormLabel fontSize="sm">Company</FormLabel>
+                    <Select
+                      options={companies.map((company) => ({
+                        value: company._id,
+                        label: company.name,
+                      }))}
+                      placeholder="Select company"
+                      value={
+                        addUser.companyId
+                          ? {
+                              value: addUser.companyId,
+                              label: companies.find(
+                                (c) => c._id === addUser.companyId,
+                              )?.name,
+                            }
+                          : null
+                      }
+                      onChange={(selectedOption) =>
+                        setAddUser({
+                          ...addUser,
+                          companyId: selectedOption ? selectedOption.value : '',
+                        })
+                      }
+                      bg={inputBg}
+                      color={inputTextColor}
+                      borderRadius="md"
+                      borderWidth="2px"
+                      borderColor={inputBorderColor}
+                      _hover={{ borderColor: hoverBorderColor }}
+                      _focus={{
+                        borderColor: focusBorderColor,
+                        boxShadow: 'outline',
+                      }}
+                      _placeholder={{ color: placeholderColor }}
+                    />
+                  </FormControl>
+                </SimpleGrid>
+              </Box>
+            ) : null}
           </ModalBody>
+
           <ModalFooter
-            style={{
-              position: 'sticky',
-              bottom: 0,
-              backgroundColor: modalBg,
-              // zIndex: '1',
-            }}
+            bg={useColorModeValue('gray.50', 'gray.800')}
+            borderTop="1px solid"
+            borderColor={useColorModeValue('gray.200', 'gray.700')}
+            py={5}
+            px={6}
+            justifyContent="space-between"
+            roundedBottom="xl"
           >
-            <Button onClick={handleAddUser} colorScheme="blue" mr={3}>
-              Add User
-            </Button>
-            <Button onClick={onClose} variant="ghost">
+            <Button
+              onClick={onClose}
+              variant="ghost"
+              colorScheme="red"
+              borderRadius="md"
+            >
               Cancel
+            </Button>
+            <Button
+              onClick={handleAddUser}
+              colorScheme="blue"
+              isLoading={loading}
+              borderRadius="md"
+              shadow="sm"
+              _hover={{ shadow: 'md', transform: 'translateY(-1px)' }}
+            >
+              Add User
             </Button>
           </ModalFooter>
         </ModalContent>
       </Modal>
 
-      <Modal
-        isOpen={isEditOpen}
-        onClose={onEditClose}
-        motionPreset="slideInRight"
-      >
+      <Modal isOpen={isEditOpen} onClose={onEditClose} size="lg">
         <ModalOverlay />
-        <ModalContent
-          maxWidth="800px"
-          mx="auto"
-          style={{ height: '80vh', overflow: 'auto' }}
-        >
-          <div
-            style={{
-              position: 'sticky',
-              top: 0,
-              backgroundColor: modalBg,
-              zIndex: '1',
-            }}
+        <ModalContent maxWidth="900px" bg={modalBg} rounded="xl" boxShadow="lg">
+          <Box
+            bg={addmodalheaderBg}
+            py={1}
+            px={2}
+            textAlign="center"
+            roundedTop="xl"
           >
-            <ModalHeader>Edit User</ModalHeader>
-            <ModalCloseButton />
-          </div>
-          <ModalBody>
-            <SimpleGrid columns={{ base: 1, md: 2 }} spacing="4">
-              <FormControl>
-                <FormLabel>Name</FormLabel>
-                <Input
-                  name="name"
-                  value={editUser?.name || ''}
-                  onChange={(e) =>
-                    setEditUser({ ...editUser, name: e.target.value })
-                  }
-                  bg={useColorModeValue('white', 'gray.700')}
-                  color={useColorModeValue('black', 'white')}
-                  _placeholder={{
-                    color: useColorModeValue('gray.500', 'gray.400'),
-                  }}
-                />
-              </FormControl>
+            <ModalHeader
+              fontSize="2xl"
+              fontWeight="bold"
+              color="white"
+              display="flex"
+              alignItems="center"
+              justifyContent="center"
+            >
+              <Icon as={EditIcon} mr={2} />
+              Edit User
+            </ModalHeader>
+            <ModalCloseButton color="white" />
+          </Box>
 
-              <FormControl>
-                <FormLabel>Email</FormLabel>
-                <Input
-                  name="email"
-                  value={editUser?.email || ''}
-                  onChange={(e) =>
-                    setEditUser({ ...editUser, email: e.target.value })
-                  }
-                  bg={useColorModeValue('white', 'gray.700')}
-                  color={useColorModeValue('black', 'white')}
-                  _placeholder={{
-                    color: useColorModeValue('gray.500', 'gray.400'),
-                  }}
-                />
-              </FormControl>
-
-              <FormControl>
-                <FormLabel>Username</FormLabel>
-                <Input
-                  name="username"
-                  value={editUser?.username || ''}
-                  onChange={(e) =>
-                    setEditUser({ ...editUser, username: e.target.value })
-                  }
-                  bg={useColorModeValue('white', 'gray.700')}
-                  color={useColorModeValue('black', 'white')}
-                  _placeholder={{
-                    color: useColorModeValue('gray.500', 'gray.400'),
-                  }}
-                />
-              </FormControl>
-
-              <FormControl>
-                <FormLabel>Role</FormLabel>
-                <Select
-                  options={addRoleOptions[role]}
-                  value={addRoleOptions[role].find(
-                    (option) => option.value === editUser?.role,
-                  )}
-                  onChange={(selectedOption) =>
-                    setEditUser({ ...editUser, role: selectedOption.value })
-                  }
-                />
-              </FormControl>
-
-              <FormControl>
-                <FormLabel>Designation</FormLabel>
-                <Input
-                  name="designation"
-                  value={editUser?.designation || ''}
-                  onChange={(e) =>
-                    setEditUser({ ...editUser, designation: e.target.value })
-                  }
-                  bg={useColorModeValue('white', 'gray.700')}
-                  color={useColorModeValue('black', 'white')}
-                  _placeholder={{
-                    color: useColorModeValue('gray.500', 'gray.400'),
-                  }}
-                />
-              </FormControl>
-
-              <FormControl>
-                <FormLabel>Phone No.</FormLabel>
-                <Input
-                  name="phoneNo"
-                  value={editUser?.phoneNo || ''}
-                  onChange={(e) =>
-                    setEditUser({ ...editUser, phoneNo: e.target.value })
-                  }
-                  bg={useColorModeValue('white', 'gray.700')}
-                  color={useColorModeValue('black', 'white')}
-                  _placeholder={{
-                    color: useColorModeValue('gray.500', 'gray.400'),
-                  }}
-                />
-              </FormControl>
-
-              {(editUser?.role === 'companyUser' ||
-                editUser?.role === 'user') && (
+          <ModalBody p={6}>
+            <Box mb={8}>
+              <Flex alignItems="center" mb={4}>
+                <Icon as={FaInfoCircle} w={6} h={6} color="blue.500" mr={2} />
+                <Text fontSize="lg" fontWeight="semibold">
+                  Basic Details
+                </Text>
+              </Flex>
+              <SimpleGrid columns={{ base: 1, md: 2 }} spacing="6">
                 <FormControl>
-                  <FormLabel>Company</FormLabel>
+                  <FormLabel fontSize="sm">Name</FormLabel>
+                  <InputGroup>
+                    <InputLeftElement pointerEvents="none" color="gray.400">
+                      <Icon as={FaUser} />
+                    </InputLeftElement>
+                    <Input
+                      name="name"
+                      placeholder="Enter name"
+                      value={editUser?.name || ''}
+                      onChange={(e) =>
+                        setEditUser({ ...editUser, name: e.target.value })
+                      }
+                      bg={useColorModeValue('white', 'gray.700')}
+                      color={useColorModeValue('black', 'white')}
+                      borderRadius="md"
+                      borderWidth="2px"
+                      borderColor={useColorModeValue('gray.300', 'gray.600')}
+                      _hover={{
+                        borderColor: useColorModeValue('blue.400', 'blue.600'),
+                      }}
+                      _focus={{
+                        borderColor: useColorModeValue('blue.500', 'blue.300'),
+                        boxShadow: 'outline',
+                      }}
+                      _placeholder={{
+                        color: useColorModeValue('gray.500', 'gray.400'),
+                      }}
+                    />
+                  </InputGroup>
+                </FormControl>
+
+                <FormControl>
+                  <FormLabel>Username</FormLabel>
+                  <InputGroup>
+                    <InputLeftElement pointerEvents="none" color="gray.400">
+                      <Icon as={FaUserCircle} />
+                    </InputLeftElement>
+                    <Input
+                      name="username"
+                      value={editUser?.username || ''}
+                      onChange={(e) =>
+                        setEditUser({ ...editUser, username: e.target.value })
+                      }
+                      bg={useColorModeValue('white', 'gray.700')}
+                      color={useColorModeValue('black', 'white')}
+                      _placeholder={{
+                        color: useColorModeValue('gray.500', 'gray.400'),
+                      }}
+                      borderWidth="2px"
+                      borderColor={useColorModeValue('gray.300', 'gray.600')}
+                      _hover={{
+                        borderColor: useColorModeValue('blue.400', 'blue.600'),
+                      }}
+                      _focus={{
+                        borderColor: useColorModeValue('blue.500', 'blue.300'),
+                        boxShadow: 'outline',
+                      }}
+                    />
+                  </InputGroup>
+                </FormControl>
+
+                <FormControl>
+                  <FormLabel>Password</FormLabel>
+                  <InputGroup>
+                    <InputLeftElement pointerEvents="none" color="gray.400">
+                      <Icon as={FaLock} />
+                    </InputLeftElement>
+                    <Input
+                      name="password"
+                      type="password"
+                      placeholder="Leave blank to keep unchanged"
+                      onChange={(e) =>
+                        setEditUser({ ...editUser, password: e.target.value })
+                      }
+                      bg={useColorModeValue('white', 'gray.700')}
+                      color={useColorModeValue('black', 'white')}
+                      _placeholder={{
+                        color: useColorModeValue('gray.500', 'gray.400'),
+                      }}
+                      borderWidth="2px"
+                      borderColor={useColorModeValue('gray.300', 'gray.600')}
+                      _hover={{
+                        borderColor: useColorModeValue('blue.400', 'blue.600'),
+                      }}
+                      _focus={{
+                        borderColor: useColorModeValue('blue.500', 'blue.300'),
+                        boxShadow: 'outline',
+                      }}
+                    />
+                  </InputGroup>
+                </FormControl>
+              </SimpleGrid>
+            </Box>
+
+            <Box mb={8}>
+              <Flex alignItems="center" mb={4}>
+                <Icon as={FaPhoneAlt} w={6} h={6} color="orange.500" mr={2} />
+                <Text fontSize="lg" fontWeight="semibold">
+                  Contact Details
+                </Text>
+              </Flex>
+              <SimpleGrid columns={{ base: 1, md: 2 }} spacing="6">
+                <FormControl>
+                  <FormLabel fontSize="sm">Email</FormLabel>
+                  <InputGroup>
+                    <InputLeftElement pointerEvents="none" color="gray.400">
+                      <Icon as={EmailIcon} />
+                    </InputLeftElement>
+                    <Input
+                      name="email"
+                      placeholder="Enter email"
+                      value={editUser?.email || ''}
+                      onChange={(e) =>
+                        setEditUser({ ...editUser, email: e.target.value })
+                      }
+                      bg={useColorModeValue('white', 'gray.700')}
+                      color={useColorModeValue('black', 'white')}
+                      borderRadius="md"
+                      borderWidth="2px"
+                      borderColor={useColorModeValue('gray.300', 'gray.600')}
+                      _hover={{
+                        borderColor: useColorModeValue('blue.400', 'blue.600'),
+                      }}
+                      _focus={{
+                        borderColor: useColorModeValue('blue.500', 'blue.300'),
+                        boxShadow: 'outline',
+                      }}
+                      _placeholder={{
+                        color: useColorModeValue('gray.500', 'gray.400'),
+                      }}
+                    />
+                  </InputGroup>
+                </FormControl>
+
+                <FormControl>
+                  <FormLabel fontSize="sm">Phone Number</FormLabel>
+                  <InputGroup>
+                    <InputLeftElement pointerEvents="none" color="gray.400">
+                      <Icon as={FaPhoneAlt} />
+                    </InputLeftElement>
+                    <Input
+                      name="phoneNo"
+                      placeholder="Enter phone number"
+                      value={editUser?.phoneNo || ''}
+                      onChange={(e) =>
+                        setEditUser({ ...editUser, phoneNo: e.target.value })
+                      }
+                      bg={useColorModeValue('white', 'gray.700')}
+                      color={useColorModeValue('black', 'white')}
+                      borderRadius="md"
+                    />
+                  </InputGroup>
+                </FormControl>
+              </SimpleGrid>
+            </Box>
+
+            <Box mb={8}>
+              <Flex alignItems="center" mb={4}>
+                <Icon as={FaUserTie} w={6} h={6} color="teal.500" mr={2} />
+                <Text fontSize="lg" fontWeight="semibold">
+                  Role and Designation
+                </Text>
+              </Flex>
+              <SimpleGrid columns={{ base: 1, md: 2 }} spacing="6">
+                <FormControl>
+                  <FormLabel fontSize="sm">Role</FormLabel>
+                  <Select
+                    options={addRoleOptions[role]}
+                    placeholder="Select role"
+                    value={addRoleOptions[role].find(
+                      (option) => option.value === editUser?.role,
+                    )}
+                    onChange={(selectedOption) =>
+                      setEditUser({ ...editUser, role: selectedOption.value })
+                    }
+                    bg={useColorModeValue('white', 'gray.700')}
+                    color={useColorModeValue('black', 'white')}
+                    borderRadius="md"
+                    borderWidth="2px"
+                    borderColor={useColorModeValue('gray.300', 'gray.600')}
+                    _hover={{
+                      borderColor: useColorModeValue('blue.400', 'blue.600'),
+                    }}
+                    _focus={{
+                      borderColor: useColorModeValue('blue.500', 'blue.300'),
+                      boxShadow: 'outline',
+                    }}
+                    _placeholder={{
+                      color: useColorModeValue('gray.500', 'gray.400'),
+                    }}
+                  />
+                </FormControl>
+
+                <FormControl>
+                  <FormLabel fontSize="sm">Designation</FormLabel>
+                  <InputGroup>
+                    <InputLeftElement pointerEvents="none" color="gray.400">
+                      <Icon as={FaBriefcase} />
+                    </InputLeftElement>
+                    <Input
+                      name="designation"
+                      placeholder="Enter designation"
+                      value={editUser?.designation || ''}
+                      onChange={(e) =>
+                        setEditUser({
+                          ...editUser,
+                          designation: e.target.value,
+                        })
+                      }
+                      bg={useColorModeValue('white', 'gray.700')}
+                      color={useColorModeValue('black', 'white')}
+                      borderRadius="md"
+                      borderWidth="2px"
+                      borderColor={useColorModeValue('gray.300', 'gray.600')}
+                      _hover={{
+                        borderColor: useColorModeValue('blue.400', 'blue.600'),
+                      }}
+                      _focus={{
+                        borderColor: useColorModeValue('blue.500', 'blue.300'),
+                        boxShadow: 'outline',
+                      }}
+                      _placeholder={{
+                        color: useColorModeValue('gray.500', 'gray.400'),
+                      }}
+                    />
+                  </InputGroup>
+                </FormControl>
+              </SimpleGrid>
+            </Box>
+
+            {editUser?.role === 'companyUser' || editUser?.role === 'user' ? (
+              <Box mb={8}>
+                <Flex alignItems="center" mb={4}>
+                  <Icon as={FaBuilding} w={6} h={6} color="purple.500" mr={2} />
+                  <Text fontSize="lg" fontWeight="semibold">
+                    Company Association
+                  </Text>
+                </Flex>
+                <FormControl>
+                  <FormLabel fontSize="sm">Company</FormLabel>
                   <Select
                     options={companies.map((company) => ({
                       value: company._id,
                       label: company.name,
                     }))}
+                    placeholder="Select company"
                     value={
                       editUser?.companyId
                         ? {
@@ -937,31 +1300,30 @@ const User = () => {
                           : null,
                       })
                     }
+                    bg={inputBg}
+                    color={inputTextColor}
+                    borderRadius="md"
                   />
                 </FormControl>
-              )}
+              </Box>
+            ) : null}
 
-              <FormControl>
-                <FormLabel>Password</FormLabel>
-                <Input
-                  name="password"
-                  type="password"
-                  placeholder="Leave blank to keep unchanged"
-                  onChange={(e) =>
-                    setEditUser({ ...editUser, password: e.target.value })
-                  }
-                  bg={useColorModeValue('white', 'gray.700')}
-                  color={useColorModeValue('black', 'white')}
-                  _placeholder={{
-                    color: useColorModeValue('gray.500', 'gray.400'),
-                  }}
-                />
-              </FormControl>
-
-              {(editUser?.role === 'user' ||
-                editUser?.role === 'companyUser') && (
+            {editUser?.role === 'user' || editUser?.role === 'companyUser' ? (
+              <Box mb={8}>
+                <Flex alignItems="center" mb={4}>
+                  <Icon
+                    as={FaClipboardList}
+                    w={6}
+                    h={6}
+                    color="green.500"
+                    mr={2}
+                  />
+                  <Text fontSize="lg" fontWeight="semibold">
+                    Assigned Devices
+                  </Text>
+                </Flex>
                 <FormControl>
-                  <FormLabel>Assigned Devices</FormLabel>
+                  <FormLabel fontSize="sm">Devices</FormLabel>
                   <Select
                     isMulti
                     options={device.map((dev) => ({
@@ -990,29 +1352,41 @@ const User = () => {
                         assignedDevices: selectedDeviceIds,
                       });
                     }}
+                    bg={inputBg}
+                    color={inputTextColor}
+                    borderRadius="md"
                   />
                 </FormControl>
-              )}
-            </SimpleGrid>
+              </Box>
+            ) : null}
           </ModalBody>
+
           <ModalFooter
-            style={{
-              position: 'sticky',
-              bottom: 0,
-              // backgroundColor: modalBg,
-              zIndex: '1',
-            }}
+            bg={useColorModeValue('gray.50', 'gray.800')}
+            borderTop="1px solid"
+            borderColor={useColorModeValue('gray.200', 'gray.700')}
+            py={5}
+            px={6}
+            justifyContent="space-between"
+            roundedBottom="xl"
           >
+            <Button
+              onClick={onEditClose}
+              variant="ghost"
+              colorScheme="red"
+              borderRadius="md"
+            >
+              Cancel
+            </Button>
             <Button
               onClick={handleSave}
               colorScheme="blue"
-              mr={3}
               isLoading={loading}
+              borderRadius="md"
+              shadow="sm"
+              _hover={{ shadow: 'md', transform: 'translateY(-1px)' }}
             >
               Save Changes
-            </Button>
-            <Button onClick={onEditClose} variant="ghost">
-              Cancel
             </Button>
           </ModalFooter>
         </ModalContent>
@@ -1027,7 +1401,6 @@ const User = () => {
           shadow="lg"
           overflow="hidden"
         >
-          {/* Header */}
           <Box bg={headerBg} color="white" py={6} textAlign="center">
             <Flex justify="center" mb={4}>
               <Avatar size="2xl" name={viewUser?.name || 'N/A'} />
@@ -1038,7 +1411,6 @@ const User = () => {
             <Text color="whiteAlpha.800">{viewUser?.designation || 'N/A'}</Text>
           </Box>
 
-          {/* Body */}
           <ModalBody bg={modalBg} px={6} py={4}>
             <ModalCloseButton />
             <Text
@@ -1094,7 +1466,6 @@ const User = () => {
               </SimpleGrid>
             </Box>
 
-            {/* Assigned Devices Section */}
             {viewUser?.assignedDevices?.length > 0 && (
               <>
                 <Divider my={6} />
