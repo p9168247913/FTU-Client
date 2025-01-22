@@ -979,6 +979,31 @@ const Company = () => {
               </Flex>
               <SimpleGrid columns={{ base: 1, md: 2 }} spacing="6">
                 <FormControl>
+                  <FormLabel fontSize="sm">Daily Limit</FormLabel>
+                  <Input
+                    name="allowedLimit"
+                    placeholder="Enter daily limit"
+                    value={addCompany?.allowedLimit}
+                    onChange={handleAddChange}
+                    bg={useColorModeValue('white', 'gray.700')}
+                    color={useColorModeValue('black', 'white')}
+                    borderRadius="md"
+                    borderWidth="2px"
+                    borderColor={useColorModeValue('gray.300', 'gray.600')}
+                    _hover={{
+                      borderColor: useColorModeValue('blue.400', 'blue.600'),
+                    }}
+                    _focus={{
+                      borderColor: useColorModeValue('blue.500', 'blue.300'),
+                      boxShadow: 'outline',
+                    }}
+                    _placeholder={{
+                      color: useColorModeValue('gray.500', 'gray.400'),
+                    }}
+                  />
+                </FormControl>
+
+                <FormControl>
                   <FormLabel fontSize="sm">Company Contact Person</FormLabel>
                   <Input
                     name="companyRepresentativeName"
@@ -1612,6 +1637,30 @@ const Company = () => {
               </Flex>
 
               <SimpleGrid columns={{ base: 1, md: 2 }} spacing="6">
+                <FormControl>
+                  <FormLabel fontSize="sm">Daily Limit</FormLabel>
+                  <Input
+                    name="allowedLimit"
+                    placeholder="Enter daily limit"
+                    value={editCompany?.allowedLimit}
+                    onChange={handleEditChange}
+                    bg={useColorModeValue('white', 'gray.700')}
+                    color={useColorModeValue('black', 'white')}
+                    borderRadius="md"
+                    borderWidth="2px"
+                    borderColor={useColorModeValue('gray.300', 'gray.600')}
+                    _hover={{
+                      borderColor: useColorModeValue('blue.400', 'blue.600'),
+                    }}
+                    _focus={{
+                      borderColor: useColorModeValue('blue.500', 'blue.300'),
+                      boxShadow: 'outline',
+                    }}
+                    _placeholder={{
+                      color: useColorModeValue('gray.500', 'gray.400'),
+                    }}
+                  />
+                </FormControl>
                 <FormControl>
                   <FormLabel fontSize="sm">Company Contact Person</FormLabel>
                   <Input
